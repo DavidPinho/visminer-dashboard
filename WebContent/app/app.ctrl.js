@@ -26,6 +26,7 @@ homeApp.controller('HomeCtrl', function ($scope, $timeout, $http,
 		.success(function(data) {
 			console.log('found', data.length, 'repositories');
 			$scope.repositories = data;
+			$scope.repositories = [];
 		});
 	}
 
