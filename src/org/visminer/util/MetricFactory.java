@@ -20,7 +20,7 @@ import org.repositoryminer.metric.clazz.WMC;
 
 public class MetricFactory {
 
-	private static Map<String, IClassMetric> classMetrics = new HashMap<String, IClassMetric>();
+	private static Map<MetricId, IClassMetric> classMetrics = new HashMap<MetricId, IClassMetric>();
 	
 	static {
 		classMetrics.put(MetricId.ATFD, new ATFD());
