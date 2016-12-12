@@ -110,7 +110,7 @@
 
 						<div ng-show="referenceType=='tags'" class="form-group">
 							<label for="inputCvs" class="col-sm-3 control-label">Tags</label>
-							<div class="col-sm-8">
+							<div class="col-sm-8" style="height: 113px; overflow-y: scroll;">
 								<div ng-repeat="tag in references.tags" class="checkbox">
 									<label> <input type="checkbox" checklist-model="tags"
 										checklist-value="tag"> {{tag.name}}
