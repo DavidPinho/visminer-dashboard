@@ -20,21 +20,21 @@ import org.repositoryminer.metric.clazz.WMC;
 
 public class MetricFactory {
 
-	private static Map<MetricId, IClassMetric> classMetrics = new HashMap<MetricId, IClassMetric>();
+	private static Map<String, IClassMetric> classMetrics = new HashMap<String, IClassMetric>();
 	
 	static {
-		classMetrics.put(MetricId.ATFD, new ATFD());
-		classMetrics.put(MetricId.CYCLO, new CYCLO());
-		classMetrics.put(MetricId.LOC, new LOC());
-		classMetrics.put(MetricId.LVAR, new LVAR());
-		classMetrics.put(MetricId.MAXNESTING, new MAXNESTING());
-		classMetrics.put(MetricId.MLOC, new MLOC());
-		classMetrics.put(MetricId.NOA, new NOA());
-		classMetrics.put(MetricId.NOAV, new NOAV());
-		classMetrics.put(MetricId.NOM, new NOM());
-		classMetrics.put(MetricId.PAR, new PAR());
-		classMetrics.put(MetricId.TCC, new TCC());
-		classMetrics.put(MetricId.WMC, new WMC());
+		classMetrics.put(MetricId.ATFD.toString(), new ATFD());
+		classMetrics.put(MetricId.CYCLO.toString(), new CYCLO());
+		classMetrics.put(MetricId.LOC.toString(), new LOC());
+		classMetrics.put(MetricId.LVAR.toString(), new LVAR());
+		classMetrics.put(MetricId.MAXNESTING.toString(), new MAXNESTING());
+		classMetrics.put(MetricId.MLOC.toString(), new MLOC());
+		classMetrics.put(MetricId.NOA.toString(), new NOA());
+		classMetrics.put(MetricId.NOAV.toString(), new NOAV());
+		classMetrics.put(MetricId.NOM.toString(), new NOM());
+		classMetrics.put(MetricId.PAR.toString(), new PAR());
+		classMetrics.put(MetricId.TCC.toString(), new TCC());
+		classMetrics.put(MetricId.WMC.toString(), new WMC());
 	}
 
 	public static IClassMetric getMetric(String key) {
