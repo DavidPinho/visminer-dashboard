@@ -12,7 +12,7 @@ homeApp.controller('TDAnalyzerCtrl', function($scope, $http, $location, $route, 
 	$scope.filtered.debts = sidebarService.getDebts();
 	
 	$scope.tagTypesSelect = sidebarService.getTagTypesSelect();
-  $scope.tagTypeSelect = sidebarService.getTagTypeSelect();
+	$scope.tagTypeSelect = sidebarService.getTagTypeSelect();
 	$scope.types = [];
 	$scope.typesAnalized = 0;
 	$scope.currentDesignDebt = null;
@@ -314,7 +314,9 @@ homeApp.controller('TDAnalyzerCtrl', function($scope, $http, $location, $route, 
 	}
 
 	if ($scope.currentPage == 'tdanalyzer') {
+		console.log("$scope.currentPage == 'tdanalyzer'")
 		if ($scope.filtered.tags.length > 0 && localStorage.getItem('tdItems') != null) {
+			console.log("thisCtrl.loadTypes();")
 			thisCtrl.loadTypes();
 		}
 		$('#filter-identificationdate').daterangepicker();

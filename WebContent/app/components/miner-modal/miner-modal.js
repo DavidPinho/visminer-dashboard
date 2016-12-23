@@ -1,5 +1,5 @@
 angular.module('homeApp').component('minerModal', {
-	controller : function($scope, $http) {
+	controller : function($scope, $rootScope, $http, sidebarService, Repository, TagTime) {
 
 		$("#minerModal1").on('show.bs.modal', function(e) {
 			centerModals($(this));
@@ -17,7 +17,7 @@ angular.module('homeApp').component('minerModal', {
 		
 		$scope.mine_next1 = function() {
 			if ($scope.path == '' || $scope.scm == '') {
-				toastr["error"]("Please fill out the form correctly")
+				toastr["error"]("Please fill out the form correctly");
 			}
 			else {
 				$http.get('rest/mining/get-references', {
@@ -25,7 +25,7 @@ angular.module('homeApp').component('minerModal', {
 						"path" : $scope.path,
 						"scm" : $scope.scm,
 					}
-				}).success(function(data) {
+				}).then(function successCallback(response) {
 					$("#minerModal1").modal("hide");
 					$("#minerModal2").modal("show");
 
@@ -35,12 +35,14 @@ angular.module('homeApp').component('minerModal', {
 						tags : []
 					};
 
-					data.forEach(function(elem) {
+					response.data.forEach(function(elem) {
 						if (elem.type == 'BRANCH')
 							$scope.references.branches.push(elem);
 						else if (elem.type == 'TAG')
 							$scope.references.tags.push(elem);
 					});
+				}, function errorCallback(response) {
+					toastr["error"]("Please fill out the form correctly")
 				});
 			}
 		};
@@ -52,16 +54,35 @@ angular.module('homeApp').component('minerModal', {
 		
 		$scope.mine = function() {
 			$("#minerModal3").modal("hide");
-			console.log($scope.selectedMetrics);
-			
-			$http.put('rest/mining/mine', {
-				"name" : $scope.name,
-				"description" : $scope.description,
-				"path" : $scope.path,
-				"scm" : $scope.scm,
-				"references" : $scope.tags.concat($scope.branches),
-				"metrics" : $scope.selectedMetrics
+//			$http.put('rest/mining/mine', {
+//				"name" : $scope.name,
+//				"description" : $scope.description,
+//				"path" : $scope.path,
+//				"scm" : $scope.scm,
+//				"references" : $scope.tags.concat($scope.branches),
+//				"metrics" : $scope.selectedMetrics
+//			}).then(function successCallback(response) {
+//				
+//			}, function errorCallback(response) {
+//				toastr["error"]("Please fill out the form correctly")
+//			});
+			$http.get('https://private-anon-1c43e3196a-visminer.apiary-mock.com/tags', {
+				"branches": [
+				   "x",
+				   "y",
+				   "z" 
+				]
+			}).then(function successCallback(response) {
+				toastr["success"]("Found "+response.data.length+" tags")
+				sidebarService.addRepository(new Repository('123abc', $scope.name, $scope.description, [], []));
+				var data = response.data;
+				for (i in data) {
+					$rootScope.tags.push(new TagTime('x', data[i].name, data[i].alias, data[i].order, data[i].type, 'repository', []));
+				}
+			}, function errorCallback(response) {
+				toastr["error"]("Error on load tags")
 			});
+			
 		}
 		
 		$scope.mine_prev = function(hide, show) {

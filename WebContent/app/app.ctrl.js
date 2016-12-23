@@ -1,4 +1,4 @@
-homeApp.controller('HomeCtrl', function ($scope, $timeout, $http,
+homeApp.controller('HomeCtrl', function ($rootScope, $scope, $timeout, $http,
  $sessionStorage, $location, $route, Repository, TagTime, Committer, tdAnalyzerService, sidebarService, alertModalService) {
   // This controller instance
   var thisCtrl = this;
@@ -6,8 +6,8 @@ homeApp.controller('HomeCtrl', function ($scope, $timeout, $http,
   // Data collections
   $scope.commits = [];
   $scope.committers = [];
-  $scope.repositories = [];
-  $scope.tags = [];
+  $rootScope.repositories = [];
+  $rootScope.tags = [];
   $scope.tagTypesSelect = sidebarService.getTagTypesSelect();
   $scope.tagTypeSelect = sidebarService.getTagTypeSelect();
   $scope.committerEvolution = [];
@@ -24,7 +24,6 @@ homeApp.controller('HomeCtrl', function ($scope, $timeout, $http,
   
   // Load all repositories
 	thisCtrl.repositoriesLoad = function() { 
-		console.log('repositoriesLoad');
 		$http.get('RepositoryServlet', {params:{"action": "getAll"}})
 		.success(function(data) {
 			console.log('found', data.length, 'repositories');
@@ -33,12 +32,12 @@ homeApp.controller('HomeCtrl', function ($scope, $timeout, $http,
 				for (x in data[i].contributors) {
 					contributors.push(new Committer(data[i].contributors[x].name, data[i].contributors[x].email, null));
 				}
-				$scope.repositories.push(new Repository(data[i]._id, data[i].name, data[i].description, data[i].path, contributors));
+				$rootScope.repositories.push(new Repository(data[i]._id, data[i].name, data[i].description, data[i].path, contributors));
 			}
 		});
 	}
 
-	thisCtrl.repositoriesLoad();
+//	thisCtrl.repositoriesLoad();
 
 	thisCtrl.selectView = function(view) {
 		$scope.currentPage = view;
@@ -50,6 +49,10 @@ homeApp.controller('HomeCtrl', function ($scope, $timeout, $http,
 		sidebarService.setRepository(repository);
 		$route.reload();
 		thisCtrl.tagsLoad(repository);
+	}
+
+	thisCtrl.refreshRepositories = function(repositories) {
+		$rootScope.repositories = repositories;
 	}
 
 	// Load all tags (versions)
@@ -81,7 +84,7 @@ homeApp.controller('HomeCtrl', function ($scope, $timeout, $http,
 				}
 				tags.push(new TagTime(data[i]._id, data[i].name, alias, order, type, repository, data[i].commits));
 			}
-			$scope.tags = tags;
+			$rootScope.tags = tags;
 			sidebarService.setTags(tags);
 			thisCtrl.commitsLoad(repository.id);
 		});

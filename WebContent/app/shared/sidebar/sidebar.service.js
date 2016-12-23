@@ -2,9 +2,10 @@ homeApp.service('sidebarService', function($rootScope){
 
 	this.data = {currentPage : "tdanalyzer"};
 	this.data.repository = null;
+	this.data.repositories = [];
 	this.data.tags = [];
 	this.data.tagTypeSelect = 'Month';
-  this.data.tagTypesSelect = ["Month", "Trimester", "Semester", "Year"];
+	this.data.tagTypesSelect = ["Month", "Trimester", "Semester", "Year"];
 	this.data.commits = [];
 	this.data.committers = [];
 	this.data.debts = ["CODE", "DESIGN"];
@@ -18,8 +19,8 @@ homeApp.service('sidebarService', function($rootScope){
 	}
 
 	this.setRepository = function(repository) {
-		$rootScope.$broadcast("selectRepository", repository);
 		this.data.repository = repository;
+		$rootScope.$broadcast("selectRepository", repository);
 	}
 
 	this.getRepository = function() {
@@ -40,6 +41,11 @@ homeApp.service('sidebarService', function($rootScope){
 
 	this.setTags = function(tags) {
 		this.data.tags = tags;
+	}
+
+	this.addRepository = function(repository) {
+		this.data.repositories.push(repository);
+		$rootScope.repositories = this.data.repositories;
 	}
 
 	this.setCommits = function(commits) {
