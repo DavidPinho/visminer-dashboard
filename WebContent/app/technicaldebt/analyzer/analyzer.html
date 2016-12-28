@@ -110,8 +110,8 @@
                   <th>Identification date</th>
                   <th>Type</th>
                   <th>TD Indicator</th>
-                  <th>Incurred by</th>
-                  <th>Location</th>
+                  <th>Occurred by</th>
+                  <th>Class</th>
                   <th>TD item?</th>
                   <th>Principal</th>
                   <th>Interest amount</th>
@@ -122,10 +122,10 @@
               <tbody>
                 <tr ng-repeat="item in tdItemFiltered | orderBy: '-item.commit.date'" ng-click="tdItemEdit({tdItem: item, i: $index})" style="cursor: pointer;">
                   <td>{{tdItemFormatDate(item.commit.date)}}</td>
-                  <td><span class="label" style="background-color:#1B93A7!important; margin-right:3px;">{{item.type}}</span></td>
-                  <td><span class="label label-default">{{item.tdIndicator.name}}</span></td>
+                  <td><span class="label" style="background-color:#1B93A7!important; margin-right:3px;" ng-repeat="type in item.type">{{type}}</span></td>
+                  <td><span class="label label-default">{{item.tdIndicator}}</span></td>
                   <td><img ng-src="{{item.committer.avatar}}" class="avatar-small" alt="{{item.committer.name}}"> {{item.committer.name}}</td>
-                  <td>{{item.tdIndicator.location}}</td>
+                  <td>{{item.className}}</td>
                   <td>{{(item.isTdItem) ? "Yes" : "No"}}</td>
                   <td>{{item.principal}}<span ng-show="item.principal!=null">h</span></td>
                   <td>{{item.interestAmount}}<span ng-show="item.interestAmount!=null">h</span></td>

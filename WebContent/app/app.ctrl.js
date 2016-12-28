@@ -48,46 +48,10 @@ homeApp.controller('HomeCtrl', function ($rootScope, $scope, $timeout, $http,
 		$scope.filtered.repository = repository;
 		sidebarService.setRepository(repository);
 		$route.reload();
-		thisCtrl.tagsLoad(repository);
 	}
 
 	thisCtrl.refreshRepositories = function(repositories) {
 		$rootScope.repositories = repositories;
-	}
-
-	// Load all tags (versions)
-	thisCtrl.tagsLoad = function(repository) { 
-		console.log('tagsLoad=', repository.id);
-		$http.get('ReferenceServlet', {params:{"action": "getCustomTagsByRepository", "repositoryId": repository.id}})
-		.success(function(data) {
-			console.log('found', data.length, 'tags');
-			var tags = [];
-			for(i in data) {
-				var alias, type;
-				var order = data[i].full_name.split('-');
-				if (data[i].full_name.indexOf('MONTH') > -1) {
-					alias = order[1]+'-'+(order[order.length-1].length == 1 ? '0'+order[order.length-1] : order[order.length-1]);
-					order = order[1]+(order[order.length-1].length == 1 ? '0'+order[order.length-1] : order[order.length-1]);
-					type = 'month';
-				} else if (data[i].full_name.indexOf('TRIMESTER') > -1) {
-					alias = order[1]+'-'+order[order.length-1];
-					order = order[0]+order[order.length-1];
-					type = 'trimester';
-				} else if (data[i].full_name.indexOf('SEMESTER') > -1) {
-					alias = order[1]+'-'+order[order.length-1];
-					order = order[0]+order[order.length-1];
-					type = 'semester';
-				} else {
-					alias = order[1];
-					order = order[0];
-					type = 'year';
-				}
-				tags.push(new TagTime(data[i]._id, data[i].name, alias, order, type, repository, data[i].commits));
-			}
-			$rootScope.tags = tags;
-			sidebarService.setTags(tags);
-			thisCtrl.commitsLoad(repository.id);
-		});
 	}
 
 	thisCtrl.filterTagTypes = function(tagTypeSelect) {
@@ -218,24 +182,27 @@ homeApp.factory('LongMethod', function() {
 })
 
 homeApp.factory('TDItem', function(Commit, Committer) {
-	var TDItem = function (repository, commit, committer, type, tdIndicator, isTdItem, principal, interestAmount, interestProbability, notes) {
-		if (typeof repository != 'undefined') {
-			if (!(commit instanceof Commit)) {
-				throw new Error('commit need to be a instance of Commit class');
-			}
-			if (!(committer instanceof Committer)) {
-				throw new Error('committer need to be a instance of Committer class');
-			}
-		}
+	var TDItem = function (repository, commit, committer, type, tdIndicator, className, package, isTdItem, principal, interestAmount, interestProbability, estimates, notes) {
+		// if (typeof repository != 'undefined') {
+		// 	if (!(commit instanceof Commit)) {
+		// 		throw new Error('commit need to be a instance of Commit class');
+		// 	}
+		// 	if (!(committer instanceof Committer)) {
+		// 		throw new Error('committer need to be a instance of Committer class');
+		// 	}
+		// }
 	  this.repository = repository;
 	  this.commit = commit;
 	  this.committer = committer;
 	  this.type = type;
 	  this.tdIndicator = tdIndicator;
+	  this.className = className;
+	  this.package = package;
 	  this.isTdItem = isTdItem;
 	  this.principal = principal;
 	  this.interestAmount = interestAmount;
 	  this.interestProbability = interestProbability;
+	  this.estimates = estimates;
 	  this.notes = notes;
 	};
 	return TDItem;

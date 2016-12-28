@@ -27,7 +27,19 @@
 
     	        		<div class="col-sm-6">
     	        			<div class="form-group">
-									    <label for="inputPath" class="col-sm-4 control-label">Incurred by</label>
+									    <label for="inputPath" class="col-sm-4 control-label">Class</label>
+									    <div class="col-sm-7">
+									    	<input type="text" class="form-control" id="inputName" ng-model="tdItemModalObj.className" readonly="readonly">
+									    </div>
+									  </div>
+									  <div class="form-group">
+									    <label for="inputPath" class="col-sm-4 control-label">Package</label>
+									    <div class="col-sm-7">
+			                  <input type="text" class="form-control" id="inputName" ng-model="tdItemModalObj.package" readonly="readonly">
+									    </div>
+									  </div>
+									  <div class="form-group">
+									    <label for="inputPath" class="col-sm-4 control-label">Occurred by</label>
 									    <div class="col-sm-7">
 			                    <img ng-show="tdItemModalObj.committer.avatar != null" ng-src="{{tdItemModalObj.committer.avatar}}" class="avatar-normal" alt="{{tdItemModalObj.committer.name}}">
 									    		{{tdItemModalObj.committer.name}}
@@ -57,10 +69,10 @@
 									    	</select>
 									    </div>
 									  </div>
-									  <div class="form-group" ng-show="tdItemModalObj.tdIndicator.location">
-									    <label for="inputPath" class="col-sm-4 control-label">Location</label>
+									  <div class="form-group" ng-show="tdItemModalObj.tdIndicator.className">
+									    <label for="inputPath" class="col-sm-4 control-label">Class</label>
 									    <div class="col-sm-7">
-									      <input type="text" class="form-control" id="inputPath" ng-model="tdItemModalObj.tdIndicator.location" readonly="readonly">
+									      <input type="text" class="form-control" id="inputPath" ng-model="tdItemModalObj.tdIndicator.className" readonly="readonly">
 									    </div>
 									  </div>
 									  <div class="form-group" ng-show="tdItemModalObj.tdIndicator.method">
@@ -73,12 +85,6 @@
 									    <label for="inputPath" class="col-sm-4 control-label">File</label>
 									    <div class="col-sm-7">
 									      <input type="text" class="form-control" id="inputPath" placeholder="E.g.: name.java" ng-model="tdItemModalObj.tdIndicator.file" readonly="readonly">
-									    </div>
-									  </div>
-									  <div class="form-group" ng-show="tdItemModalObj.package">
-									    <label for="inputPath" class="col-sm-4 control-label">Package</label>
-									    <div class="col-sm-7">
-									      <input type="text" class="form-control" id="inputPath" placeholder="E.g.: org.domain" ng-model="tdItemModalObj.package" readonly="readonly">
 									    </div>
 									  </div>
 									  <div class="form-group">
@@ -105,6 +111,16 @@
 							  		  <label for="inputPath" class="col-sm-4 control-label">Interest amount (h)</label>
 							  		  <div class="col-sm-7">
 							  		    <input type="number" class="form-control" id="inputPath" ng-model="tdItemModalObj.interestAmount" ng-disabled="tdItemModalObj.isTdItem == false">
+							  		  </div>
+							  		</div>
+							  		<div class="form-group">
+							  		  <label for="inputPath" class="col-sm-4 control-label" style="padding-left: 0px;">Estimates</label>
+							  		  <div class="col-sm-7">
+							  		    <select  class="form-control" id="inputCvs" ng-model="tdItemModalObj.estimates">
+								    		<option ng-selected="tdItemModalObj.estimates=='High'">High</option>
+								    		<option ng-selected="tdItemModalObj.estimates=='Medium'">Medium</option>
+								    		<option ng-selected="tdItemModalObj.estimates=='Low'">Low</option>
+								    	</select>
 							  		  </div>
 							  		</div>
 							  		<div class="form-group">

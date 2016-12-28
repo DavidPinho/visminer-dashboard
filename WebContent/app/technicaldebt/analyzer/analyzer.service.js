@@ -1,6 +1,8 @@
-homeApp.service('tdAnalyzerService', function($http){
+homeApp.service('tdAnalyzerService', function($http, Committer, TDItem){
 
-	this.loadData = function(tags, callback){
+	this.tdItems = [];
+
+	this.getTdItems = function(tags, callback){
 		localStorage.setItem('tdItems', JSON.stringify([]));
 		var tagsIds = [];
 		var tagsNames = [];
@@ -13,46 +15,36 @@ homeApp.service('tdAnalyzerService', function($http){
 		.then(function successCallback(res) {
 			console.log('res', res)
 			toastr["success"]("Found "+res.data.length+" td items")
-			// for (i in res.data) {
-			// 	$scope.tdItems.push(
-			// 		new TDItem(
-			// 			'x', 
-			// 			null, 
-			// 			new Committer(res.data.occuredBy.email, res.data.occuredBy.name),
-			// 			res.data.type,
-			// 			null,
-			// 			true,
-			// 			null,
-			// 			null,
-			// 			null,
-			// 			null
-			// 		)
-			// 	)
-			// }
+			var tdItems = [];
+			for (i in res.data) {
+				tdItems.push(
+					new TDItem(
+						null,
+						null,
+						new Committer(res.data[i].occuredBy.name, res.data[i].occuredBy.email, null),
+						res.data[i].type,
+						res.data[i].indicator,
+						res.data[i].className,
+						res.data[i].package,
+						res.data[i].tdItem,
+						res.data[i].principal,
+						res.data[i].interestAmount,
+						res.data[i].interestProbability,
+						res.data[i].estimates,
+						res.data[i].notes
+					)
+				);
+			}
+			localStorage.setItem('tdItems', JSON.stringify(tdItems));
+			console.log('getTdItems tdItems', tdItems)
 			callback();
 		}, function errorCallback(response) {
 			toastr["error"]("Error on analyzer this project")
 		});
-
-		// $http.get('TypeServlet', {params:{"action": "getDebtsByListOfTags", "ids": '['+tagsIds.join(',')+']'}})
-		// .success(function(data) {
-		// 	console.log('found', data.length, 'types');
-		// 	localStorage.setItem('typeData', JSON.stringify(data));
-		// 	$http.get('TagAnalysisServlet', {params:{"action": "getAllByTagsName", "tagsName": '['+tagsNames.join(',')+']'}})
-		// 	.success(function(data) {
-		// 		localStorage.setItem('duplicatedCodeData', JSON.stringify(data));
-		// 		callback();
-		// 	})
-		// });
 	}
 
-	this.getTypeData = function() {
-		var typeData = JSON.parse(localStorage.getItem('typeData'));
-		return (typeData == null) ? [] : typeData;
+	this.getTdItemsStorage = function(){
+		return JSON.parse(localStorage.getItem('tdItems'));
 	}
 
-	this.getDuplicatedCodeData = function() {
-		var duplicatedCodeData = JSON.parse(localStorage.getItem('duplicatedCodeData'));
-		return (duplicatedCodeData == null) ? [] : duplicatedCodeData;
-	}
 });

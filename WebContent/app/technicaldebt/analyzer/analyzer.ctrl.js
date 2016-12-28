@@ -27,7 +27,7 @@ homeApp.controller('TDAnalyzerCtrl', function($scope, $http, $location, $route, 
 	}
 
 	// Apply filter parameters
-	$scope.filterApply = function() {
+	$scope.filterApply = function() { console.log('$scope.filterApply')
 		var tdItemFiltered = [];
 		if (typeof $scope.filter.identificationDate != 'undefined' && $scope.filter.identificationDate != "") {
 			var dates = $scope.filter.identificationDate.split(' - ');
@@ -88,75 +88,9 @@ homeApp.controller('TDAnalyzerCtrl', function($scope, $http, $location, $route, 
 		sidebarService.setCurrentPage(view);
 	}
 
-	thisCtrl.loadTypes = function() {
-		var tdItems = JSON.parse(localStorage.getItem('tdItems'));
-		if (tdItems.length > 0) {
-			$scope.tdItems = tdItems;
-		} else {
-			$scope.tdItems = [];
-			var typeData = tdAnalyzerService.getTypeData();
-			var duplicatedCodeData = tdAnalyzerService.getDuplicatedCodeData();
-			for (a in typeData) {
-				var diffs = [];
-				var info = $scope.getCommitAndCommitter(typeData[a].commit);
-				var commit = info.commit;
-				var committer = info.committer;
-				var debts = thisCtrl.getDebts(typeData[a]);
-				for (x in debts) {
-					$scope.tdItems.push(
-						new TDItem(
-							typeData[a].repository, 
-							new Commit(commit._id, formatDate(commit.commit_date.$date), {linesAdded: commit.diffs[0].lines_added, linesRemoved: commit.diffs[0].lines_removed, type: commit.diffs[0].type}), 
-							(typeof committer != 'undefined') ? new Committer(committer.name, committer.email, committer.avatar) : new Committer(),
-							'Code Debt',
-							new LongMethod(debts[x].method, getLongMethodMetrics(debts[x].method, typeData[a].abstract_types[0].metrics), typeData[a].filename, typeData[a].package),
-							true,
-							null,
-							null,
-							null,
-							null
-						)
-					);
-				}
-				$scope.typesAnalized++;
-			}
-			for (b in duplicatedCodeData) {
-				if (duplicatedCodeData[b].code_smells.length > 0 && duplicatedCodeData[b].code_smells[0].occurrences.length > 0) {
-					var info = $scope.getCommitAndCommitter(duplicatedCodeData[b].commit);
-					var commit = info.commit;
-					var committer = info.committer;
-					var files = [];
-					for (z in duplicatedCodeData[b].code_smells[0].occurrences) {
-						files.push({
-				  		one: {
-				  			name: duplicatedCodeData[b].code_smells[0].occurrences[z].files[0].file_name,
-				  			line: duplicatedCodeData[b].code_smells[0].occurrences[z].files[0].begin_line+' ~ '+duplicatedCodeData[b].code_smells[0].occurrences[z].files[0].end_line,
-				  		},
-				  		two: {
-				  			name: duplicatedCodeData[b].code_smells[0].occurrences[z].files[1].file_name,
-				  			line: duplicatedCodeData[b].code_smells[0].occurrences[z].files[1].begin_line+' ~ '+duplicatedCodeData[b].code_smells[0].occurrences[z].files[1].end_line,
-				  		},
-				  		code: duplicatedCodeData[b].code_smells[0].occurrences[z].source_code_slice
-						})
-					}
-					$scope.tdItems.push(
-						new TDItem(
-							duplicatedCodeData[b].repository, 
-							new Commit(commit._id, formatDate(commit.commit_date.$date), {linesAdded: commit.diffs[0].lines_added, linesRemoved: commit.diffs[0].lines_removed, type: commit.diffs[0].type}), 
-							(typeof committer != 'undefined') ? new Committer(committer.name, committer.email, committer.avatar) : new Committer(),
-							'Code Debt',
-							new DuplicatedCode(files),
-							true,
-							null,
-							null,
-							null,
-							null
-						)
-					);
-				}
-			}
-      localStorage.setItem('tdItems', JSON.stringify($scope.tdItems));
-		}
+	thisCtrl.processTdItems = function() {
+		console.log("thisCtrl.processTdItems();")
+		$scope.tdItems = tdAnalyzerService.getTdItemsStorage();
 		$scope.tdItemFiltered = $scope.tdItems;
 	}
 
@@ -284,7 +218,7 @@ homeApp.controller('TDAnalyzerCtrl', function($scope, $http, $location, $route, 
 
 	$scope.updateViewByTag = function() {
 		$scope.types = [];
-		thisCtrl.loadTypes();
+		thisCtrl.processTdItems();
 	}
 
 	$scope.showTypeSmellsDetails = function(type) {
@@ -304,9 +238,11 @@ homeApp.controller('TDAnalyzerCtrl', function($scope, $http, $location, $route, 
 		} 
 		if (analyze) {
 			$('#progressBarModal').modal('show');
-			tdAnalyzerService.loadData($scope.filtered.tags, function() {
+			tdAnalyzerService.getTdItems($scope.filtered.tags, function() {
 				$('#progressBarModal').modal('hide');
-				thisCtrl.loadTypes();
+
+				 JSON.parse(localStorage.getItem('typeData'));
+				thisCtrl.processTdItems();
 			})
 		} else {
 			$('#alertModal').modal('show');
@@ -316,8 +252,7 @@ homeApp.controller('TDAnalyzerCtrl', function($scope, $http, $location, $route, 
 	if ($scope.currentPage == 'tdanalyzer') {
 		console.log("$scope.currentPage == 'tdanalyzer'")
 		if ($scope.filtered.tags.length > 0 && localStorage.getItem('tdItems') != null) {
-			console.log("thisCtrl.loadTypes();")
-			thisCtrl.loadTypes();
+			thisCtrl.processTdItems();
 		}
 		$('#filter-identificationdate').daterangepicker();
 	}

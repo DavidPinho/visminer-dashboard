@@ -37,7 +37,8 @@ angular.module('homeApp').component('tdItemModal', {
   		tdItem.isTdItem = $scope.tdItemModalObj.isTdItem;
   		tdItem.principal = $scope.tdItemModalObj.principal;
   		tdItem.interestAmount = $scope.tdItemModalObj.interestAmount;
-  		tdItem.interestProbability = $scope.tdItemModalObj.interestProbability;
+      tdItem.interestProbability = $scope.tdItemModalObj.interestProbability;
+  		tdItem.estimates = $scope.tdItemModalObj.estimates;
       // update tdItems
       var tdItems = JSON.parse(localStorage.getItem('tdItems'));
       tdItems[tdItemIndex] = tdItem;
