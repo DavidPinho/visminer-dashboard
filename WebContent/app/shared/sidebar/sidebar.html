@@ -25,16 +25,23 @@
           <small class="label pull-right bg-green" ng-show="tags.length==0">{{tags.length}}</small>
         </a>
         <ul class="treeview-menu">
+          <li ng-repeat="tag in tags | orderBy:'name'">
+            <label class="control-sidebar-subheading filter-version-sub-item">
+              <input type="checkbox" checklist-model="filtered.tags" checklist-value="tag">{{tag.name}}
+            </label>
+          </li>
+        </ul>
+        <!-- Tags by time
+        <ul class="treeview-menu">
           <select ng-model="tagTypeSelect" ng-change="ctrl.filterTagTypes(tagTypeSelect)" class="form-control">
             <option ng-repeat="tagType in tagTypesSelect" ng-selected="{{tagType==tagTypeSelect}}" value="{{tagType}}">{{tagType}}</option>
           </select>
           <li ng-repeat="tag in tags | filter:ctrl.hasTagTypeSelected | orderBy:'order'">
-          <!-- <li ng-repeat="tag in tags | orderBy:'order'"> -->
             <label class="control-sidebar-subheading filter-version-sub-item">
               <input type="checkbox" checklist-model="filtered.tags" checklist-value="tag">{{tag.alias}}
             </label>
           </li>
-        </ul>
+        </ul> -->
       </li>
       <li class="treeview">
         <a href="#">
@@ -71,14 +78,14 @@
                   <i class="fa fa-circle-o"></i> TD Committers
                 </a>
               </li>
-              <li>
+              <!-- <li>
                 <a href="technicaldebt/evolution" ng-click="ctrl.selectView('tdevolution')">
                   <i class="fa fa-circle-o"></i> TD Evolution
                 </a>
-              </li>
+              </li> -->
               <li>
-                <a href="technicaldebt/management" ng-click="ctrl.selectView('tdmanagement')">
-                  <i class="fa fa-circle-o"></i> TD Management
+                <a href="technicaldebt/manager" ng-click="ctrl.selectView('tdmanager')">
+                  <i class="fa fa-circle-o"></i> TD Manager
                 </a>
               </li>
             </ul>
