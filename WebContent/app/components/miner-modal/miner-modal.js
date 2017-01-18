@@ -66,7 +66,7 @@ angular.module('homeApp').component('minerModal', {
 //			}, function errorCallback(response) {
 //				toastr["error"]("Please fill out the form correctly")
 //			});
-			$http.get('https://private-anon-1c43e3196a-visminer.apiary-mock.com/tags', {
+			$http.get('http://private-1608d-visminer.apiary-mock.com/tags', {
 				"branches": [
 				   "x",
 				   "y",
