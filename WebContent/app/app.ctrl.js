@@ -37,8 +37,6 @@ homeApp.controller('HomeCtrl', function ($rootScope, $scope, $timeout, $http,
 		});
 	}
 
-//	thisCtrl.repositoriesLoad();
-
 	thisCtrl.selectView = function(view) {
 		$scope.currentPage = view;
 		sidebarService.setCurrentPage(view);
@@ -143,10 +141,9 @@ homeApp.factory('TagTime', function() {
 })
 
 homeApp.factory('Commit', function() {
-	var Commit = function (id, date, diffs) {
+	var Commit = function (id, date) {
 	  this.id = id;
 	  this.date = date;
-	  this.diffs = diffs;
 	};
 	return Commit;
 })
@@ -182,21 +179,14 @@ homeApp.factory('LongMethod', function() {
 })
 
 homeApp.factory('TDItem', function(Commit, Committer) {
-	var TDItem = function (repository, commit, committer, type, tdIndicator, className, package, isTdItem, principal, interestAmount, interestProbability, estimates, notes) {
-		// if (typeof repository != 'undefined') {
-		// 	if (!(commit instanceof Commit)) {
-		// 		throw new Error('commit need to be a instance of Commit class');
-		// 	}
-		// 	if (!(committer instanceof Committer)) {
-		// 		throw new Error('committer need to be a instance of Committer class');
-		// 	}
-		// }
+	var TDItem = function (id, repository, commit, committer, type, tdIndicators, fileName, package, isTdItem, principal, interestAmount, interestProbability, estimates, notes) {
+	  this.id = id;
 	  this.repository = repository;
 	  this.commit = commit;
 	  this.committer = committer;
 	  this.type = type;
-	  this.tdIndicator = tdIndicator;
-	  this.className = className;
+	  this.tdIndicators = tdIndicators;
+	  this.fileName = fileName;
 	  this.package = package;
 	  this.isTdItem = isTdItem;
 	  this.principal = principal;
