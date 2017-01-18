@@ -2,7 +2,7 @@ homeApp = angular.module('homeApp');
 
 homeApp.controller('TDAnalyzerCtrl', function($scope, $http, $location, $route, $timeout,
  TDItem, Commit, Committer, DuplicatedCode, LongMethod, // Models
- sidebarService, alertModalService, tdAnalyzerService, tdItemModalService, typeSmellsDetailsService){
+ sidebarService, alertModalService, progressbarService, tdAnalyzerService, tdItemModalService, typeSmellsDetailsService){
 	var thisCtrl = this;
 	
 	$scope.currentPage = sidebarService.getCurrentPage();
@@ -27,7 +27,7 @@ homeApp.controller('TDAnalyzerCtrl', function($scope, $http, $location, $route, 
 	}
 
 	// Apply filter parameters
-	$scope.filterApply = function() { console.log('$scope.filterApply')
+	$scope.filterApply = function() {
 		var tdItemFiltered = [];
 		if (typeof $scope.filter.identificationDate != 'undefined' && $scope.filter.identificationDate != "") {
 			var dates = $scope.filter.identificationDate.split(' - ');
@@ -89,9 +89,8 @@ homeApp.controller('TDAnalyzerCtrl', function($scope, $http, $location, $route, 
 	}
 
 	thisCtrl.processTdItems = function() {
-		console.log("thisCtrl.processTdItems();")
-		$scope.tdItems = tdAnalyzerService.getTdItemsStorage();
-		$scope.tdItemFiltered = $scope.tdItems;
+		// $scope.tdItems = tdAnalyzerService.getTdItemsStorage();
+		// $scope.tdItemFiltered = $scope.tdItems;
 	}
 
 	function getLongMethodMetrics(method, metrics) {
@@ -237,11 +236,12 @@ homeApp.controller('TDAnalyzerCtrl', function($scope, $http, $location, $route, 
       analyze = false;
 		} 
 		if (analyze) {
+			progressbarService.setTitle('Analyzing Repository');
 			$('#progressBarModal').modal('show');
-			tdAnalyzerService.getTdItems($scope.filtered.tags, function() {
+			tdAnalyzerService.analyzeIt($scope.filtered.tags, function() {
 				$('#progressBarModal').modal('hide');
 
-				 JSON.parse(localStorage.getItem('typeData'));
+				 // JSON.parse(localStorage.getItem('typeData'));
 				thisCtrl.processTdItems();
 			})
 		} else {
@@ -250,7 +250,6 @@ homeApp.controller('TDAnalyzerCtrl', function($scope, $http, $location, $route, 
 	}
 
 	if ($scope.currentPage == 'tdanalyzer') {
-		console.log("$scope.currentPage == 'tdanalyzer'")
 		if ($scope.filtered.tags.length > 0 && localStorage.getItem('tdItems') != null) {
 			thisCtrl.processTdItems();
 		}
