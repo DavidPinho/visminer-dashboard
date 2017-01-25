@@ -149,10 +149,9 @@ homeApp.factory('Commit', function() {
 })
 
 homeApp.factory('Committer', function() {
-	var Committer = function (name, email, avatar) {
+	var Committer = function (name, email) {
 	  this.name = name;
 	  this.email = email;
-	  this.avatar = avatar;
 	};
 	return Committer;
 })
@@ -179,11 +178,11 @@ homeApp.factory('LongMethod', function() {
 })
 
 homeApp.factory('TDItem', function(Commit, Committer) {
-	var TDItem = function (id, repository, commit, committer, type, tdIndicators, fileName, package, isTdItem, principal, interestAmount, interestProbability, estimates, notes) {
+	var TDItem = function (id, repository, commit, occurredBy, type, tdIndicators, fileName, package, isTdItem, principal, interestAmount, interestProbability, estimates, notes) {
 	  this.id = id;
 	  this.repository = repository;
 	  this.commit = commit;
-	  this.committer = committer;
+	  this.occurredBy = occurredBy;
 	  this.type = type;
 	  this.tdIndicators = tdIndicators;
 	  this.fileName = fileName;
