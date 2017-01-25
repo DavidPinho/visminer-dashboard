@@ -5,6 +5,7 @@ homeApp.controller('TDManagerCtrl', function($scope, $http, $route,
 	progressbarService, sidebarService, tdItemModalService){
 
 	var thisCtrl = this;
+	$scope.committers = [];
 	$scope.tdItems = [];
 	$scope.tdItemsFiltered = [];
 
@@ -18,39 +19,46 @@ homeApp.controller('TDManagerCtrl', function($scope, $http, $route,
 		$('#progressBarModal').modal('show');
 		$http.get('http://private-1608d-visminer.apiary-mock.com/td/manager', {})
 		.then(function successCallback(res) {
-			console.log('res', res)
-			toastr["success"]("Found "+res.data.length+" td items")
-			$('#progressBarModal').modal('hide');
-			for (i in res.data) {
-				var committers = [];
-				for (z in res.data[i].occurredBy) {
-					committers.push(new Committer(
-						res.data[i].occurredBy[z].name,
-						res.data[i].occurredBy[z].email,
-						null
-					));
-				}
-				for (x in res.data[i].technical_debts) {
-					$scope.tdItems.push(new TDItem(
-						res.data[i].id,
-						res.data[i].repository,
-						new Commit(res.data[i].commit, new Date(res.data[i].commit_date)),
-						committers,
-						'Code',
-						getIndicators(res.data[i].technical_debts[x].indicators),
-						res.data[i].filename,
-						'res.data[i].package',
-						false,
-						null,
-						null,
-						null,
-						null,
-						null
-					));
-				}
-			}
-			console.log('$scope.tdItems', $scope.tdItems)
-			$scope.tdItemsFiltered = $scope.tdItems;
+			$http.get('http://private-1608d-visminer.apiary-mock.com/committer', {})
+					.then(function successCallback(resCommitter) {
+						$scope.committers = resCommitter.data;
+						toastr["success"]("Found "+res.data.length+" td items")
+						$('#progressBarModal').modal('hide');
+						for (i in res.data) {
+							var occurredBy = [];
+							for (z in res.data[i].occurredBy) {
+								occurredBy.push(new Committer(
+									res.data[i].occurredBy[z].name,
+									res.data[i].occurredBy[z].email,
+									null
+								));
+							}
+							var package = res.data[i].filename.split('/');
+				      package.pop();
+							for (x in res.data[i].technical_debts) {
+								$scope.tdItems.push(new TDItem(
+									res.data[i].id,
+									res.data[i].repository,
+									new Commit(res.data[i].commit, new Date(res.data[i].commit_date)),
+									occurredBy,
+									'Code',
+									getIndicators(res.data[i].technical_debts[x].indicators),
+									res.data[i].filename,
+									package.join('.'),
+									false,
+									null,
+									null,
+									null,
+									null,
+									null
+								));
+							}
+						}
+						console.log('$scope.tdItems', $scope.tdItems)
+						$scope.tdItemsFiltered = $scope.tdItems;
+					}, function errorCallback(response) {
+				toastr["error"]("Error on analyzer this project")
+			})
 		}, function errorCallback(response) {
 			toastr["error"]("Error on analyzer this project")
 		});
@@ -115,6 +123,7 @@ homeApp.controller('TDManagerCtrl', function($scope, $http, $route,
 	}
 
 	$scope.tdItemEdit = function(i, tdItem) {
+		i.committers = $scope.committers;
 		tdItemModalService.loadObj(i, tdItem);
 		$('#tdItemModal').modal('show');
 	}

@@ -98,7 +98,9 @@
                   <td style="max-width: 200px">
                     <span ng-repeat="indicator in item.tdIndicators" class="label label-default" style="display:block; margin: 3px;     line-height: normal;white-space: normal;">{{indicator}}</span>
                   </td>
-                  <td>{{item.committer.name}}</td>
+                  <td>
+                    <span ng-repeat="occurredBy in item.occurredBy" class="label label-default" style="display:block; margin: 3px;     line-height: normal;white-space: normal;">{{occurredBy.name}}</span>
+                  </td>
                   <td style="overflow: hidden; text-overflow: ellipsis;  direction: rtl; max-width:200px;">{{item.fileName}}</td>
                   <td>{{(item.isTdItem) ? "Yes" : "No"}}</td>
                   <td>{{item.principal}}<span ng-show="item.principal!=null">h</span></td>

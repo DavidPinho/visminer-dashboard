@@ -1,7 +1,9 @@
 angular.module('homeApp').component('tdItemModal', {
   controller: function ($scope, tdItemModalService) {
+    $scope.committers = [];
 		$scope.tabTd = true;
-		$scope.tabMetrics = false;
+    $scope.tabMetrics = false;
+		$scope.tabHistory = false;
     var tdItemIndex = null;
 		var tdItem;
 		$(".modal").on('show.bs.modal', function(e) {
@@ -11,20 +13,23 @@ angular.module('homeApp').component('tdItemModal', {
   	$scope.$on('tdItemModalLoadObj', function(event, data){
       $scope.activeTab('td');
       tdItem = data.tdItem;
+      $scope.committers = JSON.parse(JSON.stringify(data.committers));
   		tdItemIndex = data.i;
   		$scope.tdItemModalObj = JSON.parse(JSON.stringify(tdItem)); // clone the object
       $scope.tdItemModalObj.commit.date = moment($scope.tdItemModalObj.commit.date).format('l');
-      console.log('tdItemModalObj', tdItemModalObj)
-      // $scope.tdItemModalObj.file = $scope.getFileName($scope.tdItemModalObj.file);
   	});
 
   	$scope.activeTab = function(tabId) {
   		$scope.tabTd = false;
-			$scope.tabMetrics = false;
+      $scope.tabMetrics = false;
+			$scope.tabHistory = false;
   		switch(tabId) {
   			case 'metrics':
 					$scope.tabMetrics = true;
   				break;
+        case 'history':
+          $scope.tabHistory = true;
+          break;
 				default:
 					$scope.tabTd = true;
   				break;
@@ -32,15 +37,16 @@ angular.module('homeApp').component('tdItemModal', {
   	}
 
   	$scope.save = function() {
-  		tdItem.type = $scope.tdItemModalObj.type;
-  		tdItem.tdIndicator = $scope.tdItemModalObj.tdIndicator;
-  		tdItem.notes = $scope.tdItemModalObj.notes;
-      tdItem.isTdItem = $scope.tdItemModalObj.isTdItem;
-  		tdItem.intentional = $scope.tdItemModalObj.intentional;
-  		tdItem.principal = $scope.tdItemModalObj.principal;
-  		tdItem.interestAmount = $scope.tdItemModalObj.interestAmount;
+      tdItem.estimates = $scope.tdItemModalObj.estimates;
+      tdItem.intentional = $scope.tdItemModalObj.intentional;
+      tdItem.interestAmount = $scope.tdItemModalObj.interestAmount;
       tdItem.interestProbability = $scope.tdItemModalObj.interestProbability;
-  		tdItem.estimates = $scope.tdItemModalObj.estimates;
+      tdItem.isTdItem = $scope.tdItemModalObj.isTdItem;
+      tdItem.notes = $scope.tdItemModalObj.notes;
+      tdItem.occurredBy = $scope.tdItemModalObj.occurredBy;
+      tdItem.principal = $scope.tdItemModalObj.principal;
+  		tdItem.tdIndicator = $scope.tdItemModalObj.tdIndicator;
+      tdItem.type = $scope.tdItemModalObj.type;
       // update tdItems
       var tdItems = JSON.parse(localStorage.getItem('tdItems'));
       tdItems[tdItemIndex] = tdItem;
