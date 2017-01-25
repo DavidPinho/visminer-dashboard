@@ -95,7 +95,9 @@
                 <tr ng-repeat="item in tdItemsFiltered | orderBy: '-item.commit.date'" ng-click="tdItemEdit({tdItem: item, i: $index})" style="cursor: pointer;">
                   <td>{{tdItemFormatDate(item.commit.date)}}</td>
                   <td><span class="label" style="background-color:#1B93A7!important; margin-right:3px;">{{item.type}}</span></td>
-                  <td><span ng-repeat="indicator in item.tdIndicators" class="label label-default" style="margin-right: 3px;">{{indicator}}</span></td>
+                  <td style="max-width: 200px">
+                    <span ng-repeat="indicator in item.tdIndicators" class="label label-default" style="display:block; margin: 3px;     line-height: normal;white-space: normal;">{{indicator}}</span>
+                  </td>
                   <td>{{item.committer.name}}</td>
                   <td style="overflow: hidden; text-overflow: ellipsis;  direction: rtl; max-width:200px;">{{item.fileName}}</td>
                   <td>{{(item.isTdItem) ? "Yes" : "No"}}</td>

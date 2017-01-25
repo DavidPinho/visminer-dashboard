@@ -27,9 +27,9 @@
 
     	        		<div class="col-sm-6">
     	        			<div class="form-group">
-									    <label for="inputPath" class="col-sm-4 control-label">Class</label>
+									    <label for="inputPath" class="col-sm-4 control-label">File</label>
 									    <div class="col-sm-7">
-									    	<input type="text" class="form-control" id="inputName" ng-model="tdItemModalObj.className" readonly="readonly">
+									    	<input type="text" class="form-control" id="inputName" ng-model="tdItemModalObj.fileName" readonly="readonly">
 									    </div>
 									  </div>
 									  <div class="form-group">
@@ -41,8 +41,7 @@
 									  <div class="form-group">
 									    <label for="inputPath" class="col-sm-4 control-label">Occurred by</label>
 									    <div class="col-sm-7">
-			                    <img ng-show="tdItemModalObj.committer.avatar != null" ng-src="{{tdItemModalObj.committer.avatar}}" class="avatar-normal" alt="{{tdItemModalObj.committer.name}}">
-									    		{{tdItemModalObj.committer.name}}
+									    	{{tdItemModalObj.committer.name}}
 									    </div>
 									  </div>
 									  <div class="form-group">
@@ -102,6 +101,15 @@
 							  		  </div>
 							  		</div>
 							  		<div class="form-group">
+							  		  <label for="inputPath" class="col-sm-4 control-label" style="padding-left: 0px;">Intentional?</label>
+							  		  <div class="col-sm-7">
+							  		    <select  class="form-control" id="inputCvs" ng-model="tdItemModalObj.intentional" ng-disabled="tdItemModalObj.isTdItem == false">
+								    		<option ng-selected="tdItemModalObj.intentional=='Yes'">Yes</option>
+								    		<option ng-selected="tdItemModalObj.intentional=='No'">No</option>
+								    	</select>
+							  		  </div>
+							  		</div>
+							  		<div class="form-group">
 							  		  <label for="inputPath" class="col-sm-4 control-label">Principal (h)</label>
 							  		  <div class="col-sm-7">
 							  		    <input type="number" class="form-control" id="inputPath" ng-model="tdItemModalObj.principal" ng-disabled="tdItemModalObj.isTdItem == false">
@@ -114,9 +122,15 @@
 							  		  </div>
 							  		</div>
 							  		<div class="form-group">
+							  		  <label for="inputPath" class="col-sm-4 control-label" style="padding-left: 0px;">Interest probability (%)</label>
+							  		  <div class="col-sm-7">
+							  		    <input type="number" min="0" max="100" class="form-control" id="inputPath" ng-model="tdItemModalObj.interestProbability" ng-disabled="tdItemModalObj.isTdItem == false">
+							  		  </div>
+							  		</div>
+							  		<div class="form-group">
 							  		  <label for="inputPath" class="col-sm-4 control-label" style="padding-left: 0px;">Estimates</label>
 							  		  <div class="col-sm-7">
-							  		    <select  class="form-control" id="inputCvs" ng-model="tdItemModalObj.estimates">
+							  		    <select  class="form-control" id="inputCvs" ng-model="tdItemModalObj.estimates" ng-disabled="tdItemModalObj.isTdItem == false">
 								    		<option ng-selected="tdItemModalObj.estimates=='High'">High</option>
 								    		<option ng-selected="tdItemModalObj.estimates=='Medium'">Medium</option>
 								    		<option ng-selected="tdItemModalObj.estimates=='Low'">Low</option>
@@ -124,15 +138,9 @@
 							  		  </div>
 							  		</div>
 							  		<div class="form-group">
-							  		  <label for="inputPath" class="col-sm-4 control-label" style="padding-left: 0px;">Interest probability (%)</label>
-							  		  <div class="col-sm-7">
-							  		    <input type="number" min="0" max="100" class="form-control" id="inputPath" ng-model="tdItemModalObj.interestProbability" ng-disabled="tdItemModalObj.isTdItem == false">
-							  		  </div>
-							  		</div>
-							  		<div class="form-group">
 									    <label for="inputPath" class="col-sm-4 control-label">Notes</label>
 									    <div class="col-sm-7">
-									      <textarea class="form-control" ng-model="tdItemModalObj.notes" style="height: 215px;"></textarea>
+									      <textarea class="form-control" ng-model="tdItemModalObj.notes" style="height: 120px;"></textarea>
 									    </div>
 									  </div>
 							  	</div>

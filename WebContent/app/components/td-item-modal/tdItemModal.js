@@ -14,6 +14,7 @@ angular.module('homeApp').component('tdItemModal', {
   		tdItemIndex = data.i;
   		$scope.tdItemModalObj = JSON.parse(JSON.stringify(tdItem)); // clone the object
       $scope.tdItemModalObj.commit.date = moment($scope.tdItemModalObj.commit.date).format('l');
+      console.log('tdItemModalObj', tdItemModalObj)
       // $scope.tdItemModalObj.file = $scope.getFileName($scope.tdItemModalObj.file);
   	});
 
@@ -34,7 +35,8 @@ angular.module('homeApp').component('tdItemModal', {
   		tdItem.type = $scope.tdItemModalObj.type;
   		tdItem.tdIndicator = $scope.tdItemModalObj.tdIndicator;
   		tdItem.notes = $scope.tdItemModalObj.notes;
-  		tdItem.isTdItem = $scope.tdItemModalObj.isTdItem;
+      tdItem.isTdItem = $scope.tdItemModalObj.isTdItem;
+  		tdItem.intentional = $scope.tdItemModalObj.intentional;
   		tdItem.principal = $scope.tdItemModalObj.principal;
   		tdItem.interestAmount = $scope.tdItemModalObj.interestAmount;
       tdItem.interestProbability = $scope.tdItemModalObj.interestProbability;
