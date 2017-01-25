@@ -53,6 +53,7 @@ angular.module('homeApp').component('minerModal', {
 		};
 		
 		$scope.mine = function() {
+			$("#minerModal2").modal("hide");
 			$("#minerModal3").modal("hide");
 //			$http.put('rest/mining/mine', {
 //				"name" : $scope.name,
