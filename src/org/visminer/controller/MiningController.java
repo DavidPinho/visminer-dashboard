@@ -13,7 +13,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.repositoryminer.exceptions.VisMinerAPIException;
+import org.repositoryminer.exceptions.RepositoryMinerException;
 import org.repositoryminer.mining.RepositoryMiner;
 import org.repositoryminer.model.Reference;
 import org.repositoryminer.parser.java.JavaParser;
@@ -39,7 +39,7 @@ public class MiningController {
 			scm.close();
 
 			return references;
-		} catch (NullPointerException |  VisMinerAPIException e) {
+		} catch (NullPointerException |  RepositoryMinerException e) {
 			throw new WebApplicationException(e.getMessage(), 400);
 		}
 	}
@@ -48,11 +48,7 @@ public class MiningController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("mine")
 	public Response mine(MiningRequest request) {
-		RepositoryMiner rm = new RepositoryMiner();
-		rm.setName(request.getName());
-		rm.setDescription(request.getDescription());
-		rm.setPath(request.getPath());
-		rm.setScm(request.getScm());
+		RepositoryMiner rm = new RepositoryMiner(request.getPath(), request.getName(), request.getDescription(), request.getScm());
 
 		rm.addParser(new JavaParser());
 
@@ -61,7 +57,7 @@ public class MiningController {
 		}
 
 		for (String metric : request.getMetrics()) {
-			rm.addClassMetric(MetricFactory.getMetric(metric));
+			rm.addDirectCodeMetric(MetricFactory.getMetric(metric));
 		}
 
 		try {
