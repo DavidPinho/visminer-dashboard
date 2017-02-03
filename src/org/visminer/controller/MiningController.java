@@ -13,6 +13,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.repositoryminer.codemetric.CodeMetricId;
 import org.repositoryminer.exceptions.RepositoryMinerException;
 import org.repositoryminer.mining.RepositoryMiner;
 import org.repositoryminer.model.Reference;
@@ -20,7 +21,7 @@ import org.repositoryminer.parser.java.JavaParser;
 import org.repositoryminer.scm.ISCM;
 import org.repositoryminer.scm.SCMFactory;
 import org.repositoryminer.scm.SCMType;
-import org.visminer.model.MiningRequest;
+import org.visminer.request.MiningRequest;
 import org.visminer.util.MetricFactory;
 
 @Path("mining")
@@ -56,7 +57,7 @@ public class MiningController {
 			rm.addReference(ref.getName(), ref.getType());
 		}
 
-		for (String metric : request.getMetrics()) {
+		for (CodeMetricId metric : request.getMetrics()) {
 			rm.addDirectCodeMetric(MetricFactory.getMetric(metric));
 		}
 

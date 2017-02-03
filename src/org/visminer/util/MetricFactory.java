@@ -47,8 +47,8 @@ public class MetricFactory {
 		classMetrics.put(CodeMetricId.WOC, new WOC());
 	}
 
-	public static IDirectCodeMetric getMetric(String key) {
-		return classMetrics.get(CodeMetricId.valueOf(key));
+	public static IDirectCodeMetric getMetric(CodeMetricId key) {
+		return classMetrics.get(key);
 	}
 	
 }

@@ -1,7 +1,8 @@
-package org.visminer.model;
+package org.visminer.request;
 
 import java.util.List;
 
+import org.repositoryminer.codemetric.CodeMetricId;
 import org.repositoryminer.model.Reference;
 import org.repositoryminer.scm.SCMType;
 
@@ -12,7 +13,7 @@ public class MiningRequest {
 	private String path;
 	private SCMType scm;
 	private List<Reference> references;
-	private List<String> metrics;
+	private List<CodeMetricId> metrics;
 
 	public String getName() {
 		return name;
@@ -54,11 +55,11 @@ public class MiningRequest {
 		this.references = references;
 	}
 
-	public List<String> getMetrics() {
+	public List<CodeMetricId> getMetrics() {
 		return metrics;
 	}
 
-	public void setMetrics(List<String> metrics) {
+	public void setMetrics(List<CodeMetricId> metrics) {
 		this.metrics = metrics;
 	}
 
