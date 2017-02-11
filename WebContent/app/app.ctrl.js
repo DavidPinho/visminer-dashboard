@@ -11,7 +11,7 @@ homeApp.controller('HomeCtrl', function ($rootScope, $scope, $timeout, $http,
   $scope.tagTypesSelect = sidebarService.getTagTypesSelect();
   $scope.tagTypeSelect = sidebarService.getTagTypeSelect();
   $scope.committerEvolution = [];
-  $scope.currentPage = "tdanalyzer";
+  $scope.currentPage = "dashboard";
   $scope.durationProgress = 1000;
 
   $scope.filtered = {
@@ -24,16 +24,34 @@ homeApp.controller('HomeCtrl', function ($rootScope, $scope, $timeout, $http,
   
   // Load all repositories
 	thisCtrl.repositoriesLoad = function() { 
-		$http.get('RepositoryServlet', {params:{"action": "getAll"}})
-		.success(function(data) {
-			console.log('found', data.length, 'repositories');
+		$http.get('rest/repository/get-repositories')
+		.then(function successCallback(res) {
+			console.log('res', res.data)
+			toastr["success"]("Found "+res.data.length+" repositories")
 			var contributors = [];
-			for (i in data) {
-				for (x in data[i].contributors) {
-					contributors.push(new Committer(data[i].contributors[x].name, data[i].contributors[x].email, null));
-				}
-				$rootScope.repositories.push(new Repository(data[i]._id, data[i].name, data[i].description, data[i].path, contributors));
+			for (i in res.data) {
+//				for (x in res.data[i].contributors) {
+//					contributors.push(new Committer(data[i].contributors[x].name, data[i].contributors[x].email, null));
+//				}
+				$rootScope.repositories.push(new Repository(res.data[i]._id.$oid, res.data[i].name, res.data[i].description, res.data[i].path, []));
 			}
+		}, function errorCallback(response) {
+			toastr["error"]("Error on load repositories");
+			
+		});
+	}
+  
+  	// Load references by repository
+	thisCtrl.referenceLoad = function(repositoryId) { 
+		$http.get('rest/repository/get-references?repositoryId='+repositoryId)
+		.then(function successCallback(res) {
+			console.log('res', res.data)
+			toastr["success"]("Found "+res.data.length+" references")
+			for (i in res.data) {
+				$rootScope.tags.push({'name': res.data[i].name});
+			}
+		}, function errorCallback(response) {
+			toastr["error"]("Error on load references");
 		});
 	}
 
@@ -46,6 +64,7 @@ homeApp.controller('HomeCtrl', function ($rootScope, $scope, $timeout, $http,
 		$scope.filtered.repository = repository;
 		sidebarService.setRepository(repository);
 		$route.reload();
+		thisCtrl.referenceLoad(repository.id);
 	}
 
 	thisCtrl.refreshRepositories = function(repositories) {
@@ -112,7 +131,9 @@ homeApp.controller('HomeCtrl', function ($rootScope, $scope, $timeout, $http,
 
   thisCtrl.hasTagTypeSelected = function(tag){
     return ($scope.tagTypeSelect.toLowerCase() == tag.type);
-	};
+  };
+  
+  thisCtrl.repositoriesLoad();
 
 });
 // Models

@@ -1,5 +1,5 @@
 angular.module('homeApp').component('minerModal', {
-	controller : function($scope, $rootScope, $http, sidebarService, Repository, TagTime) {
+	controller : function($scope, $rootScope, $http, progressbarService, sidebarService, Repository, TagTime) {
 
 		$("#minerModal1").on('show.bs.modal', function(e) {
 			centerModals($(this));
@@ -55,35 +55,31 @@ angular.module('homeApp').component('minerModal', {
 		$scope.mine = function() {
 			$("#minerModal2").modal("hide");
 			$("#minerModal3").modal("hide");
-//			$http.put('rest/mining/mine', {
-//				"name" : $scope.name,
-//				"description" : $scope.description,
-//				"path" : $scope.path,
-//				"scm" : $scope.scm,
-//				"references" : $scope.tags.concat($scope.branches),
-//				"metrics" : $scope.selectedMetrics
-//			}).then(function successCallback(response) {
-//				
-//			}, function errorCallback(response) {
-//				toastr["error"]("Please fill out the form correctly")
-//			});
-			$http.get('http://private-1608d-visminer.apiary-mock.com/tags', {
-				"branches": [
-				   "x",
-				   "y",
-				   "z" 
-				]
-			}).then(function successCallback(response) {
-				toastr["success"]("Found "+response.data.length+" tags")
-				sidebarService.addRepository(new Repository('123abc', $scope.name, $scope.description, [], []));
-				var data = response.data;
-				for (i in data) {
-					$rootScope.tags.push(new TagTime('x', data[i].name, data[i].alias, data[i].order, data[i].type, 'repository', []));
-				}
+			progressbarService.setTitle('Mining '+$scope.name+'...');
+			$('#progressBarModal').modal('show');
+			$http.put('rest/mining/mine', {
+				"name" : $scope.name,
+				"description" : $scope.description,
+				"path" : $scope.path,
+				"scm" : $scope.scm,
+				"references" : $scope.tags.concat($scope.branches),
+				"metrics" : $scope.selectedMetrics
+			}).then(function successCallback(response) {    
+				$http.get('rest/mining/get-references?scm='+$scope.scm+'&path='+$scope.path.split('/').join('%2F'))
+				.then(function successCallback(response) {
+					$('#progressBarModal').modal('hide');
+					toastr["success"]("Found "+response.data.length+" tags")
+					sidebarService.addRepository(new Repository('123abc', $scope.name, $scope.description, [], []));
+					var data = response.data;
+					for (i in data) {
+						$rootScope.tags.push(new TagTime('x', data[i].name, data[i].alias, data[i].order, data[i].type, 'repository', []));
+					}
+				}, function errorCallback(response) {
+					toastr["error"]("Error on load tags")
+				});
 			}, function errorCallback(response) {
-				toastr["error"]("Error on load tags")
+				toastr["error"]("Please fill out the form correctly")
 			});
-			
 		}
 		
 		$scope.mine_prev = function(hide, show) {
@@ -97,7 +93,7 @@ $scope.scm = 'GIT';
 $scope.name = 'retrofit';
 $scope.description = 'retrofit proj';
 $scope.tags = [];
-$scope.selectedMetrics
+$scope.selectedMetrics = [];
 		
 	},
 	templateUrl : 'app/components/miner-modal/miner-modal.html',

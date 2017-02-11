@@ -1,14 +1,8 @@
 homeApp.service('tdAnalyzerService', function($http){
-
-	this.analyzeIt = function(tags, callback){
-		var tagsIds = [];
-		var tagsNames = [];
-		for (i in tags) {
-			tagsIds.push("'"+tags[i].id+"'");
-			tagsNames.push(tags[i].name);
-		}
-
-		$http.post('http://private-1608d-visminer.apiary-mock.com/td/analyzer', {})
+	this.analyzeIt = function(repositoryId, tagId, callback){
+		console.log('repositoryId', repositoryId)
+		console.log('tagId', tagId)
+		$http.get('rest/mining/td?repositoryId='+repositoryId+'&tag='+tagId)
 		.then(function successCallback(res) {
 			console.log('res', res)
 			toastr["success"]("Analyzed")
@@ -17,5 +11,4 @@ homeApp.service('tdAnalyzerService', function($http){
 			toastr["error"]("Error on analyzer this project")
 		});
 	}
-
 });

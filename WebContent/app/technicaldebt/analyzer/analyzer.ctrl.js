@@ -58,17 +58,6 @@ homeApp.controller('TDAnalyzerCtrl', function($scope, $http, $location, $route, 
 			day = '0' + day;
 		return new Date([year, month, day].join('-')+' 00:00:00');
 	}
-
-	$scope.getDuplicatedCodeDebts = function(callback) {
-		var tagsNames = [];
-		for (c in $scope.filtered.tags) {
-			tagsNames.push($scope.filtered.tags[c].name);
-		}
-		$http.get('TagAnalysisServlet', {params:{"action": "getAllByTagsName", "tagsName": '['+tagsNames.join(',')+']'}})
-		.success(function(data) {
-			callback(data);
-		})
-	}
 	
 	thisCtrl.getDebts = function(list) {
 		var debts = [];
@@ -175,10 +164,8 @@ homeApp.controller('TDAnalyzerCtrl', function($scope, $http, $location, $route, 
 		if (analyze) {
 			progressbarService.setTitle('Analyzing Repository');
 			$('#progressBarModal').modal('show');
-			tdAnalyzerService.analyzeIt($scope.filtered.tags, function() {
+			tdAnalyzerService.analyzeIt($scope.filtered.repository.id, $scope.filtered.tags[0].name, function() {
 				$('#progressBarModal').modal('hide');
-
-				 // JSON.parse(localStorage.getItem('typeData'));
 				thisCtrl.processTdItems();
 			})
 		} else {
@@ -190,6 +177,5 @@ homeApp.controller('TDAnalyzerCtrl', function($scope, $http, $location, $route, 
 		if ($scope.filtered.tags.length > 0 && localStorage.getItem('tdItems') != null) {
 			thisCtrl.processTdItems();
 		}
-		$('#filter-identificationdate').daterangepicker();
 	}
 });

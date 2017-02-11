@@ -4,7 +4,7 @@
 	    <div class="modal-header modal-header-info">
 	      <button type="button" class="close" data-dismiss="modal">&times;</button>
 	      <h3 class="modal-title">
-	      	{{tdItemModalObj.tdIndicator.fileName}}
+	      	{{tdItemModalObj.fileName}}
 	      </h3>
 	    </div>
 
@@ -32,7 +32,7 @@
     	        			<div class="form-group">
 									    <label for="inputPath" class="col-sm-4 control-label">File</label>
 									    <div class="col-sm-7">
-									    	<input type="text" class="form-control" style="overflow:hidden;text-overflow:ellipsis;direction:rtl;padding-right:14px;" id="inputName" ng-model="tdItemModalObj.fileName" readonly="readonly">
+									    	<input type="text" class="form-control" id="inputName" ng-model="tdItemModalObj.fileName" readonly="readonly">
 									    </div>
 									  </div>
 									  <div class="form-group">
@@ -44,8 +44,7 @@
 									  <div class="form-group">
 									    <label for="inputPath" class="col-sm-4 control-label">Occurred by</label>
 									    <div class="col-sm-7">
-									    	<select  class="form-control" ng-model="tdItemModalObj.tdIndicator.occurredBy" ng-options="committer.name+' ('+committer.email+')' for committer in committers" multiple="multiple">
-									    		<option ng-repeat="committer in committers">{{committer.name}}</option>
+									    	<select  class="form-control" ng-model="selectedOccurredBy" ng-options="committer.name+' ('+committer.email+')' for committer in committers" multiple="multiple">
 									    	</select>
 									    </div>
 									  </div>
@@ -56,20 +55,18 @@
 									    </div>
 									  </div>
 									  <div class="form-group">
-									    <label for="inputDescription" class="col-sm-4 control-label">Type</label>
+									    <label for="inputDescription" class="col-sm-4 control-label">Debt Type</label>
 									    <div class="col-sm-7">
 									      <select  class="form-control" id="inputCvs" ng-model="tdItemModalObj.type">
-									    		<option ng-selected="tdItemModalObj.type=='Code Debt'">Code Debt</option>
-									    		<option ng-selected="tdItemModalObj.type=='Design Debt'">Design Debt</option>
+									    		<option ng-selected="tdItemModalObj.type=='Code'">Code</option>
+									    		<option ng-selected="tdItemModalObj.type=='Design'">Design</option>
 									    	</select>
 									    </div>
 									  </div>
 									  <div class="form-group">
 									    <label for="inputPath" class="col-sm-4 control-label">TD Indicators</label>
 									    <div class="col-sm-7">
-									      <select  class="form-control" ng-model="tdItemModalObj.tdIndicator.name" multiple="multiple">
-									    		<option ng-selected="tdItemModalObj.tdIndicator.name=='Duplicated Code'">Duplicated code</option>
-									    		<option ng-selected="tdItemModalObj.tdIndicator.name=='Long Method'">Long method</option>
+									    	<select  class="form-control" ng-model="selectedTdIndicators" ng-options="tdIndicator for tdIndicator in tdIndicators" multiple="multiple">
 									    	</select>
 									    </div>
 									  </div>

@@ -24,6 +24,14 @@
     <link rel="stylesheet" href="assets/plugins/select2/select2.css">
     <link rel="stylesheet" href="assets/css/toastr.min.css">
     <link rel="stylesheet" href="assets/css/visminer-td.css">
+    <style>
+    	.stepSuccess {
+    		color: green;
+    	}
+    	.stepWarning {
+    		color: red;
+    	}
+    </style>
   </head>
 
   <body class="hold-transition skin-blue sidebar-mini" ng-controller="HomeCtrl as ctrl">
@@ -31,34 +39,35 @@
 
       <div ng-include="'app/shared/navbar/navbar.html'"></div>
       
-        <div ng-include="'app/shared/sidebar/sidebar.html'"></div>  
+      <div ng-include="'app/shared/sidebar/sidebar.html'"></div>  
       
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
-        <div ng-show="repositories.length == 0">
-          <section class="content">
-            <div class="alert alert-warn-vmtd alert-dismissable">
-              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-              <h4>Welcome</h4>
-                Please, select the option to mine your first project at the top right corner.
-            </div>
-          </section>
-        </div>
-        <div ng-show="repositories.length > 0 && filtered.repository==null">
-          <section class="content">
-            <div class="alert alert-warn-vmtd alert-dismissable">
-              <button type="button" class="close" data-dismiss="alert" aria-hidden="true" style="margin-top:20px;">&times;</button>
-                <i class="icon fa fa-hand-o-left"></i>Please, select a project in the left menu.
-            </div>
-          </section>
-        </div>
-
+      
+      	<div ng-show="currentPage == 'dashboard'" style="padding: 20px;">
+	      	<label>Please, follow these steps:</label>
+	  		<ol>
+				<li ng-class="{'stepWarning': repositories.length == 0, 'stepSuccess': repositories.length > 0}">
+					<i class="fa fa-times-circle-o" ng-show="repositories.length == 0"></i><i class="fa fa-check" ng-show="repositories.length > 0"></i> Mine your repository at the top right corner;
+				</li>
+	    		<li ng-class="{'stepWarning': filtered.repository == null, 'stepSuccess': filtered.repository != null}">
+	    			<i class="fa fa-times-circle-o" ng-show="filtered.repository == null"></i><i class="fa fa-check" ng-show="filtered.repository != null"></i> Select your project in the left menu;
+	    		</li>
+	    		<li ng-class="{'stepWarning': !filtered.tags[0], 'stepSuccess': filtered.tags[0]}">
+	    			<i class="fa fa-times-circle-o" ng-show="!filtered.tags[0]"></i><i class="fa fa-check" ng-show="filtered.tags[0]"></i> Select your tags in the left menu;
+	    		</li>
+	    		<li class="stepWarning">
+	    			<i class="fa fa-times-circle-o"></i> Select your perspective in the left menu.
+	    		</li>
+	    	</ol>
+      	</div>
+      
         <div ng-view></div>
 
       </div><!-- /.content-wrapper -->
 
       <footer class="main-footer text-center">
-        <strong style="color: rgb(110, 114, 116)">Visminer - 2016</strong>
+        <strong style="color: rgb(110, 114, 116)">Visminer - 2017</strong>
       </footer>
 
     </div><!-- ./wrapper -->

@@ -14,10 +14,10 @@ homeApp.controller('TDManagerCtrl', function($scope, $http, $route,
 		sidebarService.setCurrentPage(view);
 	}
 
-	this.load = function(tags){
+	this.load = function(repositoryId, tagId){
 		progressbarService.setTitle('Loading TD Items');
 		$('#progressBarModal').modal('show');
-		$http.get('http://private-1608d-visminer.apiary-mock.com/td/manager', {})
+		$http.get('rest/td-management/find?repositoryId='+repositoryId+'&tag='+tagId, {})
 		.then(function successCallback(res) {
 			$http.get('http://private-1608d-visminer.apiary-mock.com/committer', {})
 					.then(function successCallback(resCommitter) {
@@ -54,7 +54,7 @@ homeApp.controller('TDManagerCtrl', function($scope, $http, $route,
 								));
 							}
 						}
-						console.log('$scope.tdItems', $scope.tdItems)
+						localStorage.setItem('tdItems', JSON.stringify($scope.tdItems));
 						$scope.tdItemsFiltered = $scope.tdItems;
 					}, function errorCallback(response) {
 				toastr["error"]("Error on analyzer this project")
@@ -64,15 +64,30 @@ homeApp.controller('TDManagerCtrl', function($scope, $http, $route,
 		});
 	}
 
+	$scope.tdIndicators = [
+        
+      ];
+
 	$scope.filter = {
-		type: ['Code Debt', 'Design Debt'],
-		tdIndicator: ['Duplicated Code', 'Long Method'],
+		type: ['Code', 'Design'],
+		tdIndicator: [
+			'Slow Algorithm',
+      'Multithread Correctness',
+      'Automatic Static Analysis Issues',
+      // Code Smells
+      'God Class',
+      'Code Complexity',
+      'Dispersed Coupling',
+      'Duplicated Code',
+      'Brain Method',
+      'Larger Class'
+    ],
 		isTdItem: ['true', 'false']
 	}
 
 	// Apply filter parameters
 	$scope.filterApply = function() {
-		var tdItemFiltered = [];
+		var tdItemsFiltered = [];
 		if (typeof $scope.filter.identificationDate != 'undefined' && $scope.filter.identificationDate != "") {
 			var dates = $scope.filter.identificationDate.split(' - ');
 			var identificationDateIni = new Date(dates[0]);
@@ -95,21 +110,23 @@ homeApp.controller('TDManagerCtrl', function($scope, $http, $route,
 			if ($scope.filter.type.indexOf(obj.type) > -1) {
 				foundType = true;
 			}
-			if ($scope.filter.tdIndicator.indexOf(obj.tdIndicator.name) > -1) {
-				foundTdIndicator = true;
+			for (i in obj.tdIndicators) {
+				if ($scope.filter.tdIndicator.indexOf(obj.tdIndicators[i]) > -1) {
+					foundTdIndicator = true;
+				}
 			}
 			if ($scope.filter.isTdItem.indexOf(String(obj.isTdItem)) > -1) {
 				foundIsTdItem = true;
 			}
 			if (foundDate && foundType && foundTdIndicator && foundIsTdItem) {
-				tdItemFiltered.push(obj);
+				tdItemsFiltered.push(obj);
 			}
 		}
-		$scope.tdItemFiltered = tdItemFiltered;
+		$scope.tdItemsFiltered = tdItemsFiltered;
 	}
 	
 	$scope.tdItemFormatDate = function(date) {
-	  return moment(date).format('l')+" "+moment(date).format('LT');
+	  return moment(date).format('l');
 	}
 
 	// Return the file name
@@ -146,6 +163,7 @@ homeApp.controller('TDManagerCtrl', function($scope, $http, $route,
 	}
 
 	if ($scope.currentPage == 'tdmanager') {
-		this.load();
+		this.load(sidebarService.getRepository().id, $scope.filtered.tags[0].ids);
+		$('#filter-identificationdate').daterangepicker();
 	}
 });
