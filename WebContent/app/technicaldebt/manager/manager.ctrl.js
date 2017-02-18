@@ -1,6 +1,6 @@
 homeApp = angular.module('homeApp');
 
-homeApp.controller('TDManagerCtrl', function($scope, $http, $route, 
+homeApp.controller('TDManagerCtrl', function($scope, $rootScope, $http, $route, 
 	TDItem, Commit, Committer, DuplicatedCode, LongMethod, // Models
 	progressbarService, sidebarService, tdItemModalService){
 
@@ -14,51 +14,49 @@ homeApp.controller('TDManagerCtrl', function($scope, $http, $route,
 		sidebarService.setCurrentPage(view);
 	}
 
-	this.load = function(repositoryId, tagId){
+	thisCtrl.load = function(repositoryId, tagId){
 		progressbarService.setTitle('Loading TD Items');
 		$('#progressBarModal').modal('show');
 		$http.get('rest/td-management/find?repositoryId='+repositoryId+'&tag='+tagId, {})
 		.then(function successCallback(res) {
-			$http.get('http://private-1608d-visminer.apiary-mock.com/committer', {})
-					.then(function successCallback(resCommitter) {
-						$scope.committers = resCommitter.data;
-						toastr["success"]("Found "+res.data.length+" td items")
-						$('#progressBarModal').modal('hide');
-						for (i in res.data) {
-							var occurredBy = [];
-							for (z in res.data[i].occurredBy) {
-								occurredBy.push(new Committer(
-									res.data[i].occurredBy[z].name,
-									res.data[i].occurredBy[z].email,
-									null
-								));
-							}
-							var package = res.data[i].filename.split('/');
-				      package.pop();
-							for (x in res.data[i].technical_debts) {
-								$scope.tdItems.push(new TDItem(
-									res.data[i].id,
-									res.data[i].repository,
-									new Commit(res.data[i].commit, new Date(res.data[i].commit_date)),
-									occurredBy,
-									'Code',
-									getIndicators(res.data[i].technical_debts[x].indicators),
-									res.data[i].filename,
-									package.join('.'),
-									false,
-									null,
-									null,
-									null,
-									null,
-									null
-								));
-							}
-						}
-						localStorage.setItem('tdItems', JSON.stringify($scope.tdItems));
-						$scope.tdItemsFiltered = $scope.tdItems;
-					}, function errorCallback(response) {
-				toastr["error"]("Error on analyzer this project")
-			})
+			var tdItemIndicators = res.data;
+			toastr["success"]("Found "+tdItemIndicators.length+" td items indicators")
+			$('#progressBarModal').modal('hide');
+			for (i in tdItemIndicators) {
+				var contributors = [];
+				for (z in tdItemIndicators[i].contributors) {
+					contributors.push(new Committer(
+						tdItemIndicators[i].contributors[z].name,
+						tdItemIndicators[i].contributors[z].email,
+						null
+					));
+				}
+				var package = tdItemIndicators[i].filename.split('/');
+				package.pop();
+				for (x in tdItemIndicators[i].indicators) {
+					$scope.tdItems.push(new TDItem(
+						tdItemIndicators[i]._id.$oid,
+						tdItemIndicators[i].repository.$oid,
+						new Commit(tdItemIndicators[i].commit, new Date(tdItemIndicators[i].commit_date.$date)),
+						contributors,
+						'Code',
+						getIndicators(tdItemIndicators[i].indicators),
+						tdItemIndicators[i].filename,
+						tdItemIndicators[i].filehash.$numberLong,
+						package.join('.'),
+						(typeof tdItemIndicators[i].analyzed != 'undefined') ? tdItemIndicators[i].analyzed : false,
+						tdItemIndicators[i].technical_debt,
+						(typeof tdItemIndicators[i].details != 'undefined' && tdItemIndicators[i].details.intentional != 'undefined') ? tdItemIndicators[i].details.intentional : null,
+						(typeof tdItemIndicators[i].details != 'undefined' && tdItemIndicators[i].details.principal != 'undefined') ? tdItemIndicators[i].details.principal : null,
+						(typeof tdItemIndicators[i].details != 'undefined' && tdItemIndicators[i].details.interest_amount != 'undefined') ? tdItemIndicators[i].details.interest_amount : null,
+						(typeof tdItemIndicators[i].details != 'undefined' && tdItemIndicators[i].details.interest_probability != 'undefined') ? tdItemIndicators[i].details.interest_probability : null,
+						(typeof tdItemIndicators[i].details != 'undefined' && tdItemIndicators[i].details.estimates != 'undefined') ? tdItemIndicators[i].details.estimates : null,
+						(typeof tdItemIndicators[i].details != 'undefined' && tdItemIndicators[i].details.notes != 'undefined') ? tdItemIndicators[i].details.notes : null
+					));
+				}
+			}
+			localStorage.setItem('tdItems', JSON.stringify($scope.tdItems));
+			$scope.tdItemsFiltered = $scope.tdItems;
 		}, function errorCallback(response) {
 			toastr["error"]("Error on analyzer this project")
 		});
@@ -72,17 +70,19 @@ homeApp.controller('TDManagerCtrl', function($scope, $http, $route,
 		type: ['Code', 'Design'],
 		tdIndicator: [
 			'Slow Algorithm',
-      'Multithread Correctness',
-      'Automatic Static Analysis Issues',
-      // Code Smells
-      'God Class',
-      'Code Complexity',
-      'Dispersed Coupling',
-      'Duplicated Code',
-      'Brain Method',
-      'Larger Class'
-    ],
-		isTdItem: ['true', 'false']
+			'Multithread Correctness',
+			'Automatic Static Analysis Issues',
+			// Code Smells
+			'God Class',
+			'Code Complexity',
+			'Code Without Standards',
+			'Dispersed Coupling',
+			'Duplicated Code',
+			'Brain Method',
+			'Larger Class'
+		],
+		isTdItem: ['true', 'false'],
+		isAnalyzed: ['true', 'false']
 	}
 
 	// Apply filter parameters
@@ -100,6 +100,7 @@ homeApp.controller('TDManagerCtrl', function($scope, $http, $route,
 			var foundType = false;
 			var foundTdIndicator = false;
 			var foundIsTdItem = false;
+			var foundIsAnalyzed = false;
 			if (typeof $scope.filter.identificationDate != 'undefined' && identificationDateIni) {
 				if (identificationDateIni <= obj.commit.date && obj.commit.date <= identificationDateEnd) {
 					foundDate = true;
@@ -111,14 +112,17 @@ homeApp.controller('TDManagerCtrl', function($scope, $http, $route,
 				foundType = true;
 			}
 			for (i in obj.tdIndicators) {
-				if ($scope.filter.tdIndicator.indexOf(obj.tdIndicators[i]) > -1) {
+				if ($scope.filter.tdIndicator.indexOf(obj.tdIndicators[i].name) > -1) {
 					foundTdIndicator = true;
 				}
 			}
 			if ($scope.filter.isTdItem.indexOf(String(obj.isTdItem)) > -1) {
 				foundIsTdItem = true;
 			}
-			if (foundDate && foundType && foundTdIndicator && foundIsTdItem) {
+			if ($scope.filter.isAnalyzed.indexOf(String(obj.isAnalyzed)) > -1) {
+				foundIsAnalyzed = true;
+			}
+			if (foundDate && foundType && foundTdIndicator && foundIsAnalyzed && foundIsTdItem) {
 				tdItemsFiltered.push(obj);
 			}
 		}
@@ -148,9 +152,8 @@ homeApp.controller('TDManagerCtrl', function($scope, $http, $route,
 	function getIndicators(indicators) {
 		var indicatorsNew = [];
 		for (indicator in indicators) {
-			indicatorsNew.push(getIndicatorName(indicator));
+			indicatorsNew.push({name: getIndicatorName(indicator), qtty: indicators[indicator]});
 		}
-		indicatorsNew.sort();
 		return indicatorsNew;
 	}
 
@@ -163,7 +166,7 @@ homeApp.controller('TDManagerCtrl', function($scope, $http, $route,
 	}
 
 	if ($scope.currentPage == 'tdmanager') {
-		this.load(sidebarService.getRepository().id, $scope.filtered.tags[0].ids);
+		thisCtrl.load(sidebarService.getRepository().id, $rootScope.tags[0].name);
 		$('#filter-identificationdate').daterangepicker();
 	}
 });

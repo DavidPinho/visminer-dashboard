@@ -32,7 +32,7 @@
               </div>
             </div>
 
-            <div class="col-sm-3">
+            <div class="col-sm-2">
               <div class="form-group">
                 <label>Debt Types:</label>
                 <select class="form-control select2" multiple="multiple" style="width: 100%;" ng-model="filter.type" ng-change="filterApply()">
@@ -49,6 +49,7 @@
                   <option value="Automatic Static Analysis Issues">Automatic Static Analysis Issues</option>
                   <option value="Brain Method" selected="selected">Brain Method</option>
                   <option value="Code Complexity" selected="selected">Code Complexity</option>
+                  <option value="Code Without Standards" selected="selected">Code Without Standards</option>
                   <option value="Dispersed Coupling" selected="selected">Dispersed Coupling</option>
                   <option value="Duplicated Code" selected="selected">Duplicated Code</option>
                   <option value="God Class" selected="selected">God Class</option>
@@ -58,8 +59,18 @@
                 </select>
               </div><!-- /.form-group -->
             </div>
+            
+            <div class="col-sm-2">
+              <div class="form-group">
+                <label>Is Analyzed?</label>
+                <select class="form-control select2" multiple="multiple" data-placeholder="Select a State" style="width: 100%;" ng-model="filter.isAnalyzed" ng-change="filterApply()">
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div><!-- /.form-group -->
+            </div>
 
-            <div class="col-sm-3">
+            <div class="col-sm-2">
               <div class="form-group">
                 <label>Is TD Item?</label>
                 <select class="form-control select2" multiple="multiple" data-placeholder="Select a State" style="width: 100%;" ng-model="filter.isTdItem" ng-change="filterApply()">
@@ -88,13 +99,13 @@
                   <th>Identification date</th>
                   <th>Type</th>
                   <th>TD Indicators</th>
-                  <th>Occurred by</th>
+                  <th>Contributors</th>
                   <th>File</th>
+                  <th>Analyzed?</th>
                   <th>TD item?</th>
                   <th>Principal</th>
                   <th>Interest amount</th>
                   <th>Interest Probability</th>
-                  <th>Notes</th>
                 </tr>
               </thead>
               <tbody>
@@ -102,17 +113,17 @@
                   <td>{{tdItemFormatDate(item.commit.date)}}</td>
                   <td><span class="label" style="background-color:#1B93A7!important; margin-right:3px;">{{item.type}}</span></td>
                   <td style="max-width: 200px">
-                    <span ng-repeat="indicator in item.tdIndicators" class="label label-default" style="display:block; margin: 3px;     line-height: normal;white-space: normal;">{{indicator}}</span>
+                    <span ng-repeat="indicator in item.tdIndicators" class="label label-default" style="display:block; margin: 3px; line-height: normal;white-space: normal;">{{indicator.qtty}} {{indicator.name}}</span>
                   </td>
                   <td>
-                    <span ng-repeat="occurredBy in item.occurredBy" class="label label-default" style="display:block; margin: 3px;     line-height: normal;white-space: normal;">{{occurredBy.name}}</span>
+                    <span ng-repeat="contributor in item.contributors" class="label label-default" style="display:block; margin: 3px; line-height: normal;white-space: normal;">{{contributor.name}}</span>
                   </td>
                   <td style="overflow: hidden; text-overflow: ellipsis;  direction: rtl; max-width:200px;">{{item.fileName}}</td>
+                  <td><span ng-show="item.isAnalyzed" style="color:green">Yes</span><span ng-hide="item.isAnalyzed" style="color:red">No</span></td>
                   <td>{{(item.isTdItem) ? "Yes" : "No"}}</td>
                   <td>{{item.principal}}<span ng-show="item.principal!=null">h</span></td>
                   <td>{{item.interestAmount}}<span ng-show="item.interestAmount!=null">h</span></td>
                   <td>{{item.interestProbability}}<span ng-show="item.interestProbability!=null">%</span></td>
-                  <td class="truncate">{{item.notes}}</td>
                 </tr>
               </tbody>
             </table>
