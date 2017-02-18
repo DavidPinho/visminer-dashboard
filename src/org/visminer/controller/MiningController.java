@@ -11,10 +11,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import org.repositoryminer.checkstyle.CheckstyleMiner;
-import org.repositoryminer.codemetric.CodeMetricId;
 import org.repositoryminer.exceptions.RepositoryMinerException;
 import org.repositoryminer.findbugs.FindBugsMiner;
 import org.repositoryminer.findbugs.configuration.Effort;
@@ -37,7 +35,6 @@ import org.repositoryminer.codesmell.direct.DataClass;
 import org.repositoryminer.codesmell.direct.GodClass;
 import org.repositoryminer.codesmell.direct.LongMethod;
 import org.visminer.request.MiningRequest;
-import org.visminer.util.MetricFactory;
 
 import com.mongodb.client.model.Projections;
 
@@ -96,8 +93,6 @@ public class MiningController {
 		rm.addParser(new JavaParser());
 
 		for (Reference ref : request.getReferences()) {
-			System.out.println("ref.getName: " +ref.getName());
-			System.out.println("ref.getType: " +ref.getType());
 			rm.addReference(ref.getName(), ref.getType());
 		}
 
@@ -156,7 +151,6 @@ public class MiningController {
 	@Produces(MediaType.TEXT_PLAIN)
 	@Path("td")
 	public String td(@QueryParam("repositoryId") final String repositoryId, @QueryParam("tag") final String tag) {
-		System.out.println("foi");
 		RepositoryDocumentHandler handler = new RepositoryDocumentHandler();
         Repository repo = Repository.parseDocument(handler.findById(repositoryId, Projections.include("path")));
         

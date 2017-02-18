@@ -23,17 +23,19 @@ public class TDManagementController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("find")
 	public String find(@QueryParam("repositoryId") final String repositoryId, @QueryParam("tag") final String tag, @QueryParam("types") final List<String> types,
-			@QueryParam("indicators") final List<String> indicators, @QueryParam("is_td") final Boolean isTd) {
+			@QueryParam("indicators") final List<String> indicators, @QueryParam("is_td") final Boolean isTd, @QueryParam("is_analyzed") final Boolean isAnalyzed) {
 		ReferenceDocumentHandler refHandler = new ReferenceDocumentHandler();
 		Reference r = Reference.parseDocument(refHandler.findByNameAndType(tag, ReferenceType.TAG, repositoryId, Projections.slice("commit", 1)));
 		TechnicalCodeDebtDocumentHandler handler = new TechnicalCodeDebtDocumentHandler();
-		List<Document> docs = handler.findToManagement(r.getCommits().get(0), types, indicators, isTd);
-		System.out.println(docs);
+		List<Document> docs = handler.findToManagement(r.getCommits().get(0), types, indicators, isTd, isAnalyzed);
 		String json = "[";
 		for (Document d : docs) {
 			json += d.toJson()+",";
 		}
-		json = json.substring(0, json.length()-1) + "]";
+		if (json.length() > 1) {
+			json = json.substring(0, json.length()-1);
+		}
+		json += "]";
 		return json;
 	}
 
