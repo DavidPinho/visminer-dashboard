@@ -10,15 +10,97 @@
       <li class="active"><i class="fa fa-line-chart"></i> TD Committer</li>
     </ol>
   </section>
-
+  
+  
   <div class="row">
     <section class="content" style="padding-top: 10px">
       <h4 style="padding-left: 15px">TD Indicators</h4>
       <div>
-        <nvd3 options="graphGlobalOptions" data="graphGlobalData"></nvd3>
+        <nvd3 options="graphOptions" data="graphData"></nvd3>
       </div>
-    </section><!-- /.content -->
+    </section>
   </div>
+  
+  
+  
+  <div class="col-md-12">
+     <div class="box box-default">
+       <div class="box-header with-border">
+         <h3 class="box-title">By Indicator</h3>
+         <div class="box-tools pull-right">
+           <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+           </button>
+         </div>
+       </div>
+       <div class="box-body no-padding">
+       
+         <div class="col-lg-6">
+		    <div id="graphByIndicator">Placeholder for chart</div>
+		  </div>
+		  
+		  <div class="col-lg-6">
+		  	<table class="table table-condensed">
+            <tbody><tr>
+              <th>Name</th>
+              <th>Indicator</th>
+              <th>Qtty</th>
+              <th>% of global</th>
+            </tr>
+            <tr ng-repeat="byIndicator in byIndicators | orderBy:'contributor'">
+              <td>{{byIndicator.contributor.name}}</td>
+              <td><div ng-repeat="indicator in byIndicator.indicators">{{indicator.name}}</div></td>
+              <td><div ng-repeat="indicator in byIndicator.indicators">{{indicator.qtty}}</div></td>
+              <td><div ng-repeat="indicator in byIndicator.indicators">{{indicator.perc}}</div></td>
+            </tr>
+          </tbody>
+         </table>
+		  </div>
+         
+       </div>
+     </div>
+   </div>
+   
+   
+   <div class="col-md-12">
+     <div class="box box-default">
+       <div class="box-header with-border">
+         <h3 class="box-title">By Intention</h3>
+         <div class="box-tools pull-right">
+           <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+           </button>
+         </div>
+       </div>
+       <div class="box-body no-padding">
+       
+         <div class="col-lg-6">
+		    <div id="graphByIntention">Placeholder for chart</div>
+		  </div>
+		  
+		  <div class="col-lg-6">
+		  	<table class="table table-condensed">
+                <tbody><tr>
+                  <th>Name</th>
+                  <th>Intentional</th>
+                  <th>Not Intentional</th>
+                </tr>
+                <tr>
+                  <td>Richard Simpson</td>
+                  <td>50</td>
+                  <td>30</td>
+                </tr>
+              </tbody>
+             </table>
+		  </div>
+         
+       </div>
+     </div>
+   </div>
+  
+  
+  
+  
+
+  
   <!-- Main content -->
 
   <div class="row">
@@ -107,7 +189,6 @@
                 <span># {{$index+1}}</span>
               </div>
               <div class="col-md-4" style="padding-left: 0px;">
-                <img class="img-circle" ng-src="{{tdItem.committer.avatar}}" alt="{{tdItem.committer.name}}">
                 <span class="username"><a href="#">{{tdItem.committer.name}}</a></span>
                 <span class="description">{{tdItem.committer.email}}</span>
               </div>
