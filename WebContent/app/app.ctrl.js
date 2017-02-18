@@ -1,5 +1,5 @@
 homeApp.controller('HomeCtrl', function ($rootScope, $scope, $timeout, $http,
- $sessionStorage, $location, $route, Repository, TagTime, Committer, tdAnalyzerService, sidebarService, alertModalService) {
+ $sessionStorage, $location, $route, Repository, TagTime, Committer, progressbarService, tdAnalyzerService, sidebarService, alertModalService) {
   // This controller instance
   var thisCtrl = this;
 
@@ -14,7 +14,7 @@ homeApp.controller('HomeCtrl', function ($rootScope, $scope, $timeout, $http,
   $scope.currentPage = "dashboard";
   $scope.durationProgress = 1000;
 
-  $scope.filtered = {
+  $rootScope.filtered = {
   	repository: null,
   	commits: [],
   	committers: [],
@@ -23,36 +23,45 @@ homeApp.controller('HomeCtrl', function ($rootScope, $scope, $timeout, $http,
   }
   
   // Load all repositories
-	thisCtrl.repositoriesLoad = function() { 
+	thisCtrl.repositoriesLoad = function() {
+	  progressbarService.setTitle('Loading repositories');
+	  $('#progressBarModal').modal('show');
 		$http.get('rest/repository/get-repositories')
 		.then(function successCallback(res) {
-			console.log('res', res.data)
-			toastr["success"]("Found "+res.data.length+" repositories")
 			var contributors = [];
 			for (i in res.data) {
-//				for (x in res.data[i].contributors) {
-//					contributors.push(new Committer(data[i].contributors[x].name, data[i].contributors[x].email, null));
-//				}
-				$rootScope.repositories.push(new Repository(res.data[i]._id.$oid, res.data[i].name, res.data[i].description, res.data[i].path, []));
+				for (x in res.data[i].contributors) {
+					contributors.push(new Committer(res.data[i].contributors[x].name, res.data[i].contributors[x].email, null));
+				}
+				contributors.sort(dynamicSort("name"));
+				$rootScope.repositories.push(new Repository(res.data[i]._id.$oid, res.data[i].name, res.data[i].description, res.data[i].path, contributors));
 			}
+			$('#progressBarModal').modal('hide');
+			toastr["success"]("Found "+res.data.length+" repositories")
 		}, function errorCallback(response) {
+			$('#progressBarModal').modal('hide');
 			toastr["error"]("Error on load repositories");
-			
 		});
 	}
   
   	// Load references by repository
 	thisCtrl.referenceLoad = function(repositoryId) { 
+		$rootScope.tags = [];
+		$rootScope.filtered.tags = [];
+		progressbarService.setTitle('Loading references');
+		$('#progressBarModal').modal('show');
 		$http.get('rest/repository/get-references?repositoryId='+repositoryId)
 		.then(function successCallback(res) {
-			console.log('res', res.data)
-			toastr["success"]("Found "+res.data.length+" references")
 			for (i in res.data) {
 				$rootScope.tags.push({'name': res.data[i].name});
 			}
+			$('#progressBarModal').modal('hide');
+			toastr["success"]("Found "+res.data.length+" references")
 		}, function errorCallback(response) {
+			$('#progressBarModal').modal('hide');
 			toastr["error"]("Error on load references");
 		});
+		
 	}
 
 	thisCtrl.selectView = function(view) {
@@ -61,7 +70,7 @@ homeApp.controller('HomeCtrl', function ($rootScope, $scope, $timeout, $http,
 	}
 
 	thisCtrl.selectRepository = function(repository) {
-		$scope.filtered.repository = repository;
+		$rootScope.filtered.repository = repository;
 		sidebarService.setRepository(repository);
 		$route.reload();
 		thisCtrl.referenceLoad(repository.id);
@@ -72,34 +81,11 @@ homeApp.controller('HomeCtrl', function ($rootScope, $scope, $timeout, $http,
 	}
 
 	thisCtrl.filterTagTypes = function(tagTypeSelect) {
-		$scope.filtered.tags = [];
+		$rootScope.filtered.tags = [];
 		$scope.tagTypeSelect = tagTypeSelect;
 	}
 
-	// Load all commits from all trees
-	thisCtrl.commitsLoad = function(repositoryId) { 
-		console.log('commitsLoad');
-		$http.get('CommitServlet', {params:{"action": "getAllByRepository", "repositoryId": repositoryId}})
-		.success(function(data) {
-			console.log('found', data.length, 'commits');
-			$scope.commits = data;
-			sidebarService.setCommits(data);
-			for (var i in data) {
-				$scope.committerEvolution.push({
-					commit: data[i]._id,
-					committer: data[i].committer,
-					date: new Date(data[i].commit_date.$date),
-					diffs: data[i].diffs	
-				})
-				var index = $.inArray(data[i].committer, $scope.committers);
-  			if (index == -1) {
-  				$scope.committers.push(data[i].committer);
-  				thisCtrl.commitsLoadAvatars(data[i].committer);
-		  	}
-			}
-		});
-  }
-
+	
   // Try to catch avatar at github
   var commitsLoadAvatarsEmails = [];
 	thisCtrl.commitsLoadAvatars = function(committer) {
@@ -120,11 +106,11 @@ homeApp.controller('HomeCtrl', function ($rootScope, $scope, $timeout, $http,
 	}
 
   thisCtrl.selectDebt = function(debt) {
-  	var index = $.inArray(debt, $scope.filtered.debts);
+  	var index = $.inArray(debt, $rootScope.filtered.debts);
   	if (index > -1) {
-      $scope.filtered.debts.splice(index, 1);
+  		$rootScope.filtered.debts.splice(index, 1);
   	} else {
-      $scope.filtered.debts.push(debt);
+  		$rootScope.filtered.debts.push(debt);
   	}
   	$route.reload();
   }
@@ -199,16 +185,19 @@ homeApp.factory('LongMethod', function() {
 })
 
 homeApp.factory('TDItem', function(Commit, Committer) {
-	var TDItem = function (id, repository, commit, occurredBy, type, tdIndicators, fileName, package, isTdItem, principal, interestAmount, interestProbability, estimates, notes) {
+	var TDItem = function (id, repository, commit, contributors, type, tdIndicators, fileName, fileHash, package, isAnalyzed, isTdItem, isIntentional, principal, interestAmount, interestProbability, estimates, notes) {
 	  this.id = id;
 	  this.repository = repository;
 	  this.commit = commit;
-	  this.occurredBy = occurredBy;
+	  this.contributors = contributors;
 	  this.type = type;
 	  this.tdIndicators = tdIndicators;
 	  this.fileName = fileName;
+	  this.fileHash = fileHash;
 	  this.package = package;
+	  this.isAnalyzed = isAnalyzed;
 	  this.isTdItem = isTdItem;
+	  this.isIntentional = isIntentional;
 	  this.principal = principal;
 	  this.interestAmount = interestAmount;
 	  this.interestProbability = interestProbability;
@@ -217,6 +206,18 @@ homeApp.factory('TDItem', function(Commit, Committer) {
 	};
 	return TDItem;
 })
+
+function dynamicSort(property) {
+    var sortOrder = 1;
+    if(property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+    return function (a,b) {
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
+}
 
 toastr.options = {
   "closeButton": false,
