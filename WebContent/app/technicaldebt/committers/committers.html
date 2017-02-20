@@ -11,7 +11,6 @@
     </ol>
   </section>
   
-  
   <div class="row">
     <section class="content" style="padding-top: 10px">
       <h4 style="padding-left: 15px">TD Indicators</h4>
@@ -21,7 +20,22 @@
     </section>
   </div>
   
-  
+  <div class="col-md-12">
+     <div class="box box-default">
+       <div class="box-header with-border">
+         <h3 class="box-title">By Principal</h3>
+         <div class="box-tools pull-right">
+           <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+           </button>
+         </div>
+       </div>
+       <div class="box-body no-padding">
+          <div class="col-lg-12">
+            <div id="graphByPrincipal">Placeholder for chart</div>
+          </div>
+       </div>
+     </div>
+   </div>
   
   <div class="col-md-12">
      <div class="box box-default">
@@ -40,20 +54,21 @@
 		  
 		  <div class="col-lg-6">
 		  	<table class="table table-condensed">
-            <tbody><tr>
+          <tbody>
+            <tr>
               <th>Name</th>
               <th>Indicator</th>
               <th>Qtty</th>
               <th>% of global</th>
             </tr>
-            <tr ng-repeat="byIndicator in byIndicators | orderBy:'contributor'">
+            <tr ng-repeat="byIndicator in byIndicators | orderBy:'contributor.name'">
               <td>{{byIndicator.contributor.name}}</td>
               <td><div ng-repeat="indicator in byIndicator.indicators">{{indicator.name}}</div></td>
               <td><div ng-repeat="indicator in byIndicator.indicators">{{indicator.qtty}}</div></td>
               <td><div ng-repeat="indicator in byIndicator.indicators">{{indicator.perc}}</div></td>
             </tr>
           </tbody>
-         </table>
+        </table>
 		  </div>
          
        </div>
@@ -78,173 +93,21 @@
 		  
 		  <div class="col-lg-6">
 		  	<table class="table table-condensed">
-                <tbody><tr>
-                  <th>Name</th>
-                  <th>Intentional</th>
-                  <th>Not Intentional</th>
-                </tr>
-                <tr>
-                  <td>Richard Simpson</td>
-                  <td>50</td>
-                  <td>30</td>
-                </tr>
-              </tbody>
-             </table>
+          <tbody>
+            <tr>
+              <th>Name</th>
+              <th>Intentional</th>
+              <th>Not Intentional</th>
+            </tr>
+            <tr ng-repeat="byIntention in byIntentions | orderBy:'contributor.name'">
+              <td>{{byIntention.contributor.name}}</td>
+              <td>{{byIntention.intentional}}</td>
+              <td>{{byIntention.notIntentional}}</td>
+            </tr>
+          </tbody>
+        </table>
 		  </div>
-         
        </div>
      </div>
    </div>
-  
-  
-  
-  
-
-  
-  <!-- Main content -->
-
-  <div class="row">
-    <section style="padding: 15px">
-      <div class="col-md-12">
-        <div ng-include="'app/technicaldebt/committers/small-boxes.html'"></div>
-      </div>
-    </section>
-  </div>
-
-  <div class="row">
-    <section style="padding: 15px">
-      <div class="col-md-12">
-      </div>
-    </section>
-  </div>
-
-  <div class="row">
-    <section class="content" style="padding-top: 10px">
-      <div class="col-md-12">
-        <div class="box box-default">
-          <div class="box-header with-border">
-            <h3 class="box-title">TD Indicators by Type</h3>
-            <div class="box-tools pull-right">
-              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-              </button>
-            </div>
-          </div>
-          <div class="box-body no-padding">
-            <div class="col-md-2" ng-repeat="tdIndicator in tdIndicators">
-              <input type="text" class="knob" value="{{tdIndicator.qtty}}" data-min="0" data-max="{{tdIndicator.qttyMax}}" data-width="70" data-height="70" data-fgColor="#3c8dbc"  data-readonly="true">
-              <div class="knob-label" style="text-align: left;">{{tdIndicator.name}}</div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-12">
-        <div class="box box-default">
-          <div class="box-header with-border">
-            <h3 class="box-title">{{graphCommitterData.length}} Contributor(s)</h3>
-            <div class="box-tools pull-right">
-              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-              </button>
-            </div>
-          </div>
-          <div class="box-body no-padding">
-            <ul class="users-list clearfix">
-              <li ng-repeat="tdItem in graphCommitterData | orderBy:'committer.name'" style="width: 150px;">
-                <img ng-src="{{tdItem.committer.avatar}}" alt="User Image" >
-                <a class="users-list-name" href="#">{{tdItem.committer.name}}</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-12">
-        <div class="box box-default">
-          <div class="box-header with-border">
-            <h3 class="box-title">TD Principal</h3>
-            <div class="box-tools pull-right">
-              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-              </button>
-            </div>
-          </div>
-          <div class="box-body no-padding">
-            <h4 style="padding-left: 15px">All Contributors</h4>
-            <nvd3 options="graphTDPrincipalOptions" data="graphTDPrincipalData"></nvd3>
-
-            <h4 style="padding-left: 15px">By Contributors</h4>
-            <nvd3 options="graphCommitterTDPrincipalOptions" data="graphCommitterTDPrincipalData"></nvd3>
-          </div>
-        </div>
-      </div>
-
-      <h4 style="padding-left: 15px">TD Indicators by Contributors</h4>
-
-      <div ng-repeat="tdItem in graphCommitterData" class="col-md-12">
-        <!-- Box Comment -->
-        <div class="box box-widget">
-          <div class="box-header with-border">
-            <div class="user-block">
-              <div class="col-md-1" style="width: 30px; padding-left: 0px; padding-right: 0px; font-size: 18px;">
-                <span># {{$index+1}}</span>
-              </div>
-              <div class="col-md-4" style="padding-left: 0px;">
-                <span class="username"><a href="#">{{tdItem.committer.name}}</a></span>
-                <span class="description">{{tdItem.committer.email}}</span>
-              </div>
-            </div>
-            <!-- /.user-block -->
-            <div class="box-tools">
-              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-              </button>
-            </div>
-            <!-- /.box-tools -->
-          </div>
-          <!-- /.box-header -->
-          <div class="box-body">
-            <div class="col-md-8">
-              <nvd3 options="graphCommitterOptions" data="tdItem.graph"></nvd3>
-            </div>
-
-            <div class="col-md-4">
-              <table class="table table-condensed">
-                <tbody>
-                  <tr>
-                    <th>Type</th>
-                    <th>Qtty</th>
-                    <th style="width: 40px">Perc</th>
-                  </tr>
-                  <tr>
-                    <td>Commits</td>
-                    <td>{{tdItem.committer.commits.length}}</td>
-                    <td><span class="badge bg-default">{{getGraphPercent('commits', tdItem.committer)}}%</span></td>
-                  </tr>
-                  <tr>
-                    <td>Files</td>
-                    <td>{{tdItem.committer.files.length}}</td>
-                    <td><span class="badge bg-default">{{getGraphPercent('files', tdItem.committer)}}%</span></td>
-                  </tr>
-                  <tr>
-                    <td>Lines</td>
-                    <td>{{tdItem.committer.lines.added}}</td>
-                    <td><span class="badge bg-default">{{getGraphPercent('lines', tdItem.committer)}}%</span></td>
-                  </tr>
-                  <tr>
-                    <td>Principal</td>
-                    <td>{{tdItem.committer.principal}}</td>
-                    <td><span class="badge bg-default">{{getGraphPercent('principal', tdItem.committer)}}%</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <!-- /.box-body -->
-        </div>
-        <!-- /.box -->
-      </div>
-      <!-- /.col -->
-    </section>
-
-  </div>
-
 </div>
