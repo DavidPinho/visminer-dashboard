@@ -1,5 +1,5 @@
 homeApp.controller('HomeCtrl', function ($rootScope, $scope, $timeout, $http,
- $sessionStorage, $location, $route, Repository, TagTime, Committer, progressbarService, tdAnalyzerService, sidebarService, alertModalService) {
+ $sessionStorage, $location, $route, Repository, TagTime, Committer, progressbarService, sidebarService, alertModalService) {
   // This controller instance
   var thisCtrl = this;
 
@@ -185,7 +185,7 @@ homeApp.factory('LongMethod', function() {
 })
 
 homeApp.factory('TDItem', function(Commit, Committer) {
-	var TDItem = function (id, repository, commit, contributors, type, tdIndicators, fileName, fileHash, package, isAnalyzed, isTdItem, isIntentional, principal, interestAmount, interestProbability, estimates, notes) {
+	var TDItem = function (id, repository, commit, contributors, type, tdIndicators, fileName, fileHash, package, isChecked, isTdItem, isIntentional, principal, interestAmount, interestProbability, estimates, notes) {
 	  this.id = id;
 	  this.repository = repository;
 	  this.commit = commit;
@@ -195,7 +195,7 @@ homeApp.factory('TDItem', function(Commit, Committer) {
 	  this.fileName = fileName;
 	  this.fileHash = fileHash;
 	  this.package = package;
-	  this.isAnalyzed = isAnalyzed;
+	  this.isChecked = isChecked;
 	  this.isTdItem = isTdItem;
 	  this.isIntentional = isIntentional;
 	  this.principal = principal;
