@@ -62,8 +62,8 @@
             
             <div class="col-sm-2">
               <div class="form-group">
-                <label>Is Analyzed?</label>
-                <select class="form-control select2" multiple="multiple" data-placeholder="Select a State" style="width: 100%;" ng-model="filter.isAnalyzed" ng-change="filterApply()">
+                <label>Is Checked?</label>
+                <select class="form-control select2" multiple="multiple" data-placeholder="Select a State" style="width: 100%;" ng-model="filter.isChecked" ng-change="filterApply()">
                   <option value="true">Yes</option>
                   <option value="false">No</option>
                 </select>
@@ -101,7 +101,7 @@
                   <th>TD Indicators</th>
                   <th>Contributors</th>
                   <th>File</th>
-                  <th>Analyzed?</th>
+                  <th>Checked?</th>
                   <th>TD item?</th>
                   <th>Principal</th>
                   <th>Interest amount</th>
@@ -119,7 +119,7 @@
                     <span ng-repeat="contributor in item.contributors" class="label label-default" style="display:block; margin: 3px; line-height: normal;white-space: normal;">{{contributor.name}}</span>
                   </td>
                   <td style="overflow: hidden; text-overflow: ellipsis;  direction: rtl; max-width:200px;">{{item.fileName}}</td>
-                  <td><span ng-show="item.isAnalyzed" style="color:green">Yes</span><span ng-hide="item.isAnalyzed" style="color:red">No</span></td>
+                  <td><span ng-show="item.isChecked" style="color:green">Yes</span><span ng-hide="item.isChecked" style="color:red">No</span></td>
                   <td>{{(item.isTdItem) ? "Yes" : "No"}}</td>
                   <td>{{item.principal}}<span ng-show="item.principal!=null">h</span></td>
                   <td>{{item.interestAmount}}<span ng-show="item.interestAmount!=null">h</span></td>

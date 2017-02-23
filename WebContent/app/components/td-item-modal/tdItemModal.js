@@ -88,18 +88,28 @@ angular.module('homeApp').component('tdItemModal', {
       tdItem.estimates = $scope.tdItemModalObj.estimates;
       tdItem.interestAmount = $scope.tdItemModalObj.interestAmount;
       tdItem.interestProbability = $scope.tdItemModalObj.interestProbability;
-      tdItem.isAnalyzed = $scope.tdItemModalObj.isAnalyzed;
+      tdItem.isChecked = ($scope.tdItemModalObj.isChecked == undefined) ? false : $scope.tdItemModalObj.isChecked;
       tdItem.isIntentional = $scope.tdItemModalObj.isIntentional;
-      tdItem.isTdItem = $scope.tdItemModalObj.isTdItem;
+      tdItem.isTdItem = ($scope.tdItemModalObj.isTdItem == undefined) ? false : $scope.tdItemModalObj.isTdItem;
       tdItem.notes = $scope.tdItemModalObj.notes;
       tdItem.contributors = $scope.selectedContributors;
       tdItem.principal = $scope.tdItemModalObj.principal;
       tdItem.tdIndicators = tdIndicatorsSelected;
       tdItem.type = $scope.tdItemModalObj.type;
+      
       // update tdItems
-      var tdItems = JSON.parse(localStorage.getItem('tdItems'));
-      tdItems[tdItemIndex] = tdItem;
-      localStorage.setItem('tdItems', JSON.stringify(tdItems));
+      progressbarService.setTitle('Saving TD Item');
+      $('#progressBarModal').modal('show');
+      $http.put('rest/td-management/save?id='+$scope.tdItemModalObj.id+'&isTD='+tdItem.isTdItem+'&isChecked='+tdItem.isChecked+'&principal='+tdItem.principal+'&estimates='+tdItem.estimates+'&notes='+tdItem.notes+'&interest_amount='+tdItem.interestAmount+'&interest_probability='+tdItem.interestProbability+'&intentional='+tdItem.isIntentional)
+      .then(function successCallback(tdItemUpdated) {
+        toastr["success"]("TD Item saved");
+        $('#progressBarModal').modal('hide');
+      }, function errorCallback(response) {
+        $('#progressBarModal').modal('hide');
+        toastr["error"]("Error on save TD Item");
+      });
+
+      // $rootScope.tdItems[tdItemIndex] = tdItem;
       $('#tdItemModal').modal('hide');
     }
 
@@ -118,36 +128,36 @@ angular.module('homeApp').component('tdItemModal', {
     
     $scope.loadMetrics = function(filehash, commitId) {
     	$scope.metrics = {
-			'direct': [],
-			'indirect': []
-		};
-    	progressbarService.setTitle('Loading Metrics');
-		$('#progressBarModal').modal('show');
+  			'direct': [],
+  			'indirect': []
+  		};
+      progressbarService.setTitle('Loading Metrics');
+  		$('#progressBarModal').modal('show');
 		
-		$http.get('rest/directcode/get-metrics?fileHash='+filehash+'&commit='+commitId)
-		.then(function successCallback(resDirectMetrics) {
-			$http.get('rest/indirectcode/get-metrics?fileHash='+filehash+'&commit='+commitId)
-			.then(function successCallback(resIndirectMetrics) {
-				$('#progressBarModal').modal('hide');
-				if (typeof resDirectMetrics.data[0] != 'undefined' && typeof resDirectMetrics.data[0].classes != 'undefined') {
-					$scope.metrics.direct = resDirectMetrics.data[0].classes.metrics;
-				}
-				if (typeof resIndirectMetrics.data[0] != 'undefined' && typeof resIndirectMetrics.data[0].codesmells_threshholds != 'undefined') {
-					$scope.metrics.indirect = resIndirectMetrics.data[0].codesmells_threshholds;
-				} 
-				setTimeout(function(){ 
-					$('#progressBarModal').modal('hide');
-					toastr["success"]("Found "+(resDirectMetrics.data.length+resIndirectMetrics.data.length)+" metrics");
-				}, 1000);
-			}, function errorCallback(response) {
-				$('#progressBarModal').modal('hide');
-				toastr["error"]("Error on load indirect metrics");
-			});
-		}, function errorCallback(response) {
-			$('#progressBarModal').modal('hide');
-			toastr["error"]("Error on load direct metrics");
-		});
-		
+  		$http.get('rest/directcode/get-metrics?fileHash='+filehash+'&commit='+commitId)
+  		.then(function successCallback(resDirectMetrics) {
+  			$http.get('rest/indirectcode/get-metrics?fileHash='+filehash+'&commit='+commitId)
+  			.then(function successCallback(resIndirectMetrics) {
+  				$('#progressBarModal').modal('hide');
+  				if (typeof resDirectMetrics.data[0] != 'undefined' && typeof resDirectMetrics.data[0].classes != 'undefined') {
+  					$scope.metrics.direct = resDirectMetrics.data[0].classes.metrics;
+  				}
+  				if (typeof resIndirectMetrics.data[0] != 'undefined' && typeof resIndirectMetrics.data[0].codesmells_threshholds != 'undefined') {
+  					$scope.metrics.indirect = resIndirectMetrics.data[0].codesmells_threshholds;
+  				} 
+  				setTimeout(function(){ 
+  					$('#progressBarModal').modal('hide');
+  					toastr["success"]("Found "+(resDirectMetrics.data.length+resIndirectMetrics.data.length)+" metrics");
+  				}, 1000);
+  			}, function errorCallback(response) {
+  				$('#progressBarModal').modal('hide');
+  				toastr["error"]("Error on load indirect metrics");
+  			});
+  		}, function errorCallback(response) {
+  			$('#progressBarModal').modal('hide');
+  			toastr["error"]("Error on load direct metrics");
+  		});
+  		
     }
 
   },

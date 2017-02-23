@@ -8,14 +8,14 @@ homeApp.controller('TDCommittersCtrl', function ($scope, $rootScope, $http, $q, 
   $scope.load = function(repositoryId, tagId){
     progressbarService.setTitle('Loading TD Items');
     $('#progressBarModal').modal('show');
-    $http.get('rest/td-management/find?repositoryId='+repositoryId+'&tag='+tagId+'&is_analyzed=True&is_td=True', {})
+    $http.get('rest/td-management/find?repositoryId='+repositoryId+'&tag='+tagId+'&is_checked=True&is_td=True', {})
     .then(function successCallback(res) {
       $scope.tdItems = res.data;
       toastr["success"]("Found "+$scope.tdItems.length+" td items indicators")
       $('#progressBarModal').modal('hide');
       $scope.generateGraph();
     }, function errorCallback(response) {
-      toastr["error"]("Error on analyzer this project")
+      toastr["error"]("Error on load this project")
     });
   }
 
@@ -54,7 +54,7 @@ homeApp.controller('TDCommittersCtrl', function ($scope, $rootScope, $http, $q, 
         enabled: false
     },
     tooltip: {
-        pointFormat: 'Total of principal: <b>{point.y:.1f}</b>'
+        pointFormat: 'Total of principal: <b>{point.y}</b>'
     },
     series: [{
       name: 'Population',
@@ -64,7 +64,7 @@ homeApp.controller('TDCommittersCtrl', function ($scope, $rootScope, $http, $q, 
         rotation: -90,
         color: '#FFFFFF',
         align: 'right',
-        format: '{point.y:.1f}', // one decimal
+        format: '{point.y}',
         y: 10, // 10 pixels down from the top
         style: {
           fontSize: '13px',
@@ -473,13 +473,11 @@ homeApp.controller('TDCommittersCtrl', function ($scope, $rootScope, $http, $q, 
   }
 
   $scope.selectView = function(view) {
-    console.log('selectView', view)
     $scope.currentPage = view;
     sidebarService.setCurrentPage(view);
   }
 
   if ($scope.currentPage == 'tdcommiters') {
-    console.log("$scope.currentPage == 'tdcommiters'")
     $scope.load(sidebarService.getRepository().id, $rootScope.tags[0].name);
   }
 });

@@ -6,8 +6,8 @@ homeApp.controller('TDManagerCtrl', function($scope, $rootScope, $http, $route,
 
 	var thisCtrl = this;
 	$scope.committers = [];
-	$scope.tdItems = [];
-	$scope.tdItemsFiltered = [];
+	$rootScope.tdItems = [];
+	$rootScope.tdItemsFiltered = [];
 
 	thisCtrl.selectView = function(view) {
 		$scope.currentPage = view;
@@ -34,7 +34,7 @@ homeApp.controller('TDManagerCtrl', function($scope, $rootScope, $http, $route,
 				var package = tdItemIndicators[i].filename.split('/');
 				package.pop();
 				for (x in tdItemIndicators[i].indicators) {
-					$scope.tdItems.push(new TDItem(
+					$rootScope.tdItems.push(new TDItem(
 						tdItemIndicators[i]._id.$oid,
 						tdItemIndicators[i].repository.$oid,
 						new Commit(tdItemIndicators[i].commit, new Date(tdItemIndicators[i].commit_date.$date)),
@@ -44,7 +44,7 @@ homeApp.controller('TDManagerCtrl', function($scope, $rootScope, $http, $route,
 						tdItemIndicators[i].filename,
 						tdItemIndicators[i].filehash.$numberLong,
 						package.join('.'),
-						(typeof tdItemIndicators[i].analyzed != 'undefined') ? tdItemIndicators[i].analyzed : false,
+						(typeof tdItemIndicators[i].Checked != 'undefined') ? tdItemIndicators[i].Checked : false,
 						tdItemIndicators[i].technical_debt,
 						(typeof tdItemIndicators[i].details != 'undefined' && tdItemIndicators[i].details.intentional != 'undefined') ? tdItemIndicators[i].details.intentional : null,
 						(typeof tdItemIndicators[i].details != 'undefined' && tdItemIndicators[i].details.principal != 'undefined') ? tdItemIndicators[i].details.principal : null,
@@ -55,8 +55,8 @@ homeApp.controller('TDManagerCtrl', function($scope, $rootScope, $http, $route,
 					));
 				}
 			}
-			localStorage.setItem('tdItems', JSON.stringify($scope.tdItems));
-			$scope.tdItemsFiltered = $scope.tdItems;
+			localStorage.setItem('tdItems', JSON.stringify($rootScope.tdItems));
+			$rootScope.tdItemsFiltered = $rootScope.tdItems;
 		}, function errorCallback(response) {
 			toastr["error"]("Error on analyzer this project")
 		});
@@ -82,7 +82,7 @@ homeApp.controller('TDManagerCtrl', function($scope, $rootScope, $http, $route,
 			'Larger Class'
 		],
 		isTdItem: ['true', 'false'],
-		isAnalyzed: ['true', 'false']
+		isChecked: ['true', 'false']
 	}
 
 	// Apply filter parameters
@@ -93,14 +93,14 @@ homeApp.controller('TDManagerCtrl', function($scope, $rootScope, $http, $route,
 			var identificationDateIni = new Date(dates[0]);
 			var identificationDateEnd = new Date(dates[1]);
 		}
-		for (i in $scope.tdItems) {
-			var obj = $scope.tdItems[i];
+		for (i in $rootScope.tdItems) {
+			var obj = $rootScope.tdItems[i];
 			var accept = 0;
 			var foundDate = false;
 			var foundType = false;
 			var foundTdIndicator = false;
 			var foundIsTdItem = false;
-			var foundIsAnalyzed = false;
+			var foundIsChecked = false;
 			if (typeof $scope.filter.identificationDate != 'undefined' && identificationDateIni) {
 				if (identificationDateIni <= obj.commit.date && obj.commit.date <= identificationDateEnd) {
 					foundDate = true;
@@ -119,14 +119,14 @@ homeApp.controller('TDManagerCtrl', function($scope, $rootScope, $http, $route,
 			if ($scope.filter.isTdItem.indexOf(String(obj.isTdItem)) > -1) {
 				foundIsTdItem = true;
 			}
-			if ($scope.filter.isAnalyzed.indexOf(String(obj.isAnalyzed)) > -1) {
-				foundIsAnalyzed = true;
+			if ($scope.filter.isChecked.indexOf(String(obj.isChecked)) > -1) {
+				foundIsChecked = true;
 			}
-			if (foundDate && foundType && foundTdIndicator && foundIsAnalyzed && foundIsTdItem) {
+			if (foundDate && foundType && foundTdIndicator && foundIsChecked && foundIsTdItem) {
 				tdItemsFiltered.push(obj);
 			}
 		}
-		$scope.tdItemsFiltered = tdItemsFiltered;
+		$rootScope.tdItemsFiltered = tdItemsFiltered;
 	}
 	
 	$scope.tdItemFormatDate = function(date) {
@@ -166,7 +166,11 @@ homeApp.controller('TDManagerCtrl', function($scope, $rootScope, $http, $route,
 	}
 
 	if ($scope.currentPage == 'tdmanager') {
-		thisCtrl.load(sidebarService.getRepository().id, $rootScope.tags[0].name);
+		if ($rootScope.filtered.tags.length > 1) {
+			toastr["error"]("Allowed to manage one tag at a time");
+		} else {
+			thisCtrl.load(sidebarService.getRepository().id, $rootScope.filtered.tags[0].name);
+		}
 		$('#filter-identificationdate').daterangepicker();
 	}
 });
