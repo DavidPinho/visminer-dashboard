@@ -39,6 +39,10 @@ public class RepositoryController {
 		StringBuilder builder = new StringBuilder("[");
 		for (Document d : docs) {
 			builder.append(d.toJson());
+			builder.append(",");
+		}
+		if (builder.length() > 1) {
+			builder.delete(builder.length() -1 , builder.length());
 		}
 		builder.append("]");
 		return builder.toString();
