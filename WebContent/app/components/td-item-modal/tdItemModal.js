@@ -34,6 +34,8 @@ angular.module('homeApp').component('tdItemModal', {
       $scope.committers = $rootScope.filtered.repository.contributors;
       tdItemIndex = data.i;
       $scope.tdItemModalObj = JSON.parse(JSON.stringify(tdItem)); // clone the object
+      console.log("$scope.tdItemModalObj", $scope.tdItemModalObj)
+      
       var fileName = $scope.tdItemModalObj.fileName.split('/');
       $scope.tdItemModalObj.fileName = fileName[fileName.length-1];
       $scope.tdItemModalObj.commit.date = moment($scope.tdItemModalObj.commit.date).format('l')+" "+moment($scope.tdItemModalObj.commit.date).format('LT')
@@ -69,9 +71,6 @@ angular.module('homeApp').component('tdItemModal', {
           $scope.tabMetrics = true;
           $scope.loadMetrics($scope.tdItemModalObj.fileHash, $scope.tdItemModalObj.commit.id);
           break;
-        case 'history':
-          $scope.tabHistory = true;
-          break;
         default:
           $scope.tabTd = true;
           break;
@@ -86,21 +85,25 @@ angular.module('homeApp').component('tdItemModal', {
     	  }
       }
       tdItem.estimates = $scope.tdItemModalObj.estimates;
-      tdItem.interestAmount = $scope.tdItemModalObj.interestAmount;
-      tdItem.interestProbability = $scope.tdItemModalObj.interestProbability;
+      tdItem.interestAmount = ($scope.tdItemModalObj.interestAmount == null) ? 0 : $scope.tdItemModalObj.interestAmount;
+      tdItem.interestProbability = ($scope.tdItemModalObj.interestProbability == null) ? 0 : $scope.tdItemModalObj.interestProbability;
       tdItem.isChecked = ($scope.tdItemModalObj.isChecked == undefined) ? false : $scope.tdItemModalObj.isChecked;
       tdItem.isIntentional = $scope.tdItemModalObj.isIntentional;
       tdItem.isTdItem = ($scope.tdItemModalObj.isTdItem == undefined) ? false : $scope.tdItemModalObj.isTdItem;
       tdItem.notes = $scope.tdItemModalObj.notes;
       tdItem.contributors = $scope.selectedContributors;
-      tdItem.principal = $scope.tdItemModalObj.principal;
+      tdItem.principal = ($scope.tdItemModalObj.principal == null) ? 0 : $scope.tdItemModalObj.principal;
       tdItem.tdIndicators = tdIndicatorsSelected;
       tdItem.type = $scope.tdItemModalObj.type;
+      var contributors = '';
+      for (var i in $scope.selectedContributors) {
+    	  contributors += $scope.selectedContributors[i].name+'%26'+$scope.selectedContributors[i].email+'%26false;';
+      }
       
       // update tdItems
       progressbarService.setTitle('Saving TD Item');
       $('#progressBarModal').modal('show');
-      $http.put('rest/td-management/save?id='+$scope.tdItemModalObj.id+'&isTD='+tdItem.isTdItem+'&isChecked='+tdItem.isChecked+'&principal='+tdItem.principal+'&estimates='+tdItem.estimates+'&notes='+tdItem.notes+'&interest_amount='+tdItem.interestAmount+'&interest_probability='+tdItem.interestProbability+'&intentional='+tdItem.isIntentional)
+      $http.put('rest/td-management/save?id='+$scope.tdItemModalObj.id+'&contributors='+contributors+'&isTD='+tdItem.isTdItem+'&isChecked='+tdItem.isChecked+'&principal='+tdItem.principal+'&estimates='+tdItem.estimates+'&notes='+tdItem.notes+'&interest_amount='+tdItem.interestAmount+'&interest_probability='+tdItem.interestProbability+'&intentional='+tdItem.isIntentional)
       .then(function successCallback(tdItemUpdated) {
         toastr["success"]("TD Item saved");
         $('#progressBarModal').modal('hide');
