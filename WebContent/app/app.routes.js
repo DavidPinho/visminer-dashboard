@@ -25,6 +25,6 @@ homeApp.config(['$routeProvider', '$locationProvider',
         templateUrl: 'app/codesmells/perspectiveone/perspectiveone.html',
         controller: 'CSPerspectiveOneCtrl'
       }).
-      otherwise({ redirectTo: '/technicaldebt/analyzer' });
+      otherwise({ redirectTo: '/' });
     $locationProvider.html5Mode(true);
  }]);
