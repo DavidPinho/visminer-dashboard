@@ -22,7 +22,7 @@ homeApp.controller('TDManagerCtrl', function($scope, $rootScope, $http, $route,
 			var tdItemIndicators = res.data;
 			toastr["success"]("Found "+tdItemIndicators.length+" td items indicators")
 			$('#progressBarModal').modal('hide');
-			for (i in tdItemIndicators) {
+			for (var i in tdItemIndicators) {
 				var contributors = [];
 				for (z in tdItemIndicators[i].contributors) {
 					contributors.push(new Committer(
@@ -33,27 +33,25 @@ homeApp.controller('TDManagerCtrl', function($scope, $rootScope, $http, $route,
 				}
 				var package = tdItemIndicators[i].filename.split('/');
 				package.pop();
-				for (x in tdItemIndicators[i].indicators) {
-					$rootScope.tdItems.push(new TDItem(
-						tdItemIndicators[i]._id.$oid,
-						tdItemIndicators[i].repository.$oid,
-						new Commit(tdItemIndicators[i].commit, new Date(tdItemIndicators[i].commit_date.$date)),
-						contributors,
-						'Code',
-						getIndicators(tdItemIndicators[i].indicators),
-						tdItemIndicators[i].filename,
-						tdItemIndicators[i].filehash.$numberLong,
-						package.join('.'),
-						(typeof tdItemIndicators[i].checked != 'undefined') ? tdItemIndicators[i].checked : false,
-						tdItemIndicators[i].technical_debt,
-						(typeof tdItemIndicators[i].details != 'undefined' && tdItemIndicators[i].details.intentional != 'undefined') ? tdItemIndicators[i].details.intentional : null,
-						(typeof tdItemIndicators[i].details != 'undefined' && tdItemIndicators[i].details.principal != 'undefined') ? tdItemIndicators[i].details.principal : null,
-						(typeof tdItemIndicators[i].details != 'undefined' && tdItemIndicators[i].details.interest_amount != 'undefined') ? tdItemIndicators[i].details.interest_amount : null,
-						(typeof tdItemIndicators[i].details != 'undefined' && tdItemIndicators[i].details.interest_probability != 'undefined') ? tdItemIndicators[i].details.interest_probability : null,
-						(typeof tdItemIndicators[i].details != 'undefined' && tdItemIndicators[i].details.estimates != 'undefined') ? tdItemIndicators[i].details.estimates : null,
-						(typeof tdItemIndicators[i].details != 'undefined' && tdItemIndicators[i].details.notes != 'undefined') ? tdItemIndicators[i].details.notes : null
-					));
-				}
+				$rootScope.tdItems.push(new TDItem(
+					tdItemIndicators[i]._id.$oid,
+					tdItemIndicators[i].repository.$oid,
+					new Commit(tdItemIndicators[i].commit, new Date(tdItemIndicators[i].commit_date.$date)),
+					contributors,
+					'Code',
+					getIndicators(tdItemIndicators[i].indicators),
+					tdItemIndicators[i].filename,
+					tdItemIndicators[i].filehash.$numberLong,
+					package.join('.'),
+					(typeof tdItemIndicators[i].checked != 'undefined') ? tdItemIndicators[i].checked : false,
+					tdItemIndicators[i].technical_debt,
+					(typeof tdItemIndicators[i].details != 'undefined' && tdItemIndicators[i].details.intentional != 'undefined') ? tdItemIndicators[i].details.intentional : null,
+					(typeof tdItemIndicators[i].details != 'undefined' && tdItemIndicators[i].details.principal != 'undefined') ? tdItemIndicators[i].details.principal : null,
+					(typeof tdItemIndicators[i].details != 'undefined' && tdItemIndicators[i].details.interest_amount != 'undefined') ? tdItemIndicators[i].details.interest_amount : null,
+					(typeof tdItemIndicators[i].details != 'undefined' && tdItemIndicators[i].details.interest_probability != 'undefined') ? tdItemIndicators[i].details.interest_probability : null,
+					(typeof tdItemIndicators[i].details != 'undefined' && tdItemIndicators[i].details.estimates != 'undefined') ? tdItemIndicators[i].details.estimates : null,
+					(typeof tdItemIndicators[i].details != 'undefined' && tdItemIndicators[i].details.notes != 'undefined') ? tdItemIndicators[i].details.notes : null
+				));
 			}
 			localStorage.setItem('tdItems', JSON.stringify($rootScope.tdItems));
 			$rootScope.tdItemsFiltered = $rootScope.tdItems;
