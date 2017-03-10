@@ -162,7 +162,7 @@ homeApp.controller('TDAnalyzerCtrl', function($scope, $http, $location, $route, 
       analyze = false;
 		} 
 		if (analyze) {
-			progressbarService.setTitle('Analyzing Repository');
+			progressbarService.setTitle('Analyzing Technical Debts');
 			$('#progressBarModal').modal('show');
 			tdAnalyzerService.analyzeIt($scope.filtered.repository.id, $scope.filtered.tags[0].name, function() {
 				$('#progressBarModal').modal('hide');
