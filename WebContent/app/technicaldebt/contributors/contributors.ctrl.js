@@ -1,6 +1,6 @@
 homeApp = angular.module('homeApp');
 
-homeApp.controller('TDCommittersCtrl', function ($scope, $rootScope, $http, $q, progressbarService, sidebarService) {
+homeApp.controller('TDContributorsCtrl', function ($scope, $rootScope, $http, $q, progressbarService, sidebarService) {
 
   $scope.currentPage = sidebarService.getCurrentPage();
   $scope.filtered.repository = sidebarService.getRepository();
@@ -477,7 +477,7 @@ homeApp.controller('TDCommittersCtrl', function ($scope, $rootScope, $http, $q, 
     sidebarService.setCurrentPage(view);
   }
 
-  if ($scope.currentPage == 'tdcommiters') {
+  if ($scope.currentPage == 'tdcontributors') {
     $scope.load(sidebarService.getRepository().id, $rootScope.tags[0].name);
   }
 });
