@@ -87,14 +87,6 @@ angular.module('homeApp').component('minerModal', {
 			$("#minerModal"+show).modal("show");
 		};
 		
-$scope.branches = [];
-$scope.path = '/Users/sandrosantos/Enviroments/java/repositories/retrofit';
-$scope.scm = 'GIT';
-$scope.name = 'retrofit';
-$scope.description = 'retrofit proj';
-$scope.tags = [];
-$scope.selectedMetrics = [];
-		
 	},
 	templateUrl : 'app/components/miner-modal/miner-modal.html',
 });
