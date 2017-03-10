@@ -17,9 +17,9 @@ homeApp.config(['$routeProvider', '$locationProvider',
         templateUrl: 'app/technicaldebt/manager/manager.html',
         controller: 'TDManagerCtrl'
       }).
-      when('/technicaldebt/committers', {
-        templateUrl: 'app/technicaldebt/committers/committers.html',
-        controller: 'TDCommittersCtrl'
+      when('/technicaldebt/contributors', {
+        templateUrl: 'app/technicaldebt/contributors/contributors.html',
+        controller: 'TDContributorsCtrl'
       }).
       when('/codesmells/perspectiveone', {
         templateUrl: 'app/codesmells/perspectiveone/perspectiveone.html',
