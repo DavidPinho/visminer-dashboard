@@ -56,20 +56,6 @@
           </li>
         </ul>
       </li>
-      <li class="treeview" ng-show="currentPage == 'committers'">
-        <a href="#">
-          <i class="fa fa-users"></i>
-          <span>Committers</span>
-          <small class="label pull-right bg-green">{{filtered.committers.length}}</small>
-        </a>
-        <ul class="treeview-menu">
-          <li ng-repeat="committer in filtered.committers | orderBy:'message'">
-            <a href="javascript:void(0)">
-              <i class="fa fa-caret-right"></i> {{committer.message}}
-            </a>
-          </li>
-        </ul>
-      </li>
       <li class="treeview" ng-show="currentPage == 'commiters'">
         <a href="#">
           <i class="fa fa-book"></i> <span>Documentation</span>
