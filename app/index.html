@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Visminer Dashboard</title>
-    <base href="/visminer-dashboard/"></base>
+    <base href="/"></base>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -17,16 +17,16 @@
     <link rel="stylesheet" href="assets/plugins/daterangepicker/daterangepicker-bs3.css">
     <link rel="stylesheet" href="assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
     <link rel="stylesheet" href="assets/plugins/jQDateRangeSlider/css/classic-min.css">
-    <link rel="stylesheet" href="app/bower_components/angularjs-slider/dist/rzslider.css"/>
+    <link rel="stylesheet" href="assets/plugins/angularjs-slider/dist/rzslider.css"/>
     <link rel="stylesheet" href="assets/css/visminer-td.css">
   </head>
 
   <body class="hold-transition skin-blue sidebar-mini" ng-controller="HomeCtrl as ctrl">
     <div class="wrapper">
 
-      <div ng-include="'app/shared/navbar/navbar.html'"></div>
+      <div ng-include="'shared/navbar/navbar.html'"></div>
 	  
-	    <div ng-include="'app/shared/sidebar/sidebar.html'"></div>  
+	    <div ng-include="'shared/sidebar/sidebar.html'"></div>  
 	  
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
@@ -80,37 +80,37 @@
     <script src="assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
     <script src="assets/plugins/slimScroll/jquery.slimscroll.min.js"></script>
     <script src="assets/js/app.min.js"></script>
-    <script src="app/bower_components/angular/angular.js"></script>
-    <script src="app/bower_components/ngstorage/ngStorage.js"></script>
-    <script src="app/bower_components/angularjs-slider/dist/rzslider.min.js"></script>
-    <script src="app/bower_components/highcharts-ng/dist/highcharts-ng.min.js"></script>
+    <script src="assets/plugin/angular/angular.js"></script>
+    <script src="assets/plugin/ngstorage/ngStorage.js"></script>
+    <script src="assets/plugin/angularjs-slider/dist/rzslider.min.js"></script>
+    <script src="assets/plugin/highcharts-ng/dist/highcharts-ng.min.js"></script>
     <script src="http://code.highcharts.com/highcharts.src.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular-route.min.js"></script>
     <script src="assets/plugins/jQDateRangeSlider/jQDateRangeSlider-min.js"></script>
     <script src="assets/js/ui-bootstrap-1.0.0.min.js"></script>
-    <script src="app/bower_components/angularjs-slider/demo/lib/ui-bootstrap-tpls.js"></script>
+    <script src="assets/plugin/angularjs-slider/demo/lib/ui-bootstrap-tpls.js"></script>
 
     <!-- APP imports -->
-    <script src="app/app.module.js"></script>
-    <script src="app/app.routes.js"></script>
-    <script src="app/shared/sidebar/sidebar.service.js"></script>
-    <script src="app/app.ctrl.js"></script>
-    <script src="app/technicaldebt/tdevolution/tdevolution.ctrl.js"></script>
-    <script src="app/technicaldebt/tdmanagement/tdmanagement.ctrl.js"></script>
-    <script src="app/technicaldebt/tdanalyzer/tdanalyzer.ctrl.js"></script>
-    <script src="app/technicaldebt/tdcommitters/tdcommitters.ctrl.js"></script>
+    <script src="app.module.js"></script>
+    <script src="app.routes.js"></script>
+    <script src="shared/sidebar/sidebar.service.js"></script>
+    <script src="app.ctrl.js"></script>
+    <script src="technicaldebt/tdevolution/tdevolution.ctrl.js"></script>
+    <script src="technicaldebt/tdmanagement/tdmanagement.ctrl.js"></script>
+    <script src="technicaldebt/tdanalyzer/tdanalyzer.ctrl.js"></script>
+    <script src="technicaldebt/tdcommitters/tdcommitters.ctrl.js"></script>
     <script src="assets/js/center-modal.js"></script>
     <script src="assets/js/checklist-model.js"></script>
-    <script src="app/components/alert-modal/alertModal.service.js"></script>
-    <script src="app/components/alert-modal/alertModal.js"></script>
-    <script src="app/components/progressbar/progressbar.service.js"></script>
-    <script src="app/components/progressbar/progressbar.js"></script>
-    <script src="app/components/type-smells-details/type-smells-details.service.js"></script>
-    <script src="app/components/type-smells-details/type-smells-details.js"></script>
-    <script src="app/components/td-timeline/td-timeline.service.js"></script>
-    <script src="app/components/td-timeline/td-timeline.js"></script>
-    <script src="app/components/miner-modal/miner-modal.js"></script>
-    <script src="app/components/td-indicators-charts/td-indicators-charts.service.js"></script>
-    <script src="app/components/td-indicators-charts/td-indicators-charts.js"></script>
+    <script src="components/alert-modal/alertModal.service.js"></script>
+    <script src="components/alert-modal/alertModal.js"></script>
+    <script src="components/progressbar/progressbar.service.js"></script>
+    <script src="components/progressbar/progressbar.js"></script>
+    <script src="components/type-smells-details/type-smells-details.service.js"></script>
+    <script src="components/type-smells-details/type-smells-details.js"></script>
+    <script src="components/td-timeline/td-timeline.service.js"></script>
+    <script src="components/td-timeline/td-timeline.js"></script>
+    <script src="components/miner-modal/miner-modal.js"></script>
+    <script src="components/td-indicators-charts/td-indicators-charts.service.js"></script>
+    <script src="components/td-indicators-charts/td-indicators-charts.js"></script>
   </body>
 </html>
