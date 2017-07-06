@@ -114,7 +114,6 @@ homeApp.controller('HomeCtrl', function ($scope, $timeout, $http,
 		}
 
 		if (analyze) {
-
 			$('#progressBarModal').modal('show');
 			$('#progressBarModal').on('hidden.bs.modal', function (e) {
 				thisCtrl.selectView('tdanalyzer');
