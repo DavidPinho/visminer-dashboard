@@ -40,7 +40,7 @@
           <small class="label pull-right bg-green">{{repositories.length}}</small>
         </a>
         <ul class="treeview-menu">
-          <li ng-repeat="repository in repositories | orderBy:'name'">
+          <li ng-repeat="repository in repositories | orderBy:'commits.length'">
             <a href="javascript:void(0)" ng-click="ctrl.selectRepository(repository)">
               <i class="fa fa-caret-right"></i> {{repository.name}}
             </a>
