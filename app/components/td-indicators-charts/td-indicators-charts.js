@@ -1,6 +1,6 @@
 angular.module('homeApp').component('tdIndicators', {
   controller: TdIndicatorsController,
-  templateUrl: 'app/components/td-indicators-charts/td-indicators-charts.html',
+  templateUrl: 'components/td-indicators-charts/td-indicators-charts.html',
 });
 
 

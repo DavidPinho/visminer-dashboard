@@ -11,5 +11,5 @@ angular.module('homeApp').component('minerModal', {
 
 			}
   },
-  templateUrl: 'app/components/miner-modal/miner-modal.html',
+  templateUrl: 'components/miner-modal/miner-modal.html',
 });

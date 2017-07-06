@@ -8,5 +8,5 @@ angular.module('homeApp').component('alertModal', {
 	  		$scope.alertMessage = message;
 	  	}); 	
   },
-  templateUrl: 'app/components/alert-modal/alertModal.html',
+  templateUrl: 'components/alert-modal/alertModal.html',
 });

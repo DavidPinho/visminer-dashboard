@@ -74,5 +74,5 @@ angular.module('homeApp').component('tdTimeline', {
      }
 
    },
-  templateUrl: 'app/components/td-timeline/td-timeline.html',
+  templateUrl: 'components/td-timeline/td-timeline.html',
 });

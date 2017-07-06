@@ -57,5 +57,5 @@ angular.module('homeApp').component('typeSmells', {
 	  		$scope.type = type;
 	  	}); 
   },
-  templateUrl: 'app/components/type-smells-details/type-smells-details.html',
+  templateUrl: 'components/type-smells-details/type-smells-details.html',
 });

@@ -13,7 +13,7 @@ angular.module('homeApp').component('progressBar', {
 
      $(window).on('resize', centerModals);
    },
-  templateUrl: 'app/components/progressbar/progressbar.html',
+  templateUrl: 'components/progressbar/progressbar.html',
 });
 
 function loadBar(){
