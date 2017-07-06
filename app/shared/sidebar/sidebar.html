@@ -35,7 +35,7 @@
           <small class="label pull-right bg-green">{{repositories.length}}</small>
         </a>
         <ul class="treeview-menu">
-          <li ng-repeat="repository in repositories | orderBy:'commits.length'">
+          <li ng-repeat="repository in repositories | orderBy:'name'">
             <a href="javascript:void(0)" ng-click="ctrl.selectRepository(repository)">
               <i class="fa fa-caret-right"></i> {{repository.name}}
             </a>
@@ -49,7 +49,7 @@
           <small class="label pull-right bg-green" ng-show="tags.length==0">{{tags.length}}</small>
         </a>
         <ul class="treeview-menu">
-          <li ng-repeat="tag in tags">
+          <li ng-repeat="tag in tags | orderBy:'commits.length'">
             <label class="control-sidebar-subheading filter-version-sub-item">
               <input type="checkbox" checklist-model="filtered.tags" checklist-value="tag">{{tag.name}}
             </label>

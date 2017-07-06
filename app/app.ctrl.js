@@ -22,7 +22,7 @@ homeApp.controller('HomeCtrl', function ($scope, $timeout, $http,
   // Load all repositories
 	thisCtrl.repositoriesLoad = function() { 
 		console.log('repositoriesLoad');
-		$http.get('data/rm_references.json')
+		$http.get('data/rm_repositories.json')
 		.success(function(data) {
 			console.log('found', data.length, 'repositories');
 			$scope.repositories = data;
@@ -47,15 +47,20 @@ homeApp.controller('HomeCtrl', function ($scope, $timeout, $http,
 	thisCtrl.tagsLoad = function(repositoryId) { 
 		console.log('tagsLoad=', repositoryId);
 
-		$http.get('TreeServlet', {params:{"action": "getAllTagsAndMaster", "repositoryId": repositoryId}})
+		$http.get('data/rm_references.json')
 		.success(function(data) {
 			console.log('found', data.length, 'tags');
 			if (data) {
+				for (tag in data) {
+					if (tag.repository === repositoryId) {
+						$scope.tags.push(tag);
+					}
+				}
 				$scope.tags = data.sort(function(tag1, tag2) {
 												return tag1.commits.length - tag2.commits.length;
 											});
 			}	
-				thisCtrl.commitsLoad(repositoryId);
+			//thisCtrl.commitsLoad(repositoryId);
 		});
 	}
 
