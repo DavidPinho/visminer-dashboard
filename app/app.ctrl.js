@@ -22,7 +22,7 @@ homeApp.controller('HomeCtrl', function ($scope, $timeout, $http,
   // Load all repositories
 	thisCtrl.repositoriesLoad = function() { 
 		console.log('repositoriesLoad');
-		$http.get('RepositoryServlet', {params:{"action": "getAll"}})
+		$http.get('data/rm_references.json')
 		.success(function(data) {
 			console.log('found', data.length, 'repositories');
 			$scope.repositories = data;
