@@ -26,10 +26,15 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 	thisCtrl.tagsLoad = function (repositoryId) {
 		console.log('tagsLoad=', repositoryId);
 
-		$http.get('TreeServlet', { params: { "action": "getAllTagsAndMaster", "repositoryId": repositoryId } })
+		$http.get('../../data/rm_references.json')
 			.success(function (data) {
 				console.log('found', data.length, 'tags');
-				$scope.tags = data.sort(function (tag1, tag2) {
+				for (tag in data) {
+					if (tag.repository === repositoryId) {
+						$scope.tags.push(tag);
+					}
+				}
+				$scope.tags = $scope.tags.sort(function (tag1, tag2) {
 					return tag1.commits.length - tag2.commits.length;
 				});
 				thisCtrl.loadSlider();
@@ -49,9 +54,10 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 					thisCtrl.loadSliderTags();
 				},
 				translate: function (value) {
-					var name = $scope.tags[value - 1].name;
-					if (name.length > 7)
-						name = name.substring(0, 7);
+					console.log(value);
+					//var name = $scope.tags[value - 1].name;
+					//if (name.length > 7)
+					//	name = name.substring(0, 7);
 					return name;
 				}
 			}
