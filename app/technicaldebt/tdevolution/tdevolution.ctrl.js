@@ -17,6 +17,8 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 	$scope.filtered.tags = sidebarService.getTags();
 	$scope.filtered.debts = sidebarService.getDebts();
 
+	$scope.hasAnalyzed = false;
+
 	thisCtrl.loadEvolutionInformation = function (repository) {
 		if (repository) {
 			thisCtrl.tagsLoad(repository._id);
@@ -73,10 +75,13 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 		$http.get('../../data/rm_technical_code_debt.json')
 			.success(function (data) {
 				console.log('found', data.length, 'types');
-				for (var i in data) {
-					var type = data[i];
-					//TODO if (tag.repository === repositoryId)
-					$scope.hashMapTags[type.reference_name].types.push(type);
+				if (!$scope.hasAnalyzed) {
+					for (var i in data) {
+						var type = data[i];
+						//TODO if (tag.repository === repositoryId)
+						$scope.hashMapTags[type.reference_name].types.push(type);
+					}
+					$scope.hasAnalyzed = true;
 				}
 
 				$scope.tagsNames = [];
