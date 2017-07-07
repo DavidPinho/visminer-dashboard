@@ -51,16 +51,11 @@ homeApp.controller('HomeCtrl', function ($scope, $timeout, $http,
 			.success(function (data) {
 				console.log('found', data.length, 'tags');
 				if (data) {
-					for (tag in data) {
-						if (tag.repository === repositoryId) {
-							$scope.tags.push(tag);
-						}
-					}
-					$scope.tags = $scope.tags.sort(function (tag1, tag2) {
+					$scope.tags = data.sort(function (tag1, tag2) {
 						return tag1.commits.length - tag2.commits.length;
 					});
 				}
-				thisCtrl.commitsLoad(repositoryId);
+				//thisCtrl.commitsLoad(repositoryId);
 			});
 	}
 

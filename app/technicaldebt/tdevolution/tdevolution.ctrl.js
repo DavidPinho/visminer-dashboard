@@ -6,6 +6,7 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 	$scope.currentPage = sidebarService.getCurrentPage();
 	$scope.tags = [];
 	$scope.tagsNames = [];
+	$scope.hashMapTags = {};
 
 	$scope.sliderTags = [];
 
@@ -24,19 +25,23 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 
 	// Load all tags (versions)
 	thisCtrl.tagsLoad = function (repositoryId) {
-		console.log('tagsLoad=', repositoryId);
-
 		$http.get('../../data/rm_references.json')
 			.success(function (data) {
 				console.log('found', data.length, 'tags');
-				for (tag in data) {
-					if (tag.repository === repositoryId) {
-						$scope.tags.push(tag);
-					}
-				}
-				$scope.tags = $scope.tags.sort(function (tag1, tag2) {
+				$scope.tags = data.sort(function (tag1, tag2) {
 					return tag1.commits.length - tag2.commits.length;
 				});
+				for (var i in $scope.tags) {
+					var tag = data[i];
+					if (tag.repository === repositoryId) {
+						$scope.hashMapTags[tag.name] = {
+							tag: tag,
+							types: [],
+							totalSmells: 0,
+							totalDebts: 0
+						};
+					}
+				}
 				thisCtrl.loadSlider();
 			});
 	}
@@ -54,10 +59,9 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 					thisCtrl.loadSliderTags();
 				},
 				translate: function (value) {
-					console.log(value);
-					//var name = $scope.tags[value - 1].name;
-					//if (name.length > 7)
-					//	name = name.substring(0, 7);
+					var name = $scope.tags[value - 1].name;
+					if (name.length > 7)
+						name = name.substring(0, 7);
 					return name;
 				}
 			}
@@ -66,42 +70,39 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 	}
 
 	thisCtrl.loadSliderTags = function () {
-		var listTypesByTags = [];
-		var request = thisCtrl.getListOfTypesByListOfTags(listTypesByTags);
+		$http.get('../../data/rm_technical_code_debt.json')
+			.success(function (data) {
+				console.log('found', data.length, 'types');
+				for (var i in data) {
+					var type = data[i];
+					//TODO if (tag.repository === repositoryId)
+					$scope.hashMapTags[type.reference_name].types.push(type);
+				}
 
-		$q.all([request]).then(function () {
-			$scope.tagsNames = [];
-			$scope.sliderTags = [];
-			$scope.chartCodeDebtSeries = [];
-			$scope.chartDesignDebtSeries = [];
-			var j = 0;
+				$scope.tagsNames = [];
+				$scope.sliderTags = [];
+				$scope.chartCodeDebtSeries = [];
+				$scope.chartDesignDebtSeries = [];
+				var j = 0;
+				for (var i = $scope.slider.minValue - 1; i < $scope.slider.maxValue; i++) {
+					var tagName = $scope.tags[i].name;
+					$scope.tagsNames.push(tagName);
 
-			for (var i = $scope.slider.minValue - 1; i < $scope.slider.maxValue; i++) {
-				$scope.tagsNames.push($scope.tags[i].name);
+					var totalCodeDebt = thisCtrl.getTotalOfCodeDebts($scope.hashMapTags[tagName].types);
+					var totalDesignDebt = thisCtrl.getTotalOfDesignDebts($scope.hashMapTags[tagName].types)
+					$scope.chartCodeDebtSeries.push(totalCodeDebt);
+					$scope.chartDesignDebtSeries.push(totalDesignDebt);
 
-				var tag = {
-					tag: null,
-					types: [],
-					totalSmells: 0,
-					totalDebts: 0
-				};
-				tag.tag = $scope.tags[i];
-				tag.types = listTypesByTags[j];
-				j++;
+					$scope.hashMapTags[tagName].totalDebts = totalCodeDebt + totalDesignDebt;
+					thisCtrl.getTotalOfCodeSmells($scope.hashMapTags[tagName], $scope.hashMapTags[tagName].types);
+					$scope.sliderTags.push($scope.hashMapTags[tagName]);
+				}
+				thisCtrl.loadColumnChart();
 
-				var totalCodeDebt = thisCtrl.getTotalOfCodeDebts(tag.types);
-				var totalDesignDebt = thisCtrl.getTotalOfDesignDebts(tag.types)
-				$scope.chartCodeDebtSeries.push(totalCodeDebt);
-				$scope.chartDesignDebtSeries.push(totalDesignDebt);
-
-				tag.totalDebts = totalCodeDebt + totalDesignDebt;
-				thisCtrl.getTotalOfCodeSmells(tag, tag.types);
-				$scope.sliderTags.push(tag);
-			}
-			thisCtrl.loadColumnChart();
-		});
+			});
 	}
 
+	/*
 	thisCtrl.getListOfTypesByListOfTags = function (list) {
 		var ids = [];
 		for (var i = $scope.slider.minValue - 1; i < $scope.slider.maxValue; i++) {
@@ -113,19 +114,12 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 				for (var j = 0; j < data.length; j++)
 					list.push(data[j]);
 			});
-	}
+	}*/
 
 	thisCtrl.getTotalOfCodeSmells = function (tag, types) {
 		var total = 0;
 		for (var i = 0; i < types.length; i++) {
-			if (types[i].abstract_types[0]) {
-				var smells = types[i].abstract_types[0].codesmells;
-				for (var j = 0; j < smells.length; j++) {
-					if (smells[j].value) {
-						total++;
-					}
-				}
-			}
+			total = total + Object.keys(types[i].indicators).length;
 		}
 		tag.totalSmells = total;
 	}
@@ -133,11 +127,8 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 	thisCtrl.getTotalOfDesignDebts = function (types) {
 		var total = 0;
 		for (var i = 0; i < types.length; i++) {
-			if (types[i].abstract_types[0]) {
-				var debt = types[i].abstract_types[0].technicaldebts[0];
-				if (debt.value && debt.status == 1) {
-					total++;
-				}
+			if (types[i].debts.indexOf("DESIGN_DEBT") != -1) {
+				total++;
 			}
 		}
 		return total;
@@ -146,11 +137,8 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 	thisCtrl.getTotalOfCodeDebts = function (types) {
 		var total = 0;
 		for (var i = 0; i < types.length; i++) {
-			if (types[i].abstract_types[0]) {
-				var debt = types[i].abstract_types[0].technicaldebts[1];
-				if (debt.value && debt.status == 1) {
-					total++;
-				}
+			if (types[i].debts.indexOf("CODE_DEBT") != -1) {
+				total++;
 			}
 		}
 		return total;
