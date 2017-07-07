@@ -96,6 +96,12 @@
             </ul>
           </li>
           <li>
+            <a href="#"><i class="fa fa-circle-o"></i>Data Class<i class="fa fa-angle-left pull-right"></i></a>
+          </li>
+          <li>
+            <a href="#"><i class="fa fa-circle-o"></i>Brain Class<i class="fa fa-angle-left pull-right"></i></a>
+          </li>
+          <li>
             <a href="#"><i class="fa fa-circle-o"></i>Long Method<i class="fa fa-angle-left pull-right"></i></a>
             <ul class="treeview-menu">
               <div>
@@ -116,6 +122,12 @@
               </div>
             </ul>
           </li>
+          <li>
+            <a href="#"><i class="fa fa-circle-o"></i>Brain Method<i class="fa fa-angle-left pull-right"></i></a>
+          </li>
+          <li>
+            <a href="#"><i class="fa fa-circle-o"></i>Feature Envy<i class="fa fa-angle-left pull-right"></i></a>
+          </li>
         </ul>
       </li>
       <li class="treeview">
@@ -125,43 +137,47 @@
         </a>
         <ul class="treeview-menu">
           <li>
-              <div class="row" style="padding-top: 10px; padding-bottom: 10px">                
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div id="filter_code" style="height: 10px;">
-                        <a href="javascript:void(0)" ng-click="ctrl.selectDebt('CODE')" onclick="setOpacity('filter_code')">
+            <div class="row" style="padding-top: 10px; padding-bottom: 10px">
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div id="filter_code" style="height: 10px;">
+                  <a href="javascript:void(0)" ng-click="ctrl.selectDebt('CODE')" onclick="setOpacity('filter_code')">
                           <span class="info-box-icon info-box-smaller bg-code-debt" style="margin-left: 15%;">
                               CODE
                           </span>
                         </a>
-                    </div>
-                </div><!-- /.col -->
-                <div class="col-md-6 col-sm-6 col-xs-12" style="padding-left: 5px;">
-                    <div id="filter_design" style="height: 10px;">
-                        <a a href="javascript:void(0)" ng-click="ctrl.selectDebt('DESIGN')" onclick="setOpacity('filter_design')">
+                </div>
+              </div>
+              <!-- /.col -->
+              <div class="col-md-6 col-sm-6 col-xs-12" style="padding-left: 5px;">
+                <div id="filter_design" style="height: 10px;">
+                  <a a href="javascript:void(0)" ng-click="ctrl.selectDebt('DESIGN')" onclick="setOpacity('filter_design')">
                           <span class="info-box-icon info-box-smaller bg-design-debt">
                               DESIGN
                           </span>
                         </a>
-                    </div>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
+                </div>
+              </div>
+              <!-- /.col -->
+            </div>
+            <!-- /.row -->
           </li>
         </ul>
       </li>
     </ul>
-     <div class="form-group" style="padding:10px; padding-top: 0px;">
-        <button class="btn bg-olive btn-flat btn-filter-analyze sidebar-form" ng-click="ctrl.analyzeDebts()">ANALYZE</button>
-      </div>
+    <div class="form-group" style="padding:10px; padding-top: 0px;">
+      <button class="btn bg-olive btn-flat btn-filter-analyze sidebar-form" ng-click="ctrl.analyzeDebts()">ANALYZE</button>
+    </div>
   </section>
   <!-- /.sidebar -->
 </aside>
 
 <script type="text/javascript">
-  function setOpacity(id){
-        var opacity = document.getElementById(id).style.opacity;
-        if(opacity=="1" || opacity=="")
-            document.getElementById(id).style.opacity = "0.2";
-        else
-            document.getElementById(id).style.opacity = "1";
+  function setOpacity(id) {
+    var opacity = document.getElementById(id).style.opacity;
+    if (opacity == "1" || opacity == "")
+      document.getElementById(id).style.opacity = "0.2";
+    else
+      document.getElementById(id).style.opacity = "1";
   }
+
 </script>
