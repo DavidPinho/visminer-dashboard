@@ -1,12 +1,12 @@
 <section class="content" ng-show="filtered.repository != null && !filtered.tags[0]">
-	<div class="alert alert-warn-vmtd alert-dismissable" >
-	  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-	    <i class="icon fa fa-hand-o-left"></i>Please, select at least one version in the left menu.
-	</div>
+  <div class="alert alert-warn-vmtd alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <i class="icon fa fa-hand-o-left"></i>Please, select at least one version in the left menu.
+  </div>
 </section>
 
 <div ng-show="filtered.repository != null && filtered.tags[0] && currentPage == 'tdanalyzer'">
- 
+
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
@@ -23,20 +23,22 @@
   <section class="content">
     <div class="box box-default">
       <div class="box-header with-border">
-      	<i class="fa fa-database" style="font-size: 15px"></i>
+        <i class="fa fa-database" style="font-size: 15px"></i>
         <h2 class="box-title">{{filtered.repository.name}}</h2>
         <div class="box-tools pull-right">
           <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
         </div>
-      </div><!-- /.box-header -->
+      </div>
+      <!-- /.box-header -->
 
       <div class="box-body">
-      	<div class="form-group">
-      		<div class="col-md-1">
-      			<label>Version:</label>
-      		</div>
+        <div class="form-group">
+          <div class="col-md-1">
+            <label>Version:</label>
+          </div>
           <div class="col-md-5">
-          	<select class="form-control" ng-model="selectedTag" ng-options="tag.name for tag in filtered.tags" ng-change="updateViewByTag()" style="width: 100%;">
+            <select class="form-control" ng-model="selectedTag" ng-options="tag.name for tag in filtered.tags" ng-change="updateViewByTag()"
+              style="width: 100%;">
 
          		</select>
           </div>
@@ -50,38 +52,51 @@
               Confirm All From Repository
             </button>
           </div>
-        </div><!-- /.form-group -->
+        </div>
+        <!-- /.form-group -->
 
         <form class="form-inline" style="padding-top: 40px;">
           <div class="form-group col-lg-4 col-xs-6 col-md-4" style="padding-top: 10px; padding-bottom: 10px;" ng-repeat="type in types">
-              <div class="box-analyzer-item">
-                <div class="box-header with-border" style="border-bottom-color: rgba(38, 28, 92, 0.21);">
-                  <a href="#" class="box-title" ng-click="showTypeSmellsDetails(type)" style="font-weight: bold;">{{substringFileName(type.filename)}}</a>   
-                  <div class="box-tools pull-right">
+            <div class="box-analyzer-item">
+              <div class="box-header with-border" style="border-bottom-color: rgba(38, 28, 92, 0.21);">
+                <a href="#" class="box-title" ng-click="showTypeSmellsDetails(type)" style="font-weight: bold;">{{substringFileName(type.filename)}}</a>
+                <div class="box-tools pull-right">
                   <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-              </div><!-- /.box-tools -->           
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                  {{loadCurrentDebts(type)}}
-                  <span class="label bg-code-debt span-analyze-debt" ng-show="currentCodeDebt" style="margin-right: 5px;">
+                </div>
+                <!-- /.box-tools -->
+              </div>
+              <!-- /.box-header -->
+              <div class="box-body" style="border-bottom: 1px solid #c8c7d4;">
+                {{loadCurrentDebts(type)}}
+                <span class="label bg-code-debt span-analyze-debt" ng-show="currentCodeDebt" style="margin-right: 5px;">
                     CODE 
                     <button class="btn btn-span-tool" ng-click="removeSingleDebt(type.commit, type.file_hash, 'Code Debt')" onclick="this.parentElement.style.display='none';"><i class="fa fa-times"></i></button>
                     <button class="btn btn-span-tool" ng-hide="currentCodeDebt.status" onclick="this.style.display='none'; this.previousElementSibling.style.display='none'" ng-click="confirmSingleDebt(type.commit, type.file_hash, 'Code Debt')"><i class="fa fa-plus"></i></button>
                   </span>
-                  <span class="label bg-design-debt span-analyze-debt" ng-show="currentDesignDebt">
+                <span class="label bg-design-debt span-analyze-debt" ng-show="currentDesignDebt">
                     DESIGN
                     <button class="btn btn-span-tool" ng-click="removeSingleDebt(type.commit, type.file_hash, 'Design Debt')" onclick="this.parentElement.style.display='none';"><i class="fa fa-times"></i></button>
                     <button class="btn btn-span-tool" ng-hide="currentDesignDebt.status" onclick="this.style.display='none'; this.previousElementSibling.style.display='none'" ng-click="confirmSingleDebt(type.commit, type.file_hash, 'Design Debt')"><i class="fa fa-plus"></i></button>
                   </span>
-                </div><!-- /.box-body -->
-              </div><!-- /.box -->
+              </div>
+              <!-- /.box-body -->
+              <div class="box-body">
+                <span class="label bg-olive span-analyze-indicator" ng-show="currentCodeDebt" style="margin-right: 5px;" ng-repeat="(key, value) in type.indicators">
+                    {{key}} 
+                  </span>
+              </div>
+            </div>
+            <!-- /.box -->
           </div>
         </form>
 
-      </div><!-- /.box-body -->
-    </div><!-- /.box -->
+      </div>
+      <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
 
 
-  </section><!-- /.content -->
+  </section>
+  <!-- /.content -->
 
 </div>

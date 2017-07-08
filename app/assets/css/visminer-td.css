@@ -79,6 +79,7 @@
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
     position: relative;
     border-radius: 0px;
+    min-height: 170px;
 }
 
 .btn-span-tool {
@@ -97,6 +98,12 @@
 .span-analyze-debt {
     font-size: 12px;
     border-radius: 0px;
+}
+
+.span-analyze-indicator {
+    font-size: 9px;
+    border-radius: 0px;
+    white-space: normal;
 }
 
 .span-management-debt {
