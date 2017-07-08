@@ -21,46 +21,30 @@ homeApp.controller('TDAnalyzerCtrl', function ($scope, $http, $location, $route,
 
 	thisCtrl.loadTypes = function () {
 		if ($scope.selectedTag) {
-			var tagId = $scope.selectedTag._id;
-			$http.get('TypeServlet', { params: { "action": "getAllByTree", "treeId": tagId } })
+			// TODO We have to use the tag id instead of the tag name here
+			var tagName = $scope.selectedTag.name;
+			$http.get('../../data/rm_technical_code_debt.json')
 				.success(function (data) {
-					console.log('found', data.length, ' types');
 					for (var i = 0; i < data.length; i++) {
-						if (data[i].abstract_types[0]) {
-							var hasDebt = thisCtrl.hasDebt(data[i].abstract_types[0].technicaldebts);
-							if (hasDebt) {
-								$scope.types.push(data[i]);
-							}
+						if (data[i].reference_name === tagName && data[i].debts.length > 0) {
+							$scope.types.push(data[i]);
 						}
 					}
 				});
 		}
 	}
 
-	thisCtrl.hasDebt = function (debtsList) {
-		var hasDebt = false;
-		if (debtsList.length > 0) {
-			for (var j = 0; j < debtsList.length; j++) {
-				if (debtsList[j].name == 'Code Debt' && $.inArray('CODE', $scope.filtered.debts) > -1 && debtsList[j].value) {
-					hasDebt = true;
-				}
-				if (debtsList[j].name == 'Design Debt' && $.inArray('DESIGN', $scope.filtered.debts) > -1 && debtsList[j].value) {
-					hasDebt = true;
-				}
-			}
-		}
-		return hasDebt;
-	}
-
 	thisCtrl.loadTypes();
 
 	$scope.loadCurrentDebts = function (type) {
-		var tdList = type.abstract_types[0].technicaldebts;
+		$scope.currentCodeDebt = null;
+		$scope.currentDesignDebt = null;
+		var tdList = type.debts;
 		for (var i = 0; i < tdList.length; i++) {
-			if (tdList[i].name == 'Code Debt') {
+			if (tdList[i] == 'CODE_DEBT') {
 				$scope.currentCodeDebt = tdList[i];
 			}
-			if (tdList[i].name == 'Design Debt') {
+			if (tdList[i] == 'DESIGN_DEBT') {
 				$scope.currentDesignDebt = tdList[i];
 			}
 		}
@@ -91,21 +75,29 @@ homeApp.controller('TDAnalyzerCtrl', function ($scope, $http, $location, $route,
 	}
 
 	$scope.confirmAllDebtsByTag = function (treeId) {
+		$scope.showSuccessModal();
+		// FIXME This part depends on each debt be an object instead of just a string
+		/*
 		$http.get('TypeServlet', { params: { "action": "confirmAllDebtsByTag", "treeId": treeId } })
 			.success(function () {
 				$route.reload();
 				$scope.showSuccessModal();
 				console.log('All debts from tree ', treeId, ' have been Confirmed.');
 			});
+		*/	
 	}
 
 	$scope.confirmAllDebtsByRepository = function (repositoryId) {
+		$scope.showSuccessModal();
+		// FIXME This part depends on each debt be an object instead of just a string
+		/*
 		$http.get('TypeServlet', { params: { "action": "confirmAllDebtsByRepository", "repositoryId": repositoryId } })
 			.success(function () {
 				$route.reload();
 				$scope.showSuccessModal();
 				console.log('All debts from repository ', repositoryId, ' have been Confirmed.');
 			});
+		*/	
 	}
 
 	$scope.showSuccessModal = function () {
@@ -121,5 +113,9 @@ homeApp.controller('TDAnalyzerCtrl', function ($scope, $http, $location, $route,
 	$scope.showTypeSmellsDetails = function (type) {
 		typeSmellsDetailsService.setType(type);
 		$('#typeSmellsDetails').modal('show');
+	}
+
+	$scope.substringFileName =  function (fileName)  {
+		return fileName.substring(fileName.lastIndexOf("/")+1,fileName.lastIndexOf(".java"));
 	}
 });
