@@ -1,59 +1,6 @@
 angular.module('homeApp').component('typeSmells', {
 	controller: function ($scope, $http) {
-		$scope.hasGodClass = function (type) {
-			if (type) {
-				console.log("Tem type");
-				if (type.indicators.GOD_CLASS && type.metrics) {
-					console.log("Tem metrics");
-					var metrics = type.metrics;
-					for (var i = 0; i < metrics.length; i++) {
-						switch (metrics[i].metric) {
-							case "ATFD":
-								$scope.ATFD = metrics[i].value;
-								break;
-							case "TCC":
-								$scope.TCC = metrics[i].value;
-								break;
-							case "WMC":
-								$scope.WMC = metrics[i].value;
-								break;
-						}
-					}
-					return true;
-				}
-			}
-		}
-
-		//loadMetricsGodClass(type);
-
-
-		function loadMetricsGodClass(type) {
-			$http.get('../../data/rm_references.json')
-				.success(function (types) {
-					console.log("aa");
-					//for (var j = 0; j < types.length; j++) {
-					/*
-					if (types[j].commit === type.filestate && types[j].filename === type.filename) {
-						var metrics = types[j].classes[0].metrics;
-						for (var i = 0; i < metrics.length; i++) {
-							switch (metrics[i].metric) {
-								case "ATFD":
-									$scope.ATFD = metrics[i].value;
-									break;
-								case "TCC":
-									$scope.TCC = metrics[i].value;
-									break;
-								case "WMC":
-									$scope.WMC = metrics[i].value;
-									break;
-							}
-						}
-					}
-					*/
-					//}
-					console.log("bb");
-				});
-		}
+		var thisCtrl = this;
 
 		/*
 		$scope.hasLongMethod = function (type) {

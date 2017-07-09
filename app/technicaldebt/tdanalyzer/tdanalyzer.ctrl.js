@@ -115,15 +115,61 @@ homeApp.controller('TDAnalyzerCtrl', function ($scope, $http, $location, $route,
 			.success(function (types) {
 				for (var j = 0; j < types.length; j++) {
 					if (types[j].commit === type.filestate && types[j].filename === type.filename) {
-						console.log("Entrou no IF");
 						type.metrics = types[j].classes[0].metrics;
 						break;
 					}
 				}
-				console.log(type);
+				console.log("Setando o type");
+				thisCtrl.loadMetrics(type);
 				typeSmellsDetailsService.setType(type);
 				$('#typeSmellsDetails').modal('show');
 			});
+	}
+
+	thisCtrl.loadMetrics = function (type) {
+		console.log("Entrou no load metrivs");
+		if (type) {
+			console.log("É TYPE")
+			var metrics = type.metrics;
+			console.log(metrics);
+			for (var i = 0; i < metrics.length; i++) {
+				switch (metrics[i].metric) {
+					case "ATFD":
+						type.ATFD = metrics[i].value;
+						break;
+					case "TCC":
+						type.TCC = metrics[i].value;
+						break;
+					case "WMC":
+						type.WMC = metrics[i].value;
+						break;
+				}
+				switch (metrics[i].name) {
+					case "LAA":
+						var methods = metrics[i].methods;
+						for (var j = 0; j < methods.length; j++) {
+							if (methods[j].value < 0.33) {
+								type.LAA = methods[j].value;
+								type.LAAMethodName = methods[j].method;
+								break;
+							}
+						}
+						break;
+					case "FDP":
+						var methods = metrics[i].methods;
+						console.log(metrics[i]);
+						for (var j = 0; j < methods.length; j++) {
+							console.log(methods[j]);
+							if (methods[j].value < 7) {
+								type.FDP = methods[j].value;
+								type.FDPMethodName = methods[j].method;
+								break;
+							}
+						}
+						break;
+				}
+			}
+		}
 	}
 
 	$scope.substringFileName = function (fileName) {

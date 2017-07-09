@@ -1,59 +1,111 @@
 <div id="typeSmellsDetails" class="modal fade bs-example-modal-sm" role="dialog">
-  <div class="modal-dialog">
-	  <div class="modal-content">
-	    <div class="modal-header modal-header-info">
-	      <button type="button" class="close" data-dismiss="modal">&times;</button>
-	      <h3 class="modal-title">
-	      	<i class="fa fa-file-code-o"></i> {{substringFileName(type.filename)}}
-	      </h3>
-	    </div>
-	    <div class="modal-body" style="font-size: 20px; padding-top: 0px">
-	      <div ng-show="hasGodClass(type)">
-		    	<div class="row box-metric-header">
-						God Class Detected
-		    	</div>
-		      <div class="row">
-				    <div class="col-md-3 col-sm-6 col-xs-12">
-				      <div class="info-box info-box-metric">
-				        <span class="info-box-icon info-box-metric-icon bg-aqua">
-				        	ATFD
-				        </span>	
-			          <span class="info-box-number info-box-metric-number">{{ATFD}}</span>
-				      </div><!-- /.info-box -->
-				    </div><!-- /.col -->
-				    <div class="col-md-3 col-sm-6 col-xs-12">
-				      <div class="info-box info-box-metric">
-				        <span class="info-box-icon info-box-metric-icon bg-green">
-				        	TCC
-				        </span>	
-			          <span class="info-box-number info-box-metric-number">{{TCC | number:2}}</span>
-				      </div><!-- /.info-box -->
-				    </div><!-- /.col -->
-				    <div class="col-md-3 col-sm-6 col-xs-12">
-				      <div class="info-box info-box-metric">
-				        <span class="info-box-icon info-box-metric-icon bg-yellow">
-				        	WMC
-				        </span>	
-			          <span class="info-box-number info-box-metric-number">{{WMC}}</span>
-				      </div><!-- /.info-box -->
-				    </div><!-- /.col -->
-				  </div><!-- /.row -->
-				</div>  
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header modal-header-info">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h3 class="modal-title">
+					<i class="fa fa-file-code-o"></i> {{substringFileName(type.filename)}}
+				</h3>
+			</div>
 
-				<div ng-show="false">
+			<div class="modal-body" style="font-size: 20px; padding-top: 0px">
+				<div ng-show="type.indicators.GOD_CLASS">
 					<div class="row box-metric-header">
-						Long Method Detected
+						God Class
 					</div>
-				  <div class="row">
-				    <div class="col-md-12 col-sm-12 col-xs-12" ng-repeat="method in longMethods">
-				      <div class="info-box info-box-metric" style="width: 100%;">
-				      	<span class="info-box-number info-box-metric-number">{{method}}</span>
-				      </div><!-- /.info-box -->
-				    </div><!-- /.col -->
-				  </div><!-- /.row -->
+					<div class="row">
+						<div class="col-md-3 col-sm-6 col-xs-12">
+							<div class="info-box info-box-metric">
+								<span class="info-box-icon info-box-metric-icon bg-aqua">
+				        	ATFD
+				        </span>
+								<span class="info-box-number info-box-metric-number">{{type.ATFD}}</span>
+							</div>
+							<!-- /.info-box -->
+						</div>
+						<!-- /.col -->
+						<div class="col-md-3 col-sm-6 col-xs-12">
+							<div class="info-box info-box-metric">
+								<span class="info-box-icon info-box-metric-icon bg-green">
+				        	TCC
+				        </span>
+								<span class="info-box-number info-box-metric-number">{{type.TCC | number:2}}</span>
+							</div>
+							<!-- /.info-box -->
+						</div>
+						<!-- /.col -->
+						<div class="col-md-3 col-sm-6 col-xs-12">
+							<div class="info-box info-box-metric">
+								<span class="info-box-icon info-box-metric-icon bg-yellow">
+				        	WMC
+				        </span>
+								<span class="info-box-number info-box-metric-number">{{type.WMC}}</span>
+							</div>
+							<!-- /.info-box -->
+						</div>
+						<!-- /.col -->
+					</div>
+					<!-- /.row -->
 				</div>
-				  
-	    </div>
-	  </div>
+
+
+				<div ng-show="type.indicators.FEATURE_ENVY">
+					<div class="row box-metric-header">
+						Feature Envy
+					</div>
+					<div class="row">
+						<div class="col-md-3 col-sm-6 col-xs-12">
+							<div class="info-box info-box-metric">
+								<span class="info-box-icon info-box-metric-icon bg-aqua">
+				        	ATFD
+				        </span>
+								<span class="info-box-number info-box-metric-number">{{type.ATFD}}</span>
+							</div>
+							<!-- /.info-box -->
+						</div>
+						<!-- /.col -->
+						<div class="col-md-3 col-sm-6 col-xs-12">
+							<div class="info-box info-box-metric">
+								<span class="info-box-icon info-box-metric-icon bg-green">
+				        	LAA
+				        </span>
+								<span class="info-box-number info-box-metric-number">{{type.LAA | number:2}}</span>
+							</div>
+							<!-- /.info-box -->
+						</div>
+						<!-- /.col -->
+						<div class="col-md-3 col-sm-6 col-xs-12">
+							<div class="info-box info-box-metric">
+								<span class="info-box-icon info-box-metric-icon bg-yellow">
+				        	FDP
+				        </span>
+								<span class="info-box-number info-box-metric-number">{{type.FDP}}</span>
+							</div>
+							<!-- /.info-box -->
+						</div>
+						<!-- /.col -->
+					</div>
+
+
+
+
+					<div ng-show="false">
+						<div class="row box-metric-header">
+							Long Method Detected
+						</div>
+						<div class="row">
+							<div class="col-md-12 col-sm-12 col-xs-12" ng-repeat="method in longMethods">
+								<div class="info-box info-box-metric" style="width: 100%;">
+									<span class="info-box-number info-box-metric-number">{{method}}</span>
+								</div>
+								<!-- /.info-box -->
+							</div>
+							<!-- /.col -->
+						</div>
+						<!-- /.row -->
+					</div>
+
+				</div>
+			</div>
+		</div>
 	</div>
-</div>
