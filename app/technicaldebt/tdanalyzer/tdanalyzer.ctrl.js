@@ -13,6 +13,9 @@ homeApp.controller('TDAnalyzerCtrl', function ($scope, $http, $location, $route,
 	$scope.types = [];
 	$scope.currentDesignDebt = null;
 	$scope.currentCodeDebt = null;
+	$scope.currentDefectDebt = null;
+	$scope.currentTestDebt = null;
+	$scope.currentRequirementDebt = null;
 
 	thisCtrl.selectView = function (view) {
 		$scope.currentPage = view;
@@ -39,6 +42,9 @@ homeApp.controller('TDAnalyzerCtrl', function ($scope, $http, $location, $route,
 	$scope.loadCurrentDebts = function (type) {
 		$scope.currentCodeDebt = null;
 		$scope.currentDesignDebt = null;
+		$scope.currentDefectDebt = null;
+		$scope.currentTestDebt = null;
+		$scope.currentRequirementDebt = null;
 		var tdList = type.debts;
 		for (var i = 0; i < tdList.length; i++) {
 			if (tdList[i] == 'CODE_DEBT') {
@@ -46,6 +52,15 @@ homeApp.controller('TDAnalyzerCtrl', function ($scope, $http, $location, $route,
 			}
 			if (tdList[i] == 'DESIGN_DEBT') {
 				$scope.currentDesignDebt = tdList[i];
+			}
+			if (tdList[i] == 'DEFECT_DEBT') {
+				$scope.currentDefectDebt = tdList[i];
+			}
+			if (tdList[i] == 'REQUIREMENT_DEBT') {
+				$scope.currentRequirementDebt = tdList[i];
+			}
+			if (tdList[i] == 'TEST_DEBT') {
+				$scope.currentTestDebt = tdList[i];
 			}
 		}
 	}

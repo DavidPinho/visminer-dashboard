@@ -73,11 +73,26 @@
                     <button class="btn btn-span-tool" ng-click="removeSingleDebt(type.commit, type.file_hash, 'Code Debt')" onclick="this.parentElement.style.display='none';"><i class="fa fa-times"></i></button>
                     <button class="btn btn-span-tool" ng-hide="currentCodeDebt.status" onclick="this.style.display='none'; this.previousElementSibling.style.display='none'" ng-click="confirmSingleDebt(type.commit, type.file_hash, 'Code Debt')"><i class="fa fa-plus"></i></button>
                   </span>
-                <span class="label bg-design-debt span-analyze-debt" ng-show="currentDesignDebt">
+                <span class="label bg-design-debt span-analyze-debt" ng-show="currentDesignDebt" style="margin-right: 5px;">
                     DESIGN
                     <button class="btn btn-span-tool" ng-click="removeSingleDebt(type.commit, type.file_hash, 'Design Debt')" onclick="this.parentElement.style.display='none';"><i class="fa fa-times"></i></button>
                     <button class="btn btn-span-tool" ng-hide="currentDesignDebt.status" onclick="this.style.display='none'; this.previousElementSibling.style.display='none'" ng-click="confirmSingleDebt(type.commit, type.file_hash, 'Design Debt')"><i class="fa fa-plus"></i></button>
                   </span>
+                <span class="label bg-defect-debt span-analyze-debt" ng-show="currentDefectDebt">
+                    DEFECT
+                    <button class="btn btn-span-tool" ng-click="removeSingleDebt(type.commit, type.file_hash, 'Defect Debt')" onclick="this.parentElement.style.display='none';"><i class="fa fa-times"></i></button>
+                    <button class="btn btn-span-tool" ng-hide="currentDesignDebt.status" onclick="this.style.display='none'; this.previousElementSibling.style.display='none'" ng-click="confirmSingleDebt(type.commit, type.file_hash, 'Defect Debt')"><i class="fa fa-plus"></i></button>
+                  </span>
+                  <span class="label bg-test-debt span-analyze-debt" ng-show="currentTestDebt">
+                    TEST
+                    <button class="btn btn-span-tool" ng-click="removeSingleDebt(type.commit, type.file_hash, 'Design Debt')" onclick="this.parentElement.style.display='none';"><i class="fa fa-times"></i></button>
+                    <button class="btn btn-span-tool" ng-hide="currentDesignDebt.status" onclick="this.style.display='none'; this.previousElementSibling.style.display='none'" ng-click="confirmSingleDebt(type.commit, type.file_hash, 'Design Debt')"><i class="fa fa-plus"></i></button>
+                  </span>  
+                  <span class="label bg-requirement-debt span-analyze-debt" ng-show="currentRequirementDebt">
+                    REQUIREMENT
+                    <button class="btn btn-span-tool" ng-click="removeSingleDebt(type.commit, type.file_hash, 'Design Debt')" onclick="this.parentElement.style.display='none';"><i class="fa fa-times"></i></button>
+                    <button class="btn btn-span-tool" ng-hide="currentDesignDebt.status" onclick="this.style.display='none'; this.previousElementSibling.style.display='none'" ng-click="confirmSingleDebt(type.commit, type.file_hash, 'Design Debt')"><i class="fa fa-plus"></i></button>
+                  </span> 
               </div>
               <!-- /.box-body -->
               <div class="box-body">

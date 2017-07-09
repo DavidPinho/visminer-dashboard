@@ -166,6 +166,18 @@
     background-color: #91A28B!important;
 }
 
+.bg-defect-debt {
+    background-color: #dd3939!important;
+}
+
+.bg-test-debt {
+    background-color: #f39c12!important;
+}
+
+.bg-requirement-debt {
+    background-color: #8a6d3b!important;
+}
+
 .span-pay {
     background-color: #00A65A !important;
     padding: 0.2em 1.0em 0.3em;
