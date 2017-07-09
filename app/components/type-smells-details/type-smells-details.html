@@ -4,7 +4,7 @@
 	    <div class="modal-header modal-header-info">
 	      <button type="button" class="close" data-dismiss="modal">&times;</button>
 	      <h3 class="modal-title">
-	      	<i class="fa fa-file-code-o"></i> {{type.abstract_types[0].name}}
+	      	<i class="fa fa-file-code-o"></i> {{substringFileName(type.filename)}}
 	      </h3>
 	    </div>
 	    <div class="modal-body" style="font-size: 20px; padding-top: 0px">
@@ -40,7 +40,7 @@
 				  </div><!-- /.row -->
 				</div>  
 
-				<div ng-show="hasLongMethod(type).length">
+				<div ng-show="false">
 					<div class="row box-metric-header">
 						Long Method Detected
 					</div>

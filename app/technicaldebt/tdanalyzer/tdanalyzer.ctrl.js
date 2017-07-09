@@ -84,7 +84,7 @@ homeApp.controller('TDAnalyzerCtrl', function ($scope, $http, $location, $route,
 				$scope.showSuccessModal();
 				console.log('All debts from tree ', treeId, ' have been Confirmed.');
 			});
-		*/	
+		*/
 	}
 
 	$scope.confirmAllDebtsByRepository = function (repositoryId) {
@@ -97,7 +97,7 @@ homeApp.controller('TDAnalyzerCtrl', function ($scope, $http, $location, $route,
 				$scope.showSuccessModal();
 				console.log('All debts from repository ', repositoryId, ' have been Confirmed.');
 			});
-		*/	
+		*/
 	}
 
 	$scope.showSuccessModal = function () {
@@ -111,11 +111,22 @@ homeApp.controller('TDAnalyzerCtrl', function ($scope, $http, $location, $route,
 	}
 
 	$scope.showTypeSmellsDetails = function (type) {
-		typeSmellsDetailsService.setType(type);
-		$('#typeSmellsDetails').modal('show');
+		$http.get('../../data/rm_direct_code_analysis.json')
+			.success(function (types) {
+				for (var j = 0; j < types.length; j++) {
+					if (types[j].commit === type.filestate && types[j].filename === type.filename) {
+						console.log("Entrou no IF");
+						type.metrics = types[j].classes[0].metrics;
+						break;
+					}
+				}
+				console.log(type);
+				typeSmellsDetailsService.setType(type);
+				$('#typeSmellsDetails').modal('show');
+			});
 	}
 
-	$scope.substringFileName =  function (fileName)  {
-		return fileName.substring(fileName.lastIndexOf("/")+1,fileName.lastIndexOf(".java"));
+	$scope.substringFileName = function (fileName) {
+		return fileName.substring(fileName.lastIndexOf("/") + 1, fileName.lastIndexOf(".java"));
 	}
 });
