@@ -1,5 +1,5 @@
 <div ng-show="filtered.repository != null && currentPage == 'tdmanagement'">
- 
+
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
@@ -16,22 +16,23 @@
 
     <div class="col-md-4">
       <div class="box box-primary">
-        <div class="box-header with-border">          
+        <div class="box-header with-border">
           <h3 class="box-title">TO DO</h3>
           <span class="label span-counter">
-            {{todoCode.length + todoDesign.length}}                           
-          </span> 
-          <div class="box-tools pull-right">                           
-              <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            {{todoCode.length + todoDesign.length + todoDefect.length + todoTest.length + todoRequirement.length}}                           
+          </span>
+          <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
           </div>
-        </div><!-- /.box-header -->
+        </div>
+        <!-- /.box-header -->
 
         <div class="box-body" style="padding: 0 10px 0 10px;">
           <div class="board-management">
             <ul id="todo_sortable" class="products-list product-list-in-box">
               <li class="item" ng-repeat="type in todoCode">
                 <div>
-                  <a href="" ng-click="showTdTimeline(type)" class="product-title">{{type.abstract_types[0].name}}</a>
+                  <a href="" ng-click="showTdTimeline(type)" class="product-title">{{substringFileName(type.filename)}}</a>
                   <span class="product-description pull-right" style="font-size: 14px;">
                      <i class="fa fa-calendar"></i> {{convertDate(type.commit_date)}}
                   </span>
@@ -44,10 +45,64 @@
                       <i class="fa fa-usd"></i> Pay                   
                   </span>
                 </div>
-              </li><!-- /.item -->
+              </li>
+              <!-- /.item -->
+              <li class="item" ng-repeat="type in todoDefect">
+                <div>
+                  <a href="" ng-click="showTdTimeline(type)" class="product-title">{{substringFileName(type.filename)}}</a>
+                  <span class="product-description pull-right" style="font-size: 14px;">
+                     <i class="fa fa-calendar"></i> {{convertDate(type.commit_date)}}
+                  </span>
+                </div>
+                <div>
+                  <span class="label bg-defect-debt span-management-debt">
+                    DEFECT                     
+                  </span>
+                  <span class="label span-pay pull-right" ng-click="updateDebtStatus(type, 'Code Debt', 2)">
+                      <i class="fa fa-usd"></i> Pay                   
+                  </span>
+                </div>
+              </li>
+              <!-- /.item -->
+              <!-- /.item -->
+              <li class="item" ng-repeat="type in todoTest">
+                <div>
+                  <a href="" ng-click="showTdTimeline(type)" class="product-title">{{substringFileName(type.filename)}}</a>
+                  <span class="product-description pull-right" style="font-size: 14px;">
+                     <i class="fa fa-calendar"></i> {{convertDate(type.commit_date)}}
+                  </span>
+                </div>
+                <div>
+                  <span class="label bg-test-debt span-management-debt">
+                    TEST                     
+                  </span>
+                  <span class="label span-pay pull-right" ng-click="updateDebtStatus(type, 'Code Debt', 2)">
+                      <i class="fa fa-usd"></i> Pay                   
+                  </span>
+                </div>
+              </li>
+              <!-- /.item -->
+              <!-- /.item -->
+              <li class="item" ng-repeat="type in todoRequirement">
+                <div>
+                  <a href="" ng-click="showTdTimeline(type)" class="product-title">{{substringFileName(type.filename)}}</a>
+                  <span class="product-description pull-right" style="font-size: 14px;">
+                     <i class="fa fa-calendar"></i> {{convertDate(type.commit_date)}}
+                  </span>
+                </div>
+                <div>
+                  <span class="label bg-requirement-debt span-management-debt">
+                    REQUIREMENT                     
+                  </span>
+                  <span class="label span-pay pull-right" ng-click="updateDebtStatus(type, 'Code Debt', 2)">
+                      <i class="fa fa-usd"></i> Pay                   
+                  </span>
+                </div>
+              </li>
+              <!-- /.item -->
               <li class="item" ng-repeat="type in todoDesign">
                 <div>
-                  <a href="" ng-click="showTdTimeline(type)" class="product-title">{{type.abstract_types[0].name}}</a>
+                  <a href="" ng-click="showTdTimeline(type)" class="product-title">{{substringFileName(type.filename)}}</a>
                   <span class="product-description pull-right" style="font-size: 14px;">
                      <i class="fa fa-calendar"></i> {{convertDate(type.commit_date)}}
                   </span>
@@ -60,11 +115,12 @@
                       <i class="fa fa-usd"></i> Pay                   
                   </span>
                 </div>
-              </li><!-- /.item -->
+              </li>
+              <!-- /.item -->
             </ul>
-          </div>          
+          </div>
         </div>
-        
+
       </div>
     </div>
 
@@ -74,11 +130,12 @@
           <h3 class="box-title">DOING</h3>
           <span class="label span-counter">
             {{doingCode.length + doingDesign.length}}                           
-          </span> 
+          </span>
           <div class="box-tools pull-right">
-              <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
           </div>
-        </div><!-- /.box-header -->
+        </div>
+        <!-- /.box-header -->
 
         <div class="box-body" style="padding: 0 10px 0 10px;">
           <div class="board-management">
@@ -97,8 +154,9 @@
                   <span class="label span-pay pull-right" ng-click="updateDebtStatus(type, 'Code Debt', 3)">
                     <i class="fa fa-thumbs-o-up "></i> Paid                
                   </span>
-                </div>                
-              </li><!-- /.item -->
+                </div>
+              </li>
+              <!-- /.item -->
               <li class="item" ng-repeat="type in doingDesign">
                 <div>
                   <a href="" ng-click="showTdTimeline(type)" class="product-title">{{type.abstract_types[0].name}}</a>
@@ -114,11 +172,12 @@
                     <i class="fa fa-thumbs-o-up "></i> Paid                
                   </span>
                 </div>
-              </li><!-- /.item -->
+              </li>
+              <!-- /.item -->
             </ul>
-          </div>          
+          </div>
         </div>
-        
+
       </div>
     </div>
 
@@ -128,12 +187,13 @@
           <h3 class="box-title">DONE</h3>
           <span class="label span-counter">
             {{doneCode.length + doneDesign.length}}                           
-          </span> 
+          </span>
           <div class="box-tools pull-right">
-              <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 
           </div>
-        </div><!-- /.box-header -->
+        </div>
+        <!-- /.box-header -->
 
         <div class="box-body" style="padding: 0 10px 0 10px;">
           <div class="board-management">
@@ -148,9 +208,10 @@
                 <div>
                   <span class="label bg-code-debt span-management-debt">
                     CODE                     
-                  </span>                 
-                </div>                
-              </li><!-- /.item -->
+                  </span>
+                </div>
+              </li>
+              <!-- /.item -->
               <li class="item" ng-repeat="type in doneDesign">
                 <div>
                   <a href="" ng-click="showTdTimeline(type)" class="product-title">{{type.abstract_types[0].name}}</a>
@@ -161,29 +222,32 @@
                 <div>
                   <span class="label bg-design-debt span-management-debt">
                     DESIGN                     
-                  </span>                  
+                  </span>
                 </div>
-              </li><!-- /.item -->
+              </li>
+              <!-- /.item -->
             </ul>
-          </div>          
+          </div>
         </div>
-        
-      </div>
-    </div>  
 
-  </section><!-- /.content -->
+      </div>
+    </div>
+
+  </section>
+  <!-- /.content -->
 
 </div>
 
 <td-indicators></td-indicators>
 
 <script type="text/javascript">
-  $(document).ready(function() {
-        $( "#todo_sortable" ).sortable({
-            revert: true
-        });
-        $( "#doing_sortable" ).sortable({
-            revert: true
-        });
-    });  
+  $(document).ready(function () {
+    $("#todo_sortable").sortable({
+      revert: true
+    });
+    $("#doing_sortable").sortable({
+      revert: true
+    });
+  });
+
 </script>
