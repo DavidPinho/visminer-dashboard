@@ -1,0 +1,551 @@
+[
+{ 
+    "_id" : "595e1e6fb8a9f919be23e132", 
+    "name" : "JUnit4", 
+    "path" : "/home/felipe/git/junit4", 
+    "description" : "JUnit is a simple framework to write repeatable tests. It is an instance of the xUnit architecture for unit testing frameworks.", 
+    "scm" : "GIT", 
+    "contributors" : [
+        {
+            "name" : "vbossica", 
+            "email" : "vbossica"
+        }, 
+        {
+            "name" : "Jesse Glick", 
+            "email" : "jglick@cloudbees.com"
+        }, 
+        {
+            "name" : "Marcos Vinícius da Silva", 
+            "email" : "marvinware2005@gmail.com"
+        }, 
+        {
+            "name" : "Mustafa Ali", 
+            "email" : "mustafa.ali@mutualmobile.com"
+        }, 
+        {
+            "name" : "Rob Dawson", 
+            "email" : "robert.dawson@ephox.com"
+        }, 
+        {
+            "name" : "Arjen Stolk", 
+            "email" : "simplyarjen@gmail.com"
+        }, 
+        {
+            "name" : "Alexander Jipa", 
+            "email" : "alexander.jipa@gmail.com"
+        }, 
+        {
+            "name" : "rodolfoliviero", 
+            "email" : "rodolfoliviero@gmail.com"
+        }, 
+        {
+            "name" : "adriannistoruiuc", 
+            "email" : "nistor1@illinois.edu"
+        }, 
+        {
+            "name" : "Daniel Rothmaler", 
+            "email" : "daniel_rothmaler@web.de"
+        }, 
+        {
+            "name" : "Chris Vest", 
+            "email" : "mr.chrisvest@gmail.com"
+        }, 
+        {
+            "name" : "Ben McCann", 
+            "email" : "ben@benmccann.com"
+        }, 
+        {
+            "name" : "David Saff", 
+            "email" : "saff@new-host-3.home"
+        }, 
+        {
+            "name" : "David Saff", 
+            "email" : "saff+aa@google.com"
+        }, 
+        {
+            "name" : "Jesse Glick", 
+            "email" : "jesse.glick@oracle.com"
+        }, 
+        {
+            "name" : "Ferry Huberts", 
+            "email" : "ferry.huberts@pelagic.nl"
+        }, 
+        {
+            "name" : "Kevin Cooney", 
+            "email" : "kcooney@users.noreply.github.com"
+        }, 
+        {
+            "name" : "CloudBees DEV@Cloud", 
+            "email" : "nobody@cloudbees.com"
+        }, 
+        {
+            "name" : "cmschmidt", 
+            "email" : "cmschmidt"
+        }, 
+        {
+            "name" : "fbarber", 
+            "email" : "fedora@barber-family.id.au"
+        }, 
+        {
+            "name" : "arjenw", 
+            "email" : "arjenwisse@gmail.com"
+        }, 
+        {
+            "name" : "Stefan Bechtold", 
+            "email" : "stefan.bechtold@namics.com"
+        }, 
+        {
+            "name" : "Francesco Mari", 
+            "email" : "mari@adobe.com"
+        }, 
+        {
+            "name" : "Peter Lawrey", 
+            "email" : "peter.lawrey@gmail.com"
+        }, 
+        {
+            "name" : "Stefan Ferstl", 
+            "email" : "st.ferstl@gmail.com"
+        }, 
+        {
+            "name" : "Joseph Walton", 
+            "email" : "joe@kafsemo.org"
+        }, 
+        {
+            "name" : "Stefan Birkner", 
+            "email" : "mail@stefan-birkner.de"
+        }, 
+        {
+            "name" : "Mike Drob", 
+            "email" : "mdrob@cloudera.com"
+        }, 
+        {
+            "name" : "Philippe Marschall", 
+            "email" : "philippe.marschall@gmail.com"
+        }, 
+        {
+            "name" : "Peter De Maeyer", 
+            "email" : "peter@de.maeyer.net"
+        }, 
+        {
+            "name" : "a", 
+            "email" : "a@a.(none)"
+        }, 
+        {
+            "name" : "Narendra Pathai", 
+            "email" : "narendra.pathai@gmail.com"
+        }, 
+        {
+            "name" : "Andreas Skoog", 
+            "email" : "github@locha.se"
+        }, 
+        {
+            "name" : "Brett Chabot", 
+            "email" : "brettchabot@google.com"
+        }, 
+        {
+            "name" : "David Saff", 
+            "email" : "saff@new-host-4.home"
+        }, 
+        {
+            "name" : "Aslak Hellesøy", 
+            "email" : "aslak.hellesoy@gmail.com"
+        }, 
+        {
+            "name" : "Dmitry Vyazelenko", 
+            "email" : "vyazelenko@yahoo.com"
+        }, 
+        {
+            "name" : "clarkware", 
+            "email" : "clarkware"
+        }, 
+        {
+            "name" : "Noel Yap", 
+            "email" : "noel.yap+github.com@gmail.com"
+        }, 
+        {
+            "name" : "Mark Michaelis", 
+            "email" : "mark.michaelis@coremedia.com"
+        }, 
+        {
+            "name" : "David Saff", 
+            "email" : "david@saff.net"
+        }, 
+        {
+            "name" : "Alistair A. Israel", 
+            "email" : "aisrael@gmail.com"
+        }, 
+        {
+            "name" : "Brazhnikov", 
+            "email" : "brazhnikov.dmitry@gmail.com"
+        }, 
+        {
+            "name" : "Aviv Ben-Yosef", 
+            "email" : "aviv@crowdspot.com"
+        }, 
+        {
+            "name" : "Russell Santos", 
+            "email" : "russell.santos@gmail.com"
+        }, 
+        {
+            "name" : "Corey Vaillancourt", 
+            "email" : "coreyjv@gmail.com"
+        }, 
+        {
+            "name" : "David Saff", 
+            "email" : "saff@redredrobot.home"
+        }, 
+        {
+            "name" : "Ian Beauregard", 
+            "email" : "ian.beauregard@gmail.com"
+        }, 
+        {
+            "name" : "Ricky", 
+            "email" : "ricky@dius.com.au"
+        }, 
+        {
+            "name" : "Shirish Padalkar", 
+            "email" : "shirish4you@gmail.com"
+        }, 
+        {
+            "name" : "Stephen Connolly", 
+            "email" : "stephen.alan.connolly@gmail.com"
+        }, 
+        {
+            "name" : "Paul Holser", 
+            "email" : "pholser@alumni.rice.edu"
+        }, 
+        {
+            "name" : "sschroevers", 
+            "email" : "sschroevers@fredhopper.com"
+        }, 
+        {
+            "name" : "David Saff", 
+            "email" : "saff@new-host.home"
+        }, 
+        {
+            "name" : "David Saff", 
+            "email" : "saff@dhcp-172-31-197-71.cam.corp.google.com"
+        }, 
+        {
+            "name" : "Lukasz Kryger", 
+            "email" : "lukasz.kryger@gmail.com"
+        }, 
+        {
+            "name" : "Andrey Hitrin", 
+            "email" : "andrey.hitrin@gmail.com"
+        }, 
+        {
+            "name" : "Paul Krause", 
+            "email" : "paulkrause88@users.noreply.github.com"
+        }, 
+        {
+            "name" : "David Hart", 
+            "email" : "davidhart82@gmail.com"
+        }, 
+        {
+            "name" : "Simon Stewart", 
+            "email" : "shs@google.com"
+        }, 
+        {
+            "name" : "William Herbert Lichtenberger", 
+            "email" : "skazzyy@gmail.com"
+        }, 
+        {
+            "name" : "emeade", 
+            "email" : "emeade"
+        }, 
+        {
+            "name" : "David Saff", 
+            "email" : "saff@google.com"
+        }, 
+        {
+            "name" : "pimterry", 
+            "email" : "pimterry@gmail.com"
+        }, 
+        {
+            "name" : "David Saff", 
+            "email" : "saff@redredrobot.local"
+        }, 
+        {
+            "name" : "unknown", 
+            "email" : "Kent Beck@.(none)"
+        }, 
+        {
+            "name" : "David Saff", 
+            "email" : "saff@dhcp-172-31-204-113.cam.corp.google.com"
+        }, 
+        {
+            "name" : "Alex Yursha", 
+            "email" : "alex.yursha@icloud.com"
+        }, 
+        {
+            "name" : "Esko Luontola", 
+            "email" : "esko.luontola@gmail.com"
+        }, 
+        {
+            "name" : "unknown", 
+            "email" : "gezr@a11.(none)"
+        }, 
+        {
+            "name" : "Petter Måhlén", 
+            "email" : "pettermahlen@gmail.com"
+        }, 
+        {
+            "name" : "David Saff", 
+            "email" : "saff@dr-computer.local"
+        }, 
+        {
+            "name" : "Alex Yursha", 
+            "email" : "alexyursha@gmail.com"
+        }, 
+        {
+            "name" : "plasticle", 
+            "email" : "plasticle@gmail.com"
+        }, 
+        {
+            "name" : "Romero Silva", 
+            "email" : "romero@linux-workstation.(none)"
+        }, 
+        {
+            "name" : "Kevin Cooney", 
+            "email" : "kcooney+github@gmail.com"
+        }, 
+        {
+            "name" : "Joshua Ikner", 
+            "email" : "josh.ikner@metawanker.com"
+        }, 
+        {
+            "name" : "based2", 
+            "email" : "based2@users.noreply.github.com"
+        }, 
+        {
+            "name" : "Dustin Lam", 
+            "email" : "mynameisdustinlam@gmail.com"
+        }, 
+        {
+            "name" : "Dave Grant", 
+            "email" : "david@grant.org.uk"
+        }, 
+        {
+            "name" : "Miltos Allamanis", 
+            "email" : "m.allamanis@ed.ac.uk"
+        }, 
+        {
+            "name" : "Doug Lawrie", 
+            "email" : "doug@neverfear.org"
+        }, 
+        {
+            "name" : "dhasday", 
+            "email" : "dhasday@gmail.com"
+        }, 
+        {
+            "name" : "unknown", 
+            "email" : "awisse@CNL1516.vanenburg.com"
+        }, 
+        {
+            "name" : "“flpa”", 
+            "email" : "“florian-p@gmx.net”"
+        }, 
+        {
+            "name" : "Arie van Deursen", 
+            "email" : "arie.vandeursen@tudelft.nl"
+        }, 
+        {
+            "name" : "Shirish Padalkar", 
+            "email" : "shirishp@thoughtworks.com"
+        }, 
+        {
+            "name" : "Kevin Cooney", 
+            "email" : "kcooney@google.com"
+        }, 
+        {
+            "name" : "Stefan Birkner", 
+            "email" : "github@stefan-birkner.de"
+        }, 
+        {
+            "name" : "Urs Metz", 
+            "email" : "urs.metz@gmx.de"
+        }, 
+        {
+            "name" : "reinholdfuereder", 
+            "email" : "reinholdfuereder@gmx.at"
+        }, 
+        {
+            "name" : "Petter Måhlén", 
+            "email" : "petter@spotify.com"
+        }, 
+        {
+            "name" : "Brian Berzins (Murasaki)", 
+            "email" : "brianberzins@gmail.com"
+        }, 
+        {
+            "name" : "N.Keywal", 
+            "email" : "nkeywal@gmail.com"
+        }, 
+        {
+            "name" : "dsaff", 
+            "email" : "dsaff"
+        }, 
+        {
+            "name" : "Arjan Wulder", 
+            "email" : "awulder@xebia.com"
+        }, 
+        {
+            "name" : "David Saff", 
+            "email" : "saff@dhcp-172-31-197-85.cam.corp.google.com"
+        }, 
+        {
+            "name" : "David Saff", 
+            "email" : "saff@dr-computer.home"
+        }, 
+        {
+            "name" : "Jeremy Herault", 
+            "email" : "jeremy.herault@gmail.com"
+        }, 
+        {
+            "name" : "egamma", 
+            "email" : "egamma"
+        }, 
+        {
+            "name" : "Priya", 
+            "email" : "pria.v03@gmail.com"
+        }, 
+        {
+            "name" : "Craig P. Motlin", 
+            "email" : "craig@motlin.com"
+        }, 
+        {
+            "name" : "mengyanan", 
+            "email" : "mengyanan@xiaomi.com"
+        }, 
+        {
+            "name" : "Alex Reece", 
+            "email" : "awreece@gmail.com"
+        }, 
+        {
+            "name" : "Kent R. Spillner", 
+            "email" : "kspillner@acm.org"
+        }, 
+        {
+            "name" : "Manan Shah", 
+            "email" : "manan.shah.777@gmail.com"
+        }, 
+        {
+            "name" : "Petter Måhlén", 
+            "email" : "pmahlen@shopzilla.com"
+        }, 
+        {
+            "name" : "Éamonn McManus", 
+            "email" : "eamonn@mcmanus.net"
+        }, 
+        {
+            "name" : "marciomazza", 
+            "email" : "marciomazza@gmail.com"
+        }, 
+        {
+            "name" : "Vladislav Bauer", 
+            "email" : "bauer.vlad@gmail.com"
+        }, 
+        {
+            "name" : "ancosen", 
+            "email" : "ancosen@gmail.com"
+        }, 
+        {
+            "name" : "Arup Malakar", 
+            "email" : "amalakar@gmail.com"
+        }, 
+        {
+            "name" : "KentBeck", 
+            "email" : "kent@threeriversinstitute.org"
+        }, 
+        {
+            "name" : "Tibor Digana", 
+            "email" : "tibor17@lycos.com"
+        }, 
+        {
+            "name" : "David Saff", 
+            "email" : "saff@new-host-2.home"
+        }, 
+        {
+            "name" : "Juan Cortez", 
+            "email" : "jmc0092@yahoo.com"
+        }, 
+        {
+            "name" : "Henning Gross", 
+            "email" : "igaffai@gmail.com"
+        }, 
+        {
+            "name" : "charlie", 
+            "email" : "charlie@yandex-team.ru"
+        }, 
+        {
+            "name" : "Brian Takashi Hooper", 
+            "email" : "b.takashi@gmail.com"
+        }, 
+        {
+            "name" : "kbeck", 
+            "email" : "kbeck"
+        }, 
+        {
+            "name" : "Kristian Rosenvold", 
+            "email" : "kristian@rosenvold.com"
+        }, 
+        {
+            "name" : "David Saff", 
+            "email" : "saff@dhcp-172-31-204-188.cam.corp.google.com"
+        }, 
+        {
+            "name" : "Thomas Nappo", 
+            "email" : "technology@live.com"
+        }, 
+        {
+            "name" : "Adam Beneschan", 
+            "email" : "adambeneschan@aol.com"
+        }, 
+        {
+            "name" : "Nicolas Bérard-Nault", 
+            "email" : "nicobn@nicobn.(none)"
+        }, 
+        {
+            "name" : "Rowan Hill", 
+            "email" : "rowan.hill@softwire.com"
+        }, 
+        {
+            "name" : "Matthew Farwell", 
+            "email" : "matthew@farwell.co.uk"
+        }, 
+        {
+            "name" : "Marc Philipp", 
+            "email" : "mail@marcphilipp.de"
+        }, 
+        {
+            "name" : "Brian Takashi Hooper", 
+            "email" : "b-hooper@m3.com"
+        }, 
+        {
+            "name" : "flpa", 
+            "email" : "florian-p@gmx.net"
+        }, 
+        {
+            "name" : "Nayan Hajratwala", 
+            "email" : "nayan@chikli.com"
+        }, 
+        {
+            "name" : "flpa", 
+            "email" : "flpa.dev@zoho.com"
+        }, 
+        {
+            "name" : "Nicolas A. Bérard-Nault", 
+            "email" : "nicobn@gmail.com"
+        }, 
+        {
+            "name" : "Robin Stevens", 
+            "email" : "stevensro@gmail.com"
+        }, 
+        {
+            "name" : "Craig P. Motlin", 
+            "email" : "cmotlin@gmail.com"
+        }
+    ]
+}
+]
