@@ -279,7 +279,7 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 			},
 			series: seriesArray,
 			size: {
-				height: 400
+				height: 350
 			}
 		};
 	}
