@@ -94,7 +94,8 @@ homeApp.controller('TDManagementCtrl', function ($scope, $http,
 	}
 
 	$scope.convertDate = function (commitDate) {
-		return moment(new Date(commitDate.substring(0,10))).format('DD/MM/YYYY');
+		if (commitDate)
+			return moment(new Date(commitDate.substring(0,10))).format('DD/MM/YYYY');
 	}
 
 	$scope.showTdTimeline = function (type) {
