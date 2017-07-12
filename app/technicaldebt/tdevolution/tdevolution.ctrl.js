@@ -12,6 +12,9 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 
 	$scope.chartCodeDebtSeries = [];
 	$scope.chartDesignDebtSeries = [];
+	$scope.chartDefectDebtSeries = [];
+	$scope.chartTestDebtSeries = [];
+	$scope.chartRequirementDebtSeries = [];
 
 	$scope.filtered.repository = sidebarService.getRepository();
 	$scope.filtered.tags = sidebarService.getTags();
@@ -88,6 +91,9 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 				$scope.sliderTags = [];
 				$scope.chartCodeDebtSeries = [];
 				$scope.chartDesignDebtSeries = [];
+				$scope.chartDefectDebtSeries = [];
+				$scope.chartTestDebtSeries = [];
+				$scope.chartRequirementDebtSeries = [];
 				var j = 0;
 				for (var i = $scope.slider.minValue - 1; i < $scope.slider.maxValue; i++) {
 					var tagName = $scope.tags[i].name;
@@ -95,10 +101,16 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 
 					var totalCodeDebt = thisCtrl.getTotalOfCodeDebts($scope.hashMapTags[tagName].types);
 					var totalDesignDebt = thisCtrl.getTotalOfDesignDebts($scope.hashMapTags[tagName].types)
+					var totalDefectDebt = thisCtrl.getTotalOfDefectDebts($scope.hashMapTags[tagName].types)
+					var totalTestDebt = thisCtrl.getTotalOfTestDebts($scope.hashMapTags[tagName].types)
+					var totalRequirementDebt = thisCtrl.getTotalOfRequirementDebts($scope.hashMapTags[tagName].types)
 					$scope.chartCodeDebtSeries.push(totalCodeDebt);
 					$scope.chartDesignDebtSeries.push(totalDesignDebt);
+					$scope.chartDefectDebtSeries.push(totalDefectDebt);
+					$scope.chartTestDebtSeries.push(totalTestDebt);
+					$scope.chartRequirementDebtSeries.push(totalRequirementDebt);
 
-					$scope.hashMapTags[tagName].totalDebts = totalCodeDebt + totalDesignDebt;
+					$scope.hashMapTags[tagName].totalDebts = totalCodeDebt + totalDesignDebt + totalDefectDebt + totalRequirementDebt + totalTestDebt;
 					thisCtrl.getTotalOfCodeSmells($scope.hashMapTags[tagName], $scope.hashMapTags[tagName].types);
 					$scope.sliderTags.push($scope.hashMapTags[tagName]);
 				}
@@ -149,8 +161,53 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 		return total;
 	}
 
+	thisCtrl.getTotalOfDefectDebts = function (types) {
+		var total = 0;
+		for (var i = 0; i < types.length; i++) {
+			if (types[i].debts.indexOf("DEFECT_DEBT") != -1) {
+				total++;
+			}
+		}
+		return total;
+	}
+
+	thisCtrl.getTotalOfTestDebts = function (types) {
+		var total = 0;
+		for (var i = 0; i < types.length; i++) {
+			if (types[i].debts.indexOf("TEST_DEBT") != -1) {
+				total++;
+			}
+		}
+		return total;
+	}
+
+	thisCtrl.getTotalOfRequirementDebts = function (types) {
+		var total = 0;
+		for (var i = 0; i < types.length; i++) {
+			if (types[i].debts.indexOf("REQUIREMENT_DEBT") != -1) {
+				total++;
+			}
+		}
+		return total;
+	}
+
 	thisCtrl.loadColumnChart = function () {
 		var seriesArray = [];
+		seriesArray.push({
+			color: '#dd4b39',
+			name: 'Defect Debt',
+			data: $scope.chartDefectDebtSeries
+		});
+		seriesArray.push({
+			color: '#8a6d3b',
+			name: 'Test Debt',
+			data: $scope.chartTestDebtSeries
+		});
+		seriesArray.push({
+			color: '#f39c12',
+			name: 'Requirement Debt',
+			data: $scope.chartRequirementDebtSeries
+		});
 		if ($.inArray('CODE', $scope.filtered.debts) > -1) {
 			seriesArray.push({
 				color: '#1B93A7',
@@ -191,8 +248,7 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 					type: 'column'
 				},
 				legend: {
-					align: 'right',
-					x: -70,
+					align: 'center',
 					verticalAlign: 'top',
 					y: 20,
 					floating: true,
@@ -223,7 +279,7 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 			},
 			series: seriesArray,
 			size: {
-				height: 350
+				height: 400
 			}
 		};
 	}
