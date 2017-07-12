@@ -1,58 +1,64 @@
 <div id="tdTimelineModal" class="modal fade bs-example-modal-sm" role="dialog">
-  <div class="modal-dialog">
-	  <div class="modal-content timeline-content">
-	    <div class="modal-header modal-header-info">
-	      <button type="button" class="close" data-dismiss="modal">&times;</button>
-	      <h3 class="modal-title">
-	      	<i class="fa fa-line-chart" aria-hidden="true"></i> Timeline - {{type.abstract_types[0].name}}
-	      </h3>
-	    </div>
-	    <div class="modal-body" style="font-size: 20px; padding-top: 0px;">
-				  
-          <!-- row -->
-          <div class="row" style="padding-top: 20px;">
-            <div class="col-md-12">
-              <!-- The time line -->
-              <ul class="timeline">
-              	<li class="time-label" ng-repeat="item in timelineList.slice().reverse()">
-              		<span class="bg-blue version-timeline">
+	<div class="modal-dialog">
+		<div class="modal-content timeline-content">
+			<div class="modal-header modal-header-info">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h3 class="modal-title">
+					<i class="fa fa-line-chart" aria-hidden="true"></i> Timeline - {{substringFileName(type.filename)}}
+				</h3>
+			</div>
+			<div class="modal-body" style="font-size: 20px; padding-top: 0px; background-color: rgba(242, 242, 242, 0.89);">
+
+				<!-- row -->
+				<div class="row" style="padding-top: 20px;">
+					<div class="col-md-12">
+						<!-- The time line -->
+						<ul class="timeline">
+							<li class="time-label" ng-repeat="item in timelineList.slice().reverse()">
+								<span class="bg-blue version-timeline">
 		                {{item.tagName}}
 		              </span>
-									<ul class="ul-timeline">
-										<li>
-											<i class="fa fa-usd bg-green icon-timeline" ng-show="item.state == 'REMOVE'"></i>
-												<i class="fa fa-usd bg-red icon-timeline" ng-show="item.state == 'ADD'"></i>
-												<i class="fa bg-gray icon-timeline" style="color: white" ng-show="item.state == 'NONE'">-</i>
-											<div class="timeline-item" style="display: inline;">
-												<span class="label bg-code-debt span-analyze-debt" ng-show="item.codeDebt" style="margin-right: 5px;">
+								<ul class="ul-timeline">
+									<li>
+										<i class="fa fa-usd bg-green icon-timeline" ng-show="item.state == 'REMOVE'"></i>
+										<i class="fa fa-usd bg-red icon-timeline" ng-show="item.state == 'ADD'"></i>
+										<i class="fa bg-gray icon-timeline" style="color: white" ng-show="item.state == 'NONE'">-</i>
+										<div class="timeline-item" style="display: inline;">
+											<span class="label bg-code-debt span-analyze-debt" ng-show="item.codeDebt" style="margin-right: 5px;">
 													CODE                     
                   			</span>
-                  			<span class="label bg-design-debt span-analyze-debt" ng-show="item.designDebt" style="margin-right: 5px;">
+											<span class="label bg-design-debt span-analyze-debt" ng-show="item.designDebt" style="margin-right: 5px;">
 													DESIGN                     
                   			</span>
-                  			<span class="label bg-green span-analyze-debt" ng-show="item.noDebt" style="margin-right: 5px;">
-													NONE                     
+											<span class="label bg-defect-debt span-analyze-debt" ng-show="item.defectDebt" style="margin-right: 5px;">
+													DEFECT                     
                   			</span>
-                  			<span class="label span-analyze-debt" style="color: rgba(242, 242, 242, 0.89); background-color: rgba(242, 242, 242, 0.89)" ng-show="item.noDebt" style="margin-right: 5px;">
-													DESIGN                     
+											<span class="label bg-test-debt span-analyze-debt" ng-show="item.testDebt" style="margin-right: 5px;">
+													TEST                     
                   			</span>
-                  			<span class="label span-analyze-debt" style="color: rgba(242, 242, 242, 0.89); background-color: rgba(242, 242, 242, 0.89)" ng-show="item.designDebt && !item.codeDebt" style="margin-right: 5px;">
-													CODE                     
+											<span class="label bg-requirement-debt span-analyze-debt" ng-show="item.requirementDebt" style="margin-right: 5px;">
+													REQUIREMENT                     
                   			</span>
+										</div>
+										<div style="margin-left: 70px;">
+											<span class="label bg-olive span-analyze-indicator" style="margin-right: 5px;" ng-repeat="(key, value) in item.type.indicators">
+                    			{{key}} 
+                  		</span>
+										</div>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+					<!-- /.col -->
+				</div>
+				<!-- /.row -->
 
-											</div>
-                		</li>
-									</ul>
-		            </li>              		
-              </ul>
-            </div><!-- /.col -->
-          </div><!-- /.row -->
+			</div>
 
-	    </div>
-
-	    <div class="modal-footer modal-footer-timeline">
-        <button type="button" ng-click="showTdIndicators()" class="btn btn-warning btn-footer-timeline">Analyze Indicators Evolution</button>
-      </div>
-	  </div>
+			<div class="modal-footer modal-footer-timeline">
+				<button type="button" ng-click="showTdIndicators()" class="btn btn-warning btn-footer-timeline">Analyze Indicators Evolution</button>
+			</div>
+		</div>
 	</div>
 </div>
