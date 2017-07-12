@@ -194,17 +194,17 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 	thisCtrl.loadColumnChart = function () {
 		var seriesArray = [];
 		seriesArray.push({
-			color: '#dd4b39',
+			color: '#dd3939',
 			name: 'Defect Debt',
 			data: $scope.chartDefectDebtSeries
 		});
 		seriesArray.push({
-			color: '#8a6d3b',
+			color: '#f39c12',
 			name: 'Test Debt',
 			data: $scope.chartTestDebtSeries
 		});
 		seriesArray.push({
-			color: '#f39c12',
+			color: '#8a6d3b',
 			name: 'Requirement Debt',
 			data: $scope.chartRequirementDebtSeries
 		});
