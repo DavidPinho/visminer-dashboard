@@ -1,24 +1,20 @@
 <div id="tdIndicatorsModal" class="modal fade bs-example-modal-sm" role="dialog">
-  <div class="modal-dialog" id="ttt" style="width: 90%">
-	  <div class="modal-content">
-	    <div class="modal-header modal-header-info">
-	      <button type="button" class="close" data-dismiss="modal">&times;</button>
-	      <h3 class="modal-title">
-	      	<i class="fa fa-bar-chart" aria-hidden="true"></i> TD Indicators - {{type.abstract_types[0].name}}
-	      </h3>
-	    </div>
+	<div class="modal-dialog" id="ttt" style="width: 90%">
+		<div class="modal-content">
+			<div class="modal-header modal-header-info">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h3 class="modal-title">
+					<i class="fa fa-bar-chart" aria-hidden="true"></i> Metrics Evolution - {{substringFileName(type.filename)}}
+				</h3>
+			</div>
 
-	    <div class="modal-body" style="font-size: 20px;">
-        <div class="row">
-        	<div class="col-sm-12 col-md-6 col-lg-6">
-          	<highchart id="godclass-chart" config="configGodClassChart"></highchart>
-          </div>
-          <div class="col-sm-12 col-md-6 col-lg-6">
-          	<highchart id="long-method-chart" config="configLongMethodChart"></highchart>
-          </div>
-        </div>
-	    </div>
-
-	  </div>
+			<div class="modal-body" style="font-size: 20px;">
+				<div class="row">
+					<div class="col-sm-12 col-md-12 col-lg-12">
+						<highchart id="godclass-chart" config="configGodClassChart"></highchart>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
