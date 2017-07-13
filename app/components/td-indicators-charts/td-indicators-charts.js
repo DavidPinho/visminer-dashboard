@@ -69,45 +69,54 @@ function TdIndicatorsController($scope, $http) {
       series: seriesArray
     }
     $http.get('../../data/rm_direct_code_analysis.json')
-      .success(function (typeWithMetrics) {
+      .success(function (typesWithMetrics) {
+        var selectedTypeCommitHistory = [];
+        for (var z = 0; z < typesWithMetrics.length; z++) {
+          if ($scope.type.filename.indexOf(typesWithMetrics[z].filename) !== -1) {
+            selectedTypeCommitHistory.push(typesWithMetrics[z]);
+          }
+        }
         for (var i = 0; i < $scope.timelineList.length; i++) {
           var typeTimeline = $scope.timelineList[i].type;
-          for (var z = 0; z < typeWithMetrics.length; z++) {
-            if (typeWithMetrics[z].commit === typeTimeline.filestate && typeTimeline.filename.indexOf(typeWithMetrics[z].filename) !== -1) {
-              var metrics = typeWithMetrics[z].classes[0].metrics;
-              for (var k = 0; k < metrics.length; k++) {
-                switch (metrics[k].metric) {
-                  case "ATFD":
-                    $scope.atfdSeries.push(metrics[k].value);
-                    break;
-                  case "TCC":
-                    $scope.tccSeries.push(metrics[k].value);
-                    break;
-                  case "WMC":
-                    $scope.wmcSeries.push(metrics[k].value);
-                    break;
-                  case "LOC":
-                    $scope.locSeries.push(metrics[k].value);
-                    break;
-                  case "PAR":
-                    $scope.parSeries.push(metrics[k].value);
-                    break;
-                  case "LVAR":
-                    $scope.lvarSeries.push(metrics[k].value);
-                    break;
-                  case "FDP":
-                    var cont = 0;
-                    for (var l = 0; l < metrics[k].methods.length; l++) {
-                      cont = cont + metrics[k].methods[l].value;
-                    }
-                    $scope.fdpSeries.push(cont);
-                    break;
-                  case "WOC":
-                    $scope.wocSeries.push(metrics[k].value);
-                    break;
+          var selectedTypeByCommit = selectedTypeCommitHistory[0];
+          var typeTimelineCommitDate = Date.parse(typeTimeline.commit_date);
+          for (var z = 0; z < selectedTypeCommitHistory.length; z++) {
+            var auxDate = Date.parse(selectedTypeCommitHistory[z].commit_date);
+            if (auxDate < typeTimelineCommitDate && auxDate > Date.parse(selectedTypeByCommit.commit_date)) {
+              selectedTypeByCommit = selectedTypeCommitHistory[z];
+            }
+          }
+          var metrics = selectedTypeByCommit.classes[0].metrics;
+          for (var k = 0; k < metrics.length; k++) {
+            switch (metrics[k].metric) {
+              case "ATFD":
+                $scope.atfdSeries.push(metrics[k].value);
+                break;
+              case "TCC":
+                $scope.tccSeries.push(metrics[k].value);
+                break;
+              case "WMC":
+                $scope.wmcSeries.push(metrics[k].value);
+                break;
+              case "LOC":
+                $scope.locSeries.push(metrics[k].value);
+                break;
+              case "PAR":
+                $scope.parSeries.push(metrics[k].value);
+                break;
+              case "LVAR":
+                $scope.lvarSeries.push(metrics[k].value);
+                break;
+              case "FDP":
+                var cont = 0;
+                for (var l = 0; l < metrics[k].methods.length; l++) {
+                  cont = cont + metrics[k].methods[l].value;
                 }
-              }
-              break;
+                $scope.fdpSeries.push(cont);
+                break;
+              case "WOC":
+                $scope.wocSeries.push(metrics[k].value);
+                break;
             }
           }
         }
