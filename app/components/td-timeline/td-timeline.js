@@ -15,7 +15,7 @@ angular.module('homeApp').component('tdTimeline', {
             .success(function (data) {
               for (var j = 0; j < $scope.tags.length; j++) {
                 for (var i = 0; i < data.length; i++) {
-                  if (data[i].filename === $scope.type.filename && data[i].reference_name === $scope.tags[j].name) {
+                  if ($scope.type.filename.indexOf(data[i].filename) !== -1 && data[i].reference_name === $scope.tags[j].name) {
                     item = {
                       'type': data[i],
                       'tag': $scope.tags[j]
