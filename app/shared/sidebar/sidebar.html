@@ -45,13 +45,13 @@
       <li class="treeview">
         <a href="#">
           <i class="fa fa-tags"></i> <span>Versions</span>
-          <small class="label pull-right bg-green" ng-hide="tags.length==0">{{filtered.tags.length}}/{{tags.length}}</small>
-          <small class="label pull-right bg-green" ng-show="tags.length==0">{{tags.length}}</small>
+          <small class="label pull-right bg-green" ng-hide="references.length==0">{{filtered.references.length}}/{{references.length}}</small>
+          <small class="label pull-right bg-green" ng-show="references.length==0">{{references.length}}</small>
         </a>
         <ul class="treeview-menu">
-          <li ng-repeat="tag in tags | orderBy:'commits.length'">
+          <li ng-repeat="tag in references">
             <label class="control-sidebar-subheading filter-version-sub-item">
-              <input type="checkbox" checklist-model="filtered.tags" checklist-value="tag">{{tag.name}}
+              <input type="checkbox" checklist-model="filtered.references" checklist-value="tag"> {{tag.name}}
             </label>
           </li>
         </ul>

@@ -6,7 +6,7 @@ homeApp.controller('HomeCtrl', function ($scope, $timeout, $http,
 	$scope.commits = [];
 	$scope.committers = [];
 	$scope.repositories = [];
-	$scope.tags = [];
+	$scope.references = [];
 	$scope.committerEvolution = [];
 	$scope.currentPage = "tdevolution";
 	$scope.durationProgress = 1000;
@@ -15,7 +15,7 @@ homeApp.controller('HomeCtrl', function ($scope, $timeout, $http,
 		repository: null,
 		commits: [],
 		committers: [],
-		tags: [],
+		references: [],
 		debts: ["CODE", "DESIGN"],
 	}
 
@@ -38,23 +38,18 @@ homeApp.controller('HomeCtrl', function ($scope, $timeout, $http,
 		$scope.filtered.repository = repository;
 		sidebarService.setRepository(repository);
 		$route.reload();
-		thisCtrl.tagsLoad(repository._id);
+		thisCtrl.referencesLoad(repository._id);
 	}
 
-	// Load all tags (versions)
-	thisCtrl.tagsLoad = function (repositoryId) {
-		console.log('tagsLoad=', repositoryId);
-
-		$http.get('data/rm_references.json')
-			.success(function (data) {
-				console.log('found', data.length, 'tags');
-				if (data) {
-					$scope.tags = data.sort(function (tag1, tag2) {
-						return tag1.commits.length - tag2.commits.length;
-					});
-				}
-				//thisCtrl.commitsLoad(repositoryId);
-			});
+	// Load all References
+	thisCtrl.referencesLoad = function (repositoryId) {
+		if (repositoryId) {
+			let requestUrl = 'http://localhost:4040/api/references/repository/' + repositoryId;
+			$http.get(requestUrl)
+				.success(function (references) {
+					$scope.references = references;
+				});
+		}	
 	}
 
 	// Load all commits from all trees
@@ -97,7 +92,7 @@ homeApp.controller('HomeCtrl', function ($scope, $timeout, $http,
 			alertModalService.setMessage("Please Select a Repository!");
 			analyze = false;
 		}
-		else if ($scope.filtered.tags.length == 0) {
+		else if ($scope.filtered.references.length == 0) {
 			alertModalService.setMessage("Please Select What Versions Will be Analyzed!");
 			analyze = false;
 		}
