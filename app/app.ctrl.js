@@ -21,11 +21,9 @@ homeApp.controller('HomeCtrl', function ($scope, $timeout, $http,
 
 	// Load all repositories
 	thisCtrl.repositoriesLoad = function () {
-		console.log('repositoriesLoad');
-		$http.get('data/rm_repositories.json')
-			.success(function (data) {
-				console.log('found', data.length, 'repositories');
-				$scope.repositories = data;
+		$http.get('http://localhost:4040/api/repositories')
+			.success(function (repositories) {
+				$scope.repositories = repositories;
 			});
 	}
 
