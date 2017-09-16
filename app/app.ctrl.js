@@ -52,30 +52,6 @@ homeApp.controller('HomeCtrl', function ($scope, $timeout, $http,
 		}	
 	}
 
-	// Load all commits from all trees
-	thisCtrl.commitsLoad = function (repositoryId) {
-		console.log('commitsLoad');
-
-		$http.get('CommitServlet', { params: { "action": "getAllByRepository", "repositoryId": repositoryId } })
-			.success(function (data) {
-				console.log('found', data.length, 'commits');
-				$scope.commits = data;
-				for (var i in data) {
-					$scope.committerEvolution.push({
-						commit: data[i]._id,
-						committer: data[i].committer,
-						date: new Date(data[i].commit_date.$date),
-						diffs: data[i].diffs
-					})
-					var index = $.inArray(data[i].committer, $scope.committers);
-					if (index == -1) {
-						$scope.committers.push(data[i].committer);
-						sidebarService.addCommitter(data[i].committer);
-					}
-				}
-			});
-	}
-
 	thisCtrl.selectDebt = function (debt) {
 		var index = $.inArray(debt, $scope.filtered.debts);
 		if (index > -1) {
