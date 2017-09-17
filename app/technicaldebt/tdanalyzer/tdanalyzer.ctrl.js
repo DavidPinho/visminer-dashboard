@@ -6,10 +6,10 @@ homeApp.controller('TDAnalyzerCtrl', function ($scope, $http, $location, $route,
 
 	$scope.currentPage = sidebarService.getCurrentPage();
 	$scope.filtered.repository = sidebarService.getRepository();
-	$scope.filtered.tags = sidebarService.getTags();
+	$scope.filtered.references = sidebarService.getReferences();
 	$scope.filtered.committers = sidebarService.getCommitters();
 	$scope.filtered.debts = sidebarService.getDebts();
-	$scope.selectedTag = $scope.filtered.tags[0];
+	$scope.selectedReference = $scope.filtered.references[0];
 	$scope.types = [];
 	$scope.currentDesignDebt = null;
 	$scope.currentCodeDebt = null;
@@ -23,13 +23,13 @@ homeApp.controller('TDAnalyzerCtrl', function ($scope, $http, $location, $route,
 	}
 
 	thisCtrl.loadTypes = function () {
-		if ($scope.selectedTag) {
-			// TODO We have to use the tag id instead of the tag name here
-			var tagName = $scope.selectedTag.name;
+		if ($scope.selectedReference) {
+			// TODO We have to use the reference id instead of the reference name here
+			var referenceName = $scope.selectedReference.name;
 			$http.get('../../data/rm_technical_code_debt.json')
 				.success(function (data) {
 					for (var i = 0; i < data.length; i++) {
-						if (data[i].reference_name === tagName && data[i].debts.length > 0) {
+						if (data[i].reference_name === referenceName && data[i].debts.length > 0) {
 							$scope.types.push(data[i]);
 						}
 					}
@@ -89,11 +89,11 @@ homeApp.controller('TDAnalyzerCtrl', function ($scope, $http, $location, $route,
 			});
 	}
 
-	$scope.confirmAllDebtsByTag = function (treeId) {
+	$scope.confirmAllDebtsByReference = function (treeId) {
 		$scope.showSuccessModal();
 		// FIXME This part depends on each debt be an object instead of just a string
 		/*
-		$http.get('TypeServlet', { params: { "action": "confirmAllDebtsByTag", "treeId": treeId } })
+		$http.get('TypeServlet', { params: { "action": "confirmAllDebtsByReference", "treeId": treeId } })
 			.success(function () {
 				$route.reload();
 				$scope.showSuccessModal();
@@ -120,7 +120,7 @@ homeApp.controller('TDAnalyzerCtrl', function ($scope, $http, $location, $route,
 		$('#alertModal').modal('show');
 	}
 
-	$scope.updateViewByTag = function () {
+	$scope.updateViewByReference = function () {
 		$scope.types = [];
 		thisCtrl.loadTypes();
 	}

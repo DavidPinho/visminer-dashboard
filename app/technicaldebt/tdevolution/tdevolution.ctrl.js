@@ -4,11 +4,11 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 	var thisCtrl = this;
 
 	$scope.currentPage = sidebarService.getCurrentPage();
-	$scope.tags = [];
-	$scope.tagsNames = [];
-	$scope.hashMapTags = {};
+	$scope.references = [];
+	$scope.referencesNames = [];
+	$scope.hashMapReferences = {};
 
-	$scope.sliderTags = [];
+	$scope.sliderReferences = [];
 
 	$scope.chartCodeDebtSeries = [];
 	$scope.chartDesignDebtSeries = [];
@@ -17,30 +17,30 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 	$scope.chartRequirementDebtSeries = [];
 
 	$scope.filtered.repository = sidebarService.getRepository();
-	$scope.filtered.tags = sidebarService.getTags();
+	$scope.filtered.references = sidebarService.getReferences();
 	$scope.filtered.debts = sidebarService.getDebts();
 
 	$scope.hasAnalyzed = false;
 
 	thisCtrl.loadEvolutionInformation = function (repository) {
 		if (repository) {
-			thisCtrl.tagsLoad(repository._id);
+			thisCtrl.referencesLoad(repository._id);
 		}
 	}
 
-	// Load all tags (versions)
-	thisCtrl.tagsLoad = function (repositoryId) {
+	// Load all references (versions)
+	thisCtrl.referencesLoad = function (repositoryId) {
 		$http.get('../../data/rm_references.json')
 			.success(function (data) {
-				console.log('found', data.length, 'tags');
-				$scope.tags = data.sort(function (tag1, tag2) {
-					return tag1.commits.length - tag2.commits.length;
+				console.log('found', data.length, 'references');
+				$scope.references = data.sort(function (reference1, reference2) {
+					return reference1.commits.length - reference2.commits.length;
 				});
-				for (var i in $scope.tags) {
-					var tag = data[i];
-					if (tag.repository === repositoryId) {
-						$scope.hashMapTags[tag.name] = {
-							tag: tag,
+				for (var i in $scope.references) {
+					var reference = data[i];
+					if (reference.repository === repositoryId) {
+						$scope.hashMapReferences[reference.name] = {
+							reference: reference,
 							types: [],
 							totalSmells: 0,
 							totalDebts: 0
@@ -54,41 +54,41 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 	thisCtrl.loadSlider = function () {
 		$scope.slider = {
 			minValue: 1,
-			maxValue: $scope.tags.length,
+			maxValue: $scope.references.length,
 			options: {
-				ceil: $scope.tags.length,
+				ceil: $scope.references.length,
 				floor: 1,
 				showTicksValues: true,
 				draggableRange: true,
 				onEnd: function () {
-					thisCtrl.loadSliderTags();
+					thisCtrl.loadSliderReferences();
 				},
 				translate: function (value) {
-					var name = $scope.tags[value - 1].name;
+					var name = $scope.references[value - 1].name;
 					if (name.length > 7)
 						name = name.substring(0, 7);
 					return name;
 				}
 			}
 		};
-		thisCtrl.loadSliderTags();
+		thisCtrl.loadSliderReferences();
 	}
 
-	thisCtrl.loadSliderTags = function () {
+	thisCtrl.loadSliderReferences = function () {
 		$http.get('../../data/rm_technical_code_debt.json')
 			.success(function (data) {
 				console.log('found', data.length, 'types');
 				if (!$scope.hasAnalyzed) {
 					for (var i in data) {
 						var type = data[i];
-						//TODO if (tag.repository === repositoryId)
-						$scope.hashMapTags[type.reference_name].types.push(type);
+						//TODO if (reference.repository === repositoryId)
+						$scope.hashMapReferences[type.reference_name].types.push(type);
 					}
 					$scope.hasAnalyzed = true;
 				}
 
-				$scope.tagsNames = [];
-				$scope.sliderTags = [];
+				$scope.referencesNames = [];
+				$scope.sliderReferences = [];
 				$scope.chartCodeDebtSeries = [];
 				$scope.chartDesignDebtSeries = [];
 				$scope.chartDefectDebtSeries = [];
@@ -96,23 +96,23 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 				$scope.chartRequirementDebtSeries = [];
 				var j = 0;
 				for (var i = $scope.slider.minValue - 1; i < $scope.slider.maxValue; i++) {
-					var tagName = $scope.tags[i].name;
-					$scope.tagsNames.push(tagName);
+					var referenceName = $scope.references[i].name;
+					$scope.referencesNames.push(referenceName);
 
-					var totalCodeDebt = thisCtrl.getTotalOfCodeDebts($scope.hashMapTags[tagName].types);
-					var totalDesignDebt = thisCtrl.getTotalOfDesignDebts($scope.hashMapTags[tagName].types)
-					var totalDefectDebt = thisCtrl.getTotalOfDefectDebts($scope.hashMapTags[tagName].types)
-					var totalTestDebt = thisCtrl.getTotalOfTestDebts($scope.hashMapTags[tagName].types)
-					var totalRequirementDebt = thisCtrl.getTotalOfRequirementDebts($scope.hashMapTags[tagName].types)
+					var totalCodeDebt = thisCtrl.getTotalOfCodeDebts($scope.hashMapReferences[referenceName].types);
+					var totalDesignDebt = thisCtrl.getTotalOfDesignDebts($scope.hashMapReferences[referenceName].types)
+					var totalDefectDebt = thisCtrl.getTotalOfDefectDebts($scope.hashMapReferences[referenceName].types)
+					var totalTestDebt = thisCtrl.getTotalOfTestDebts($scope.hashMapReferences[referenceName].types)
+					var totalRequirementDebt = thisCtrl.getTotalOfRequirementDebts($scope.hashMapReferences[referenceName].types)
 					$scope.chartCodeDebtSeries.push(totalCodeDebt);
 					$scope.chartDesignDebtSeries.push(totalDesignDebt);
 					$scope.chartDefectDebtSeries.push(totalDefectDebt);
 					$scope.chartTestDebtSeries.push(totalTestDebt);
 					$scope.chartRequirementDebtSeries.push(totalRequirementDebt);
 
-					$scope.hashMapTags[tagName].totalDebts = totalCodeDebt + totalDesignDebt + totalDefectDebt + totalRequirementDebt + totalTestDebt;
-					thisCtrl.getTotalOfCodeSmells($scope.hashMapTags[tagName], $scope.hashMapTags[tagName].types);
-					$scope.sliderTags.push($scope.hashMapTags[tagName]);
+					$scope.hashMapReferences[referenceName].totalDebts = totalCodeDebt + totalDesignDebt + totalDefectDebt + totalRequirementDebt + totalTestDebt;
+					thisCtrl.getTotalOfCodeSmells($scope.hashMapReferences[referenceName], $scope.hashMapReferences[referenceName].types);
+					$scope.sliderReferences.push($scope.hashMapReferences[referenceName]);
 				}
 				thisCtrl.loadColumnChart();
 
@@ -123,7 +123,7 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 	thisCtrl.getListOfTypesByListOfTags = function (list) {
 		var ids = [];
 		for (var i = $scope.slider.minValue - 1; i < $scope.slider.maxValue; i++) {
-			ids.push($scope.tags[i]._id);
+			ids.push($scope.references[i]._id);
 		}
 		return $http.get('TypeServlet', { params: { "action": "getListOfTypesByListOfTags", "ids": JSON.stringify(ids) } })
 			.success(function (data) {
@@ -133,12 +133,12 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 			});
 	}*/
 
-	thisCtrl.getTotalOfCodeSmells = function (tag, types) {
+	thisCtrl.getTotalOfCodeSmells = function (reference, types) {
 		var total = 0;
 		for (var i = 0; i < types.length; i++) {
 			total = total + Object.keys(types[i].indicators).length;
 		}
-		tag.totalSmells = total;
+		reference.totalSmells = total;
 	}
 
 	thisCtrl.getTotalOfDesignDebts = function (types) {
@@ -227,7 +227,7 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 				text: 'Technical Debt X Versions'
 			},
 			xAxis: {
-				categories: $scope.tagsNames
+				categories: $scope.referencesNames
 			},
 			yAxis: {
 				min: 0,

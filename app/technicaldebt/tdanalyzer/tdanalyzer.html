@@ -1,11 +1,11 @@
-<section class="content" ng-show="filtered.repository != null && !filtered.tags[0]">
+<section class="content" ng-show="filtered.repository != null && !filtered.references[0]">
   <div class="alert alert-warn-vmtd alert-dismissable">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
     <i class="icon fa fa-hand-o-left"></i>Please, select at least one version in the left menu.
   </div>
 </section>
 
-<div ng-show="filtered.repository != null && filtered.tags[0] && currentPage == 'tdanalyzer'">
+<div ng-show="filtered.repository != null && filtered.references[0] && currentPage == 'tdanalyzer'">
 
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -37,13 +37,13 @@
             <label>Version:</label>
           </div>
           <div class="col-md-5">
-            <select class="form-control" ng-model="selectedTag" ng-options="tag.name for tag in filtered.tags" ng-change="updateViewByTag()"
+            <select class="form-control" ng-model="selectedReference" ng-options="reference.name for reference in filtered.references" ng-change="updateViewByReference()"
               style="width: 100%;">
 
          		</select>
           </div>
           <div class="col-md-3">
-            <button class="btn bg-olive btn-flat btn-confirm-analyze-debt" ng-click="confirmAllDebtsByTag(selectedTag._id)">
+            <button class="btn bg-olive btn-flat btn-confirm-analyze-debt" ng-click="confirmAllDebtsByReference(selectedReference._id)">
               Confirm All from Version
             </button>
           </div>

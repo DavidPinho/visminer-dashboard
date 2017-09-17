@@ -49,9 +49,9 @@
           <small class="label pull-right bg-green" ng-show="references.length==0">{{references.length}}</small>
         </a>
         <ul class="treeview-menu">
-          <li ng-repeat="tag in references">
+          <li ng-repeat="reference in references">
             <label class="control-sidebar-subheading filter-version-sub-item">
-              <input type="checkbox" checklist-model="filtered.references" checklist-value="tag"> {{tag.name}}
+              <input type="checkbox" checklist-model="filtered.references" checklist-value="reference"> {{reference.name}}
             </label>
           </li>
         </ul>

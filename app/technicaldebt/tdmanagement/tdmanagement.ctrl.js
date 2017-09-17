@@ -32,9 +32,9 @@ homeApp.controller('TDManagementCtrl', function ($scope, $http,
 				.success(function (data) {
 					console.log('Loading master');
 					for (var i in data) {
-						var tag = data[i];
-						if (tag.repository === repositoryId && tag.path === "refs/heads/master") {
-							$scope.master = tag;
+						var reference = data[i];
+						if (reference.repository === repositoryId && reference.path === "refs/heads/master") {
+							$scope.master = reference;
 							thisCtrl.loadTypes($scope.master.name);
 							break;
 						}
@@ -45,11 +45,11 @@ homeApp.controller('TDManagementCtrl', function ($scope, $http,
 
 	thisCtrl.loadMaster();
 
-	thisCtrl.loadTypes = function (tagName) {
+	thisCtrl.loadTypes = function (referenceName) {
 		$http.get('../../data/rm_technical_code_debt.json')
 			.success(function (data) {
 				for (var i = 0; i < data.length; i++) {
-					if (data[i].reference_name === tagName && data[i].debts.length > 0) {
+					if (data[i].reference_name === referenceName && data[i].debts.length > 0) {
 						thisCtrl.loadCards(data[i]);
 						$scope.types.push(data[i]);
 					}

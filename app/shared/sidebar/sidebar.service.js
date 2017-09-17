@@ -2,7 +2,7 @@ homeApp.service('sidebarService', function($rootScope){
 
 	this.data = {currentPage : "tdevolution"};
 	this.data.repository = null;
-	this.data.tags = [];
+	this.data.references = [];
 	this.data.committers = [];
 	this.data.debts = ["CODE", "DESIGN"];
 
@@ -24,16 +24,16 @@ homeApp.service('sidebarService', function($rootScope){
 		return this.data.repository;
 	}
 
-	this.addTag = function(tag) {
-		this.data.tags.push(tag);
+	this.addReference = function(reference) {
+		this.data.references.push(reference);
 	}
 
-	this.removeTag = function(index) {
-		this.data.tags.splice(index,1);
+	this.removeReference = function(index) {
+		this.data.references.splice(index,1);
 	}
 
-	this.getTags = function() {
-		return this.data.tags;
+	this.getReferences = function() {
+		return this.data.references;
 	}
 
 	this.addCommitter = function(committer) {
