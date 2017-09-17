@@ -15,22 +15,20 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 	$scope.chartRequirementDebtSeries = [];
 
 	$scope.filtered.repository = sidebarService.getRepository();
+
+	// TODO: Filter the info displayed on the chat based on the filtered references and debts.
 	$scope.filtered.references = sidebarService.getReferences();
 	$scope.filtered.debts = sidebarService.getDebts();
 
 	thisCtrl.loadEvolutionInformation = function (repository) {
 		if (repository) {
-			thisCtrl.referencesLoad(repository._id);
-		}
-	}
-
-	thisCtrl.referencesLoad = function (repositoryId) {
-		let requestUrl = 'http://localhost:4040/api/references/enhanced/repository/' + repositoryId;
-		$http.get(requestUrl)
+		  let requestUrl = 'http://localhost:4040/api/references/enhanced/repository/' + repository._id;
+		  $http.get(requestUrl)
 			.success(function (referencesWithFiles) {
 				$scope.references = referencesWithFiles;
 				thisCtrl.loadSlider();
 			});
+		}
 	}
 
 	thisCtrl.loadSlider = function () {
@@ -60,15 +58,15 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 		cleanArrays();
 		var j = 0;
 		for (var i = $scope.slider.minValue - 1; i < $scope.slider.maxValue; i++) {
-			var referenceName = $scope.references[i].name;
-			$scope.referencesNames.push(referenceName);
+			$scope.referencesNames.push($scope.references[i].name);
 
 			var files = $scope.references[i].files;
-			var totalCodeDebt = thisCtrl.getTotalOfCodeDebts(files);
-			var totalDesignDebt = thisCtrl.getTotalOfDesignDebts(files);
-			var totalDefectDebt = thisCtrl.getTotalOfDefectDebts(files);
-			var totalTestDebt = thisCtrl.getTotalOfTestDebts(files);
-			var totalRequirementDebt = thisCtrl.getTotalOfRequirementDebts(files);
+			var totalCodeDebt = thisCtrl.getTotalOfDebtsByType(files, "CODE_DEBT");
+			var totalDesignDebt = thisCtrl.getTotalOfDebtsByType(files, "DESIGN_DEBT");
+			var totalDefectDebt = thisCtrl.getTotalOfDebtsByType(files, "DEFECT_DEBT");
+			var totalTestDebt = thisCtrl.getTotalOfDebtsByType(files, "TEST_DEBT");
+			var totalRequirementDebt = thisCtrl.getTotalOfDebtsByType(files, "REQUIREMENT_DEBT");
+
 			$scope.chartCodeDebtSeries.push(totalCodeDebt);
 			$scope.chartDesignDebtSeries.push(totalDesignDebt);
 			$scope.chartDefectDebtSeries.push(totalDefectDebt);
@@ -76,7 +74,7 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 			$scope.chartRequirementDebtSeries.push(totalRequirementDebt);
 
 			$scope.references[i].totalDebts = totalCodeDebt + totalDesignDebt + totalDefectDebt + totalRequirementDebt + totalTestDebt;
-			thisCtrl.getTotalOfCodeSmells($scope.references[i], files);
+			thisCtrl.getTotalOfCodeSmells(files, $scope.references[i]);
 			$scope.sliderReferences.push($scope.references[i]);
 		}
 		thisCtrl.loadColumnChart();
@@ -92,7 +90,7 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 		$scope.chartRequirementDebtSeries = [];
 	}
 
-	thisCtrl.getTotalOfCodeSmells = function (reference, files) {
+	thisCtrl.getTotalOfCodeSmells = function (files, reference) {
 		var total = 0;
 		for (var i = 0; i < files.length; i++) {
 			total = total + Object.keys(files[i].indicators).length;
@@ -100,50 +98,10 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 		reference.totalSmells = total;
 	}
 
-	thisCtrl.getTotalOfDesignDebts = function (files) {
+	thisCtrl.getTotalOfDebtsByType = function (files, debt) {
 		var total = 0;
 		for (var i = 0; i < files.length; i++) {
-			if (files[i].debts.indexOf("DESIGN_DEBT") != -1) {
-				total++;
-			}
-		}
-		return total;
-	}
-
-	thisCtrl.getTotalOfCodeDebts = function (files) {
-		var total = 0;
-		for (var i = 0; i < files.length; i++) {
-			if (files[i].debts.indexOf("CODE_DEBT") != -1) {
-				total++;
-			}
-		}
-		return total;
-	}
-
-	thisCtrl.getTotalOfDefectDebts = function (files) {
-		var total = 0;
-		for (var i = 0; i < files.length; i++) {
-			if (files[i].debts.indexOf("DEFECT_DEBT") != -1) {
-				total++;
-			}
-		}
-		return total;
-	}
-
-	thisCtrl.getTotalOfTestDebts = function (files) {
-		var total = 0;
-		for (var i = 0; i < files.length; i++) {
-			if (files[i].debts.indexOf("TEST_DEBT") != -1) {
-				total++;
-			}
-		}
-		return total;
-	}
-
-	thisCtrl.getTotalOfRequirementDebts = function (files) {
-		var total = 0;
-		for (var i = 0; i < files.length; i++) {
-			if (files[i].debts.indexOf("REQUIREMENT_DEBT") != -1) {
+			if (files[i].debts.indexOf(debt) != -1) {
 				total++;
 			}
 		}
@@ -245,5 +203,4 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 
 	thisCtrl.loadColumnChart();
 	thisCtrl.loadEvolutionInformation($scope.filtered.repository);
-
 });
