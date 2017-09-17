@@ -44,7 +44,7 @@ homeApp.controller('HomeCtrl', function ($scope, $timeout, $http,
 	// Load all References
 	thisCtrl.referencesLoad = function (repositoryId) {
 		if (repositoryId) {
-			let requestUrl = 'http://localhost:4040/api/references/repository/' + repositoryId;
+			let requestUrl = 'http://localhost:4040/api/references/enhanced/repository/' + repositoryId;
 			$http.get(requestUrl)
 				.success(function (references) {
 					$scope.references = references;

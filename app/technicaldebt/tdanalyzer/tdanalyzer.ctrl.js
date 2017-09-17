@@ -7,10 +7,10 @@ homeApp.controller('TDAnalyzerCtrl', function ($scope, $http, $location, $route,
 	$scope.currentPage = sidebarService.getCurrentPage();
 	$scope.filtered.repository = sidebarService.getRepository();
 	$scope.filtered.references = sidebarService.getReferences();
-	$scope.filtered.committers = sidebarService.getCommitters();
 	$scope.filtered.debts = sidebarService.getDebts();
 	$scope.selectedReference = $scope.filtered.references[0];
-	$scope.types = [];
+	$scope.files = [];
+
 	$scope.currentDesignDebt = null;
 	$scope.currentCodeDebt = null;
 	$scope.currentDefectDebt = null;
@@ -22,44 +22,35 @@ homeApp.controller('TDAnalyzerCtrl', function ($scope, $http, $location, $route,
 		sidebarService.setCurrentPage(view);
 	}
 
-	thisCtrl.loadTypes = function () {
+	thisCtrl.loadFiles = function () {
 		if ($scope.selectedReference) {
-			// TODO We have to use the reference id instead of the reference name here
-			var referenceName = $scope.selectedReference.name;
-			$http.get('../../data/rm_technical_code_debt.json')
-				.success(function (data) {
-					for (var i = 0; i < data.length; i++) {
-						if (data[i].reference_name === referenceName && data[i].debts.length > 0) {
-							$scope.types.push(data[i]);
-						}
-					}
-				});
+			$scope.files = $scope.selectedReference.files;
 		}
 	}
 
-	thisCtrl.loadTypes();
+	thisCtrl.loadFiles();
 
-	$scope.loadCurrentDebts = function (type) {
+
+	$scope.loadCurrentDebts = function (file) {
 		$scope.currentCodeDebt = null;
 		$scope.currentDesignDebt = null;
 		$scope.currentDefectDebt = null;
 		$scope.currentTestDebt = null;
 		$scope.currentRequirementDebt = null;
-		var tdList = type.debts;
+
+		var tdList = file.debts;
 		for (var i = 0; i < tdList.length; i++) {
-			if (tdList[i] == 'CODE_DEBT') {
+			var name = tdList[i].name;
+			var value = tdList[i].value;
+			if (name == 'CODE_DEBT' && value != -1) {
 				$scope.currentCodeDebt = tdList[i];
-			}
-			if (tdList[i] == 'DESIGN_DEBT') {
+			} else if (name == 'DESIGN_DEBT' && value != -1) {
 				$scope.currentDesignDebt = tdList[i];
-			}
-			if (tdList[i] == 'DEFECT_DEBT') {
+			} else if (name == 'DEFECT_DEBT' && value != -1) {
 				$scope.currentDefectDebt = tdList[i];
-			}
-			if (tdList[i] == 'REQUIREMENT_DEBT') {
+			} else if (name == 'REQUIREMENT_DEBT' && value != -1) {
 				$scope.currentRequirementDebt = tdList[i];
-			}
-			if (tdList[i] == 'TEST_DEBT') {
+			} else if (name == 'TEST_DEBT' && value != -1) {
 				$scope.currentTestDebt = tdList[i];
 			}
 		}
@@ -121,8 +112,8 @@ homeApp.controller('TDAnalyzerCtrl', function ($scope, $http, $location, $route,
 	}
 
 	$scope.updateViewByReference = function () {
-		$scope.types = [];
-		thisCtrl.loadTypes();
+		$scope.files = [];
+		thisCtrl.loadFiles();
 	}
 
 	$scope.showTypeSmellsDetails = function (type) {
