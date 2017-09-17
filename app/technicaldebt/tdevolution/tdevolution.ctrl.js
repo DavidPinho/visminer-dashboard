@@ -104,8 +104,6 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 			var debts = files[i].debts;
 			for (index in debts) {
 				var debtObject = debts[index];
-				console.log(debtObject);
-				console.log(debtObject.name);
 				if (debtObject.name == debtName && (debtObject.value == 1 || debtObject.value == 2)) {
 					total++;
 					break;
