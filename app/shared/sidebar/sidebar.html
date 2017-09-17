@@ -56,22 +56,6 @@
           </li>
         </ul>
       </li>
-      <li class="treeview" ng-show="currentPage == 'commiters'">
-        <a href="#">
-          <i class="fa fa-book"></i> <span>Documentation</span>
-          <i class="fa fa-angle-left pull-right"></i>
-        </a>
-        <ul class="treeview-menu">
-          <li>
-            <a href="#">
-              <i class="fa fa-caret-right"></i> Code Smells <i class="fa fa-angle-right pull-right"></i>
-            </a>
-            <ul ng-repeat="codeSmell in codeSmellsAll | orderBy:'name'" class="treeview-menu">
-              <li><a href="#"><i class="fa fa-caret-right"></i> {{codeSmell.name}}</a></li>
-            </ul>
-          </li>
-        </ul>
-      </li>
       <li class="treeview">
         <a href="#">
           <i class="fa fa-line-chart"></i> <span>TD Indicators</span>

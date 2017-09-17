@@ -4,6 +4,7 @@ homeApp.service('sidebarService', function($rootScope){
 	this.data.repository = null;
 	this.data.references = [];
 	this.data.committers = [];
+	// TODO: Add other debts
 	this.data.debts = ["CODE", "DESIGN"];
 
 
