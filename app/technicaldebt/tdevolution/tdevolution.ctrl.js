@@ -98,11 +98,18 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 		reference.totalSmells = total;
 	}
 
-	thisCtrl.getTotalOfDebtsByType = function (files, debt) {
+	thisCtrl.getTotalOfDebtsByType = function (files, debtName) {
 		var total = 0;
 		for (var i = 0; i < files.length; i++) {
-			if (files[i].debts.indexOf(debt) != -1) {
-				total++;
+			var debts = files[i].debts;
+			for (index in debts) {
+				var debtObject = debts[index];
+				console.log(debtObject);
+				console.log(debtObject.name);
+				if (debtObject.name == debtName && (debtObject.value == 1 || debtObject.value == 2)) {
+					total++;
+					break;
+				}
 			}
 		}
 		return total;
