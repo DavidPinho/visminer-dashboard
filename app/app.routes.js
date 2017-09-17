@@ -17,10 +17,6 @@ homeApp.config(['$routeProvider', '$locationProvider',
 		    templateUrl: 'technicaldebt/tdmanagement/tdmanagement.html',
 		    controller: 'TDManagementCtrl'
 		      }).
-			when('/tdcommitters', {
-		    templateUrl: 'technicaldebt/tdcommitters/tdcommitters.html',
-		    controller: 'TDCommittersCtrl'
-		      }).
 			otherwise({ redirectTo: '/tdevolution' });
 			$locationProvider.html5Mode(true);
  }]);
