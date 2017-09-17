@@ -24,7 +24,6 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 		}
 	}
 
-	// Load all references (versions)
 	thisCtrl.referencesLoad = function (repositoryId) {
 		let requestUrl = 'http://localhost:4040/api/references/enhanced/repository/' + repositoryId;
 		$http.get(requestUrl)
@@ -58,13 +57,7 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 	}
 
 	thisCtrl.loadSliderReferences = function () {
-		$scope.referencesNames = [];
-		$scope.sliderReferences = [];
-		$scope.chartCodeDebtSeries = [];
-		$scope.chartDesignDebtSeries = [];
-		$scope.chartDefectDebtSeries = [];
-		$scope.chartTestDebtSeries = [];
-		$scope.chartRequirementDebtSeries = [];
+		cleanArrays();
 		var j = 0;
 		for (var i = $scope.slider.minValue - 1; i < $scope.slider.maxValue; i++) {
 			var referenceName = $scope.references[i].name;
@@ -87,6 +80,16 @@ homeApp.controller('TDEvolutionCtrl', function ($scope, $http, $q, sidebarServic
 			$scope.sliderReferences.push($scope.references[i]);
 		}
 		thisCtrl.loadColumnChart();
+	}
+
+	function cleanArrays() {
+		$scope.referencesNames = [];
+		$scope.sliderReferences = [];
+		$scope.chartCodeDebtSeries = [];
+		$scope.chartDesignDebtSeries = [];
+		$scope.chartDefectDebtSeries = [];
+		$scope.chartTestDebtSeries = [];
+		$scope.chartRequirementDebtSeries = [];
 	}
 
 	thisCtrl.getTotalOfCodeSmells = function (reference, files) {
